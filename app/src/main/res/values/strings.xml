@@ -8,6 +8,7 @@
     <string name="third_fragment_label">Third Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="iniciar">Iniciar sesión</string>
     <string name="email">Email</string>
     <string name="emailbox">prueba@prueba.com</string>
     <string name="password">Contraseña</string>

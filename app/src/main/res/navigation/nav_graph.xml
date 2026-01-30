@@ -12,17 +12,17 @@
         tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_LoginFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_LoginFragment_to_DashboardFragment"
+            app:destination="@id/DashboardFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/DashboardFragment"
         android:name="com.example.tourney.DashboardFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_dashboard">
 
         <action
-            android:id="@+id/action_SecondFragment_to_LoginFragment"
+            android:id="@+id/action_DashboardFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
     </fragment>
 </navigation>
