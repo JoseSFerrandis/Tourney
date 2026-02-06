@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "com.example.tourney.app-mergeDebugResources-47:/layout/fragment_login.xml",
+        "source": "com.example.tourney.app-main-50:/layout/fragment_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\josfermon8\\.gradle\\daemon\\8.13\\com.example.tourney.app-mergeDebugResources-47:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\josfermon8\\.gradle\\daemon\\8.13\\com.example.tourney.app-main-50:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\josfermon8\\.gradle\\daemon\\8.13\\com.example.tourney.app-mergeDebugResources-47:\\layout\\fragment_login.xml",
+        "source": "C:\\Users\\josfermon8\\.gradle\\daemon\\8.13\\com.example.tourney.app-main-50:\\layout\\fragment_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\josfermon8\\.gradle\\daemon\\8.13\\com.example.tourney.app-mergeDebugResources-47:\\layout\\content_main.xml",
+        "source": "C:\\Users\\josfermon8\\.gradle\\daemon\\8.13\\com.example.tourney.app-main-50:\\layout\\content_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\josfermon8\\.gradle\\daemon\\8.13\\com.example.tourney.app-mergeDebugResources-47:\\layout\\fragment_dashboard.xml",
+        "source": "C:\\Users\\josfermon8\\.gradle\\daemon\\8.13\\com.example.tourney.app-main-50:\\layout\\fragment_dashboard.xml"
+    },
+    {
+        "merged": "com.example.tourney.app-mergeDebugResources-47:/layout/content_main.xml",
+        "source": "com.example.tourney.app-main-50:/layout/content_main.xml"
+    },
+    {
+        "merged": "com.example.tourney.app-mergeDebugResources-47:/layout/activity_main.xml",
+        "source": "com.example.tourney.app-main-50:/layout/activity_main.xml"
+    }
+]

@@ -2,6 +2,7 @@
     <string name="app_name">incidenciasdam</string>
     <string name="action_profile">Perfil</string>
     <string name="action_preferences">Preferencias</string>
+    <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="login_fragment_label">Login Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <dimen name="fab_margin">16dp</dimen>
+    <string name="action_preferences">Preferencias</string>
+    <string name="action_profile">Perfil</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">incidenciasdam</string>
+    <string name="ayuda">El correo de prueba es prueba@prueba.com y la pass debe tener al menos 8 carácteres 1 mayus y 1 número</string>
+    <string name="email">Email</string>
+    <string name="emailbox">prueba@prueba.com</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="iniciar">Iniciar sesión</string>
+    <string name="login_fragment_label">Login Fragment</string>
+    <string name="lorem_ipsum">
+        Estoy cansado del Lore ipsum
+    </string>
+    <string name="next">Next</string>
+    <string name="password">Contraseña</string>
+    <string name="previous">Previous</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="third_fragment_label">Third Fragment</string>
+    <style name="Base.Theme.Tourney" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.Tourney" parent="Base.Theme.Tourney"/>
+</resources>
