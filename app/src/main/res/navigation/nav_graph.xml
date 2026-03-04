@@ -15,6 +15,7 @@
             android:id="@+id/action_LoginFragment_to_DashboardFragment"
             app:destination="@id/DashboardFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/DashboardFragment"
         android:name="com.example.tourney.DashboardFragment"
@@ -24,5 +25,50 @@
         <action
             android:id="@+id/action_DashboardFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
+        <action
+            android:id="@+id/action_DashboardFragment_to_JoinTournamentFragment"
+            app:destination="@id/JoinTournamentFragment" />
+        <action
+            android:id="@+id/action_DashboardFragment_to_ProfileFragment"
+            app:destination="@id/ProfileFragment" />
     </fragment>
+
+    <!-- Fragmento de Perfil -->
+    <fragment
+        android:id="@+id/ProfileFragment"
+        android:name="com.example.tourney.AccountManagement"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_account_management">
+
+        <action
+            android:id="@+id/action_ProfileFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_DashboardFragment"
+            app:destination="@id/DashboardFragment" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_DashboardFragment2"
+            app:destination="@id/DashboardFragment" />
+    </fragment>
+
+    <!-- Fragmento Unirse a Torneo -->
+    <fragment
+        android:id="@+id/JoinTournamentFragment"
+        android:name="com.example.tourney.JoinTournamentPage"
+        android:label="Unirse al Torneo"
+        tools:layout="@layout/fragment_join_tournament_page">
+        <action
+            android:id="@+id/action_JoinTournamentFragment_to_TournamentFragment"
+            app:destination="@id/TournamentFragment" />
+    </fragment>
+
+    <!-- Fragmento Página de Torneo -->
+    <fragment
+        android:id="@+id/TournamentFragment"
+        android:name="com.example.tourney.TournamentPage"
+        android:label="Detalles del Torneo"
+        tools:layout="@layout/fragment_tournament_page" />
+
 </navigation>
