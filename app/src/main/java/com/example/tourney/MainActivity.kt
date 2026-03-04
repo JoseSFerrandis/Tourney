@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.example.tourney.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +34,36 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null)
                 .setAnchorView(R.id.fab).show()
         }
+        /*
+        @Author:JL
+        @Date:04/03/2026 22:19
+        Esta es la función basica que teniamos en las demás practicas para usar fav y toolbar, en mis
+        layouts de torneo hay una imagen en la parte supeiro por lo que he desactivado la toolbar
+         */
+
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.DashboardFragment -> {
+                    binding.fab.show()
+                    binding.toolbar.visibility = View.VISIBLE
+                }
+                R.id.LoginFragment -> {
+                    binding.fab.hide()
+                    binding.toolbar.visibility = View.GONE
+                }
+                R.id.TournamentFragment , R.id.JoinTournamentFragment  -> {
+                    binding.fab.show()
+                    binding.toolbar.visibility = View.GONE
+                    // Desbloquear para otras pantallas si es necesario, o mantenerlo según diseño
+                }
+                else -> {
+                    binding.fab.hide()
+                    binding.toolbar.visibility = View.VISIBLE
+                }
+            }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

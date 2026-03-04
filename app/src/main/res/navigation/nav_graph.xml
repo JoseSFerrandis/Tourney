@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_DashboardFragment_to_ProfileFragment"
             app:destination="@id/ProfileFragment" />
+        <action
+            android:id="@+id/action_DashboardFragment_to_TournamentFragment"
+            app:destination="@id/TournamentFragment" />
     </fragment>
 
     <!-- Fragmento de Perfil -->
