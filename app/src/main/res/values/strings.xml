@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">incidenciasdam</string>
+    <string name="app_name">Tourney</string>
     <string name="action_profile">Perfil</string>
     <string name="action_preferences">Preferencias</string>
     <string name="action_settings">Settings</string>
