@@ -60,11 +60,11 @@ class LoginFragment : Fragment() {
 
     fun loginByButton() : Boolean {
 
+        val regexEmail = Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")
         val regexPassword = Regex("(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}")
 
         // Error en el email
-        if(!(binding.loginEmailInput.text.toString().contains("@")) ||
-            !(binding.loginEmailInput.text.toString().contains("."))){
+        if(!(binding.loginEmailInput.text.toString().matches(regexEmail))){
             binding.tilLoginEmail.error = "Introduce un email válido"
             return false
         }else{
@@ -95,7 +95,7 @@ class LoginFragment : Fragment() {
         binding.loginEmailInput.clearFocus()
         binding.loginPasswordInput.clearFocus()
 
-        return ((binding.loginEmailInput.text.toString() == "prueba@prueba.com") &&
+        return ((binding.loginEmailInput.text.toString().matches(regexEmail)) &&
                 (binding.loginPasswordInput.text.toString().matches(regexPassword)))
     }
 }
