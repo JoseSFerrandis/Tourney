@@ -77,22 +77,15 @@
                 android:id="@+id/tilLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="none"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.344">
+                android:layout_marginBottom="16dp"
+                app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/loginEmailInput"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_input_white"
                     android:hint="tu@email.com"
-                    app:hintEnabled="false"
                     android:inputType="textEmailAddress"
                     android:paddingHorizontal="16dp"
                     android:textSize="14sp" />
@@ -113,23 +106,16 @@
                 android:id="@+id/tilLoginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="none"
+                android:layout_marginBottom="16dp"
                 app:endIconMode="password_toggle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.586">
+                app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/loginPasswordInput"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_input_white"
                     android:hint="••••••••"
-                    app:hintEnabled="false"
                     android:inputType="textPassword"
                     android:paddingHorizontal="16dp"
                     android:textSize="14sp" />
