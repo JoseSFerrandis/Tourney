@@ -94,6 +94,6 @@ class LoginFragment : Fragment() {
         binding.loginPasswordInput.clearFocus()
 
         return ((binding.loginEmailInput.text.toString().matches(regexEmail)) &&
-                (binding.loginPasswordInput.text.toString().matches(regexPassword)))
+                binding.tilLoginPassword.error == null)
     }
 }
