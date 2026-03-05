@@ -4,22 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.FrameLayout
-import androidx.appcompat.widget.AppCompatButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tournamentapp.adapters.TournamentAdapter
 import com.example.tournamentapp.models.Tournament
 import com.example.tourney.R
+import com.example.tourney.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
-    private lateinit var btnProfile: FrameLayout
-    private lateinit var etSearch: EditText
-    private lateinit var btnCreateTournament: AppCompatButton
-    private lateinit var rvTournaments: RecyclerView
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var tournamentAdapter: TournamentAdapter
 
     // Sample tournament data
@@ -33,7 +32,8 @@ class HomeFragment : Fragment() {
             date = "25 Ene 2026",
             location = "KOI",
             status = "Inscripciones Abiertas",
-            prize = "$5,000"
+            prize = "$5,000",
+            code =  777
         ),
         Tournament(
             id = 2,
@@ -44,7 +44,8 @@ class HomeFragment : Fragment() {
             date = "18 Ene 2026",
             location = "Cybercafé Central",
             status = "Inscripciones Abiertas",
-            prize = "$2,000"
+            prize = "$2,000",
+            code =  69
         ),
         Tournament(
             id = 3,
@@ -55,7 +56,8 @@ class HomeFragment : Fragment() {
             date = "20 Ene 2026",
             location = "Tienda Gaming Local",
             status = "En Progreso",
-            prize = "$1,500"
+            prize = "$1,500",
+            code =  1
         ),
         Tournament(
             id = 4,
@@ -66,7 +68,8 @@ class HomeFragment : Fragment() {
             date = "28 Ene 2026",
             location = "Online/Presencial",
             status = "Inscripciones Abiertas",
-            prize = "$3,000"
+            prize = "$3,000",
+            code =  1000
         )
     )
 
@@ -74,50 +77,62 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        initViews(view)
+
         setupRecyclerView()
         setupListeners()
     }
 
-    private fun initViews(view: View) {
-        btnProfile = view.findViewById(R.id.btn_profile)
-        etSearch = view.findViewById(R.id.et_search)
-        btnCreateTournament = view.findViewById(R.id.btn_create_tournament)
-        rvTournaments = view.findViewById(R.id.rv_tournaments)
-    }
-
     private fun setupRecyclerView() {
+        binding.rvTournaments.layoutManager = LinearLayoutManager(context)
+        
         tournamentAdapter = TournamentAdapter(tournaments) { tournament ->
             onTournamentClick(tournament)
         }
         
-        rvTournaments.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = tournamentAdapter
-        }
+        binding.rvTournaments.adapter = tournamentAdapter
     }
 
     private fun setupListeners() {
-        btnProfile.setOnClickListener {
-            // Navigate to profile screen
-            // TODO: Implement navigation
+        binding.btnProfile.setOnClickListener {
+             findNavController().navigate(R.id.action_DashboardFragment_to_ProfileFragment2)
         }
 
-        btnCreateTournament.setOnClickListener {
-            // Navigate to create tournament screen
-            // TODO: Implement navigation
+        binding.btnCreateTournament.setOnClickListener {
+            Toast.makeText(requireContext(), "Próximamente: Crear Torneo", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnJoinTournament.setOnClickListener {
+            try {
+                findNavController().navigate(R.id.action_DashboardFragment_to_JoinTournamentFragment2)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun onTournamentClick(tournament: Tournament) {
-        // Navigate to tournament detail screen
-        // TODO: Implement navigation
+        // Creamos el Bundle y pasamos el objeto Parcelable
+        val bundle = Bundle().apply {
+            putParcelable("tournament_data", tournament)
+        }
+        
+        // Navegamos pasando el bundle (Asegúrate que esta acción existe en nav_graph)
+        try {
+            findNavController().navigate(R.id.action_DashboardFragment_to_TournamentFragment2, bundle)
+        } catch (e: Exception) {
+            Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

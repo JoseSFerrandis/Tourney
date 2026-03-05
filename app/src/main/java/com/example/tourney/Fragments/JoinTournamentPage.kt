@@ -32,8 +32,8 @@ class JoinTournamentPage : Fragment(R.layout.fragment_join_tournament_page) {
             Toast.makeText(requireContext(), "Próximamente", Toast.LENGTH_SHORT).show()
         }
 
-        binding.btnRules.setOnClickListener {
-            Toast.makeText(requireContext(), "Reglas no disponibles", Toast.LENGTH_SHORT).show()
+        binding.btnAyuda.setOnClickListener {
+            Toast.makeText(requireContext(), "Próximamente", Toast.LENGTH_SHORT).show()
         }
     }
 

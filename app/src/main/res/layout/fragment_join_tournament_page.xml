@@ -139,23 +139,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:text="Participantes"
+                    android:text="NonFunctional"
                     android:textColor="@color/Blue3"
-                    app:icon="@drawable/ic_people"
                     app:iconTint="@color/Blue3"
                     app:strokeColor="@color/Blue3" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRules"
+                    android:id="@+id/btnAyuda"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Reglas"
+                    android:text="Ayuda"
                     android:textColor="@color/Blue3"
-                    app:icon="@drawable/ic_gravel"
+                    app:icon="@drawable/ic_help"
                     app:iconTint="@color/Blue3"
+                    app:iconSize="24dp"
                     app:strokeColor="@color/Blue3" />
 
             </LinearLayout>
