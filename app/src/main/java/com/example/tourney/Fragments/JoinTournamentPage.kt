@@ -1,10 +1,11 @@
-package com.example.tourney
+package com.example.tourney.Fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.tourney.R
 import com.example.tourney.databinding.FragmentJoinTournamentPageBinding
 
 class JoinTournamentPage : Fragment(R.layout.fragment_join_tournament_page) {

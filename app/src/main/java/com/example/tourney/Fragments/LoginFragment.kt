@@ -1,20 +1,18 @@
-package com.example.incidenciasdam
+package com.example.tourney.Fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
 
-
-
 /**
- * A simple [Fragment] subclass.
+ * A simple [androidx.fragment.app.Fragment] subclass.
  * Use the [LoginFragment.newInstance] factory method to
  * create an instance of this fragment.
  */

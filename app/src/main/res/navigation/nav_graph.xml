@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/LoginFragment"
-        android:name="com.example.incidenciasdam.LoginFragment"
+        android:name="com.example.tourney.Fragments.LoginFragment"
         android:label="@string/login_fragment_label"
         tools:layout="@layout/fragment_login">
 
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/DashboardFragment"
-        android:name="com.example.tourney.DashboardFragment"
+        android:name="com.example.tourney.Fragments.HomeFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_dashboard">
 
@@ -39,7 +39,7 @@
     <!-- Fragmento de Perfil -->
     <fragment
         android:id="@+id/ProfileFragment"
-        android:name="com.example.tourney.AccountManagement"
+        android:name="com.example.tourney.Fragments.AccountManagement"
         android:label="Perfil"
         tools:layout="@layout/fragment_account_management">
 
@@ -59,7 +59,7 @@
     <!-- Fragmento Unirse a Torneo -->
     <fragment
         android:id="@+id/JoinTournamentFragment"
-        android:name="com.example.tourney.JoinTournamentPage"
+        android:name="com.example.tourney.Fragments.JoinTournamentPage"
         android:label="Unirse al Torneo"
         tools:layout="@layout/fragment_join_tournament_page">
         <action
@@ -70,7 +70,7 @@
     <!-- Fragmento Página de Torneo -->
     <fragment
         android:id="@+id/TournamentFragment"
-        android:name="com.example.tourney.TournamentPage"
+        android:name="com.example.tourney.Fragments.TournamentPage"
         android:label="Detalles del Torneo"
         tools:layout="@layout/fragment_tournament_page" />
 
