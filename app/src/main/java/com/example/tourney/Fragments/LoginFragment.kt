@@ -57,6 +57,10 @@ class LoginFragment : Fragment() {
             binding.tilLoginEmail.error = null
         }
 
+        binding.btnCreateAccount.setOnClickListener {
+            findNavController().navigate(R.id.action_LoginFragment_to_RegisterFragment)
+        }
+
     }
 
 

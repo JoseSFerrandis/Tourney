@@ -14,7 +14,18 @@
         <action
             android:id="@+id/action_LoginFragment_to_DashboardFragment"
             app:destination="@id/DashboardFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/RegisterFragment"
+        android:name="com.example.tourney.Fragments.RegisterFragment"
+        android:label="@string/register_fragment_label"
+        tools:layout="@layout/fragment_register">
+    </fragment>
+
 
     <fragment
         android:id="@+id/DashboardFragment"

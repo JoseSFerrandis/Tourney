@@ -19,6 +19,17 @@ class UsersDao(context: Context){
         }
         return db.insert(UserDatabaseHelper.Companion.TABLE_USERS, null, values)
     }
+    fun insertNewUser(nickname: String, email: String, password: String, photo: Int): Long {
+        val db = helper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(UserDatabaseHelper.Companion.COL_NICKNAME, nickname)
+            put(UserDatabaseHelper.Companion.COL_EMAIL, email)
+            put(UserDatabaseHelper.Companion.COL_PASSWORD, password)
+            put(UserDatabaseHelper.Companion.COL_PHOTO, photo)
+        }
+        return db.insert(UserDatabaseHelper.Companion.TABLE_USERS, null, values)
+    }
 
     fun getAllUsers(): List<User> {
         val db = helper.readableDatabase

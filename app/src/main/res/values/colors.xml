@@ -9,4 +9,28 @@
     <color name="blue_600">#0B3557</color>
     <color name="green_100">#00FF00</color>
 
+
+
+    <!-- Register new user -->
+    <!--  ── Fondo y superficies ─────────────────────────────────────────  -->
+    <color name="bg_dark">#0F0F1A</color>
+    <color name="input_bg">#1A1A2E</color>
+    <color name="input_stroke">#2D2D4E</color>
+    <color name="divider_color">#2D2D4E</color>
+    <!--  ── Acento principal ────────────────────────────────────────────  -->
+    <color name="accent_purple">#7C3AED</color>
+    <color name="accent_purple_light">#A78BFA</color>
+    <!--  ── Texto ───────────────────────────────────────────────────────  -->
+    <color name="text_primary">#F1F0FF</color>
+    <color name="text_secondary">#9CA3AF</color>
+    <color name="text_hint">#4B5563</color>
+    <!--  ── Estado de error ─────────────────────────────────────────────  -->
+    <color name="error_red">#EF4444</color>
+    <!--  ── Indicador de fortaleza ──────────────────────────────────────  -->
+    <color name="strength_empty">#2D2D4E</color>
+    <color name="strength_weak">#EF4444</color>
+    <color name="strength_fair">#F97316</color>
+    <color name="strength_good">#EAB308</color>
+    <color name="strength_strong">#22C55E</color>
+
 </resources>
