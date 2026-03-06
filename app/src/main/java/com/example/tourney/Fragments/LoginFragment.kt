@@ -105,8 +105,12 @@ class LoginFragment : Fragment() {
     fun login(): Boolean{
         //ESTO ES SOLO PARA DEBUGGING
         if(binding.loginEmailInput.text.toString() == "" &&
-            binding.loginPasswordInput.text.toString() == "")
+            binding.loginPasswordInput.text.toString() == ""){
+            MainActivity.actualUser = User(-1, "admin", "admin@admin.com", "admin", 0)
+
             return true
+        }
+        //-------------------------------------------------------------------
 
 
 
