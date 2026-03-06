@@ -15,6 +15,7 @@ import com.example.tourney.UsersDao
 import com.example.tourney.databinding.FragmentRegisterBinding
 import com.google.android.material.textfield.TextInputLayout
 
+// TODO: humanizar código
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
@@ -39,7 +40,6 @@ class RegisterFragment : Fragment() {
     }
 
 
-    // ── Listeners ─────────────────────────────────────────────────────────────
     private fun setupClickListeners() {
 
         // Botón principal: Crear cuenta
@@ -55,7 +55,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    // ── Validación ────────────────────────────────────────────────────────────
     private fun validateFields(): Boolean {
         var isValid = true
 
@@ -64,8 +63,23 @@ class RegisterFragment : Fragment() {
         val password = binding.etPassword.text?.toString() ?: ""
         val confirm  = binding.etPasswordConfirm.text?.toString() ?: ""
 
-        // Nickname
+
         clearError(binding.tilNickname)
+
+        // Check availability
+        val allUsers = UsersDao(requireContext()).getAllUsers()
+        for(user in allUsers){
+            if(nickname == user.nickname){
+                setError(binding.tilNickname, "El nickname ya está en uso")
+                isValid = false
+            }
+            if(email == user.email){
+                setError(binding.tilEmail, "El email ya está en uso")
+                isValid = false
+            }
+        }
+
+        // Nickname
         when {
             nickname.isEmpty() -> {
                 setError(binding.tilNickname, "El nickname es obligatorio")
