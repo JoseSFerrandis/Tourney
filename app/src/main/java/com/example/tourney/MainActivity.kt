@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.example.tourney.databinding.ActivityMainBinding
+import com.example.tourney.entities.User
 
 class MainActivity : AppCompatActivity() {
 
@@ -86,5 +87,9 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    companion object{
+        var actualUser: User? = null
     }
 }

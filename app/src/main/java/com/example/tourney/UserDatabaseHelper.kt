@@ -1,4 +1,4 @@
-package com.example.incidenciasdam
+package com.example.tourney
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -28,9 +28,9 @@ class UserDatabaseHelper(context: Context) :
         db.execSQL(createTable)
 
         val insert = """
-            INSERT INTO $TABLE_USERS ($COL_NICKNAME, $COL_EMAIL, $COL_PASSWORD) VALUES
-            ('admin', 'admin@admin.com', 'admin'),
-            ('user', 'user@user.com', 'user')
+            INSERT INTO $TABLE_USERS ($COL_NICKNAME, $COL_EMAIL, $COL_PASSWORD, $COL_PHOTO) VALUES
+            ('admin', 'admin@admin.com', 'admin', 0),
+            ('user', 'user@user.com', 'user', 0)
         """.trimIndent()
         db.execSQL(insert)
     }

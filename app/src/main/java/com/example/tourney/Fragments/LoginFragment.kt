@@ -1,5 +1,6 @@
 package com.example.tourney.Fragments
 
+import com.example.tourney.entities.User
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,9 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.tourney.MainActivity
 import com.example.tourney.R
+import com.example.tourney.UsersDao
 import com.example.tourney.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -39,8 +42,9 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.bind(view)
 
         binding.btnLoginLogin.setOnClickListener {
-            if(loginByButton()) {
-                Snackbar.make(view, "Hola Holita", Snackbar.LENGTH_LONG).show()
+            //if(loginByButton()) {
+            if(login()) {
+                Snackbar.make(view, "Hola, ${MainActivity.actualUser?.nickname}", Snackbar.LENGTH_LONG).show()
                 findNavController().navigate(R.id.action_LoginFragment_to_DashboardFragment)
             }
         }
@@ -95,5 +99,28 @@ class LoginFragment : Fragment() {
 
         return ((binding.loginEmailInput.text.toString().matches(regexEmail)) &&
                 binding.tilLoginPassword.error == null)
+    }
+
+
+    fun login(): Boolean{
+        //ESTO ES SOLO PARA DEBUGGING
+        if(binding.loginEmailInput.text.toString() == "" &&
+            binding.loginPasswordInput.text.toString() == "")
+            return true
+
+
+
+        val allUsers = UsersDao(requireContext()).getAllUsers()
+
+        for(user in allUsers){
+            if(binding.loginEmailInput.text.toString() == user.email &&
+                binding.loginPasswordInput.text.toString() == user.password){
+                MainActivity.actualUser = user;
+
+                return true
+            }
+        }
+        Snackbar.make(binding.root, "Email o contraseña incorrectos", Snackbar.LENGTH_LONG).show()
+        return false
     }
 }
