@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tournamentapp.adapters.TournamentAdapter
 import com.example.tournamentapp.models.Tournament
+import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentHomeBinding
 import com.google.android.material.snackbar.Snackbar
@@ -129,6 +130,11 @@ class HomeFragment : Fragment() {
         } catch (e: Exception) {
             Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.tvGreeting.text = "Hola, ${MainActivity.actualUser?.nickname}"
     }
 
     override fun onDestroyView() {
