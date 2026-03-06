@@ -6,6 +6,8 @@
     <!-- Strings used for fragments for navigation -->
     <string name="login_fragment_label">Login Fragment</string>
     <string name="register_fragment_label">Register Fragment</string>
+    <string name="remember_password_fragment_label">Recordar contraseña</string>
+    <string name="set_new_password_fragment_label">Crear nueva contraseña</string>
     <string name="second_fragment_label">Torneos</string>
     <string name="third_fragment_label">Third Fragment</string>
     <string name="next">Next</string>

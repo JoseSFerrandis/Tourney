@@ -60,6 +60,9 @@ class LoginFragment : Fragment() {
         binding.btnCreateAccount.setOnClickListener {
             findNavController().navigate(R.id.action_LoginFragment_to_RegisterFragment)
         }
+        binding.btnForgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.action_LoginFragment_to_RememberPassword)
+        }
 
     }
 

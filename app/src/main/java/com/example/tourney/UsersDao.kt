@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import com.example.tourney.entities.User
 
-// TODO: fix this
 class UsersDao(context: Context){
     private val helper = UserDatabaseHelper(context.applicationContext)
 
@@ -65,32 +64,21 @@ class UsersDao(context: Context){
     }
 
 
-    /*fun actualizarPorId(id: Int, nombre: String, apellidos: String): Int {
+    fun updatePassword(email: String, password: String): Int {
         val db = helper.writableDatabase
 
         val values = ContentValues().apply {
-            put(UserDatabaseHelper.COL_NOMBRE, nombre)
-            put(UserDatabaseHelper.COL_APELLIDOS, apellidos)
+            put(UserDatabaseHelper.Companion.COL_PASSWORD, password)
         }
 
         // Devuelve cuántas filas se actualizaron
         val rowsUpdated = db.update(
-            UserDatabaseHelper.TABLE_USERS,
+            UserDatabaseHelper.Companion.TABLE_USERS,
             values,
-            "${UserDatabaseHelper.COL_ID}=?",
-            arrayOf(id.toString())
+            "${UserDatabaseHelper.Companion.COL_EMAIL}=?",
+            arrayOf(email)
         )
         db.close()
-
-        getAllUsers().forEach { user->
-            if(user.id == id){
-                //MainActivity.actualUser = user
-            }
-        }
-
-
-
         return rowsUpdated
-
-    }*/
+    }
 }
