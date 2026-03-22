@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_blue"
+    android:orientation="vertical"
+    android:padding="24dp"
+    tools:context=".Fragments.CreateTournamentFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Título -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:text="Crear Torneo"
+                android:textColor="@android:color/white"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="32dp"
+                android:text="Completa los detalles del evento"
+                android:textColor="#CCDCFF"
+                android:textSize="14sp" />
+
+            <!-- Formulario -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Nombre del Torneo -->
+                <TextView
+                    android:text="Nombre del Torneo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                <com.google.android.material.textfield.TextInputLayout  android:id="@+id/tilName" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etName" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="Copa Mundial 2026" android:paddingHorizontal="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Juego -->
+                <TextView   android:text="Videojuego" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                <com.google.android.material.textfield.TextInputLayout  android:id="@+id/tilGame" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etGame" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="League of Legends" android:paddingHorizontal="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <!-- Participantes Actuales -->
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                        <TextView   android:text="Part. Actuales" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                        <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etParticipants" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="0" android:inputType="number" android:paddingHorizontal="16dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!-- Máximo Participantes -->
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="8dp">
+                        <TextView   android:text="Máx. Participantes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                        <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etMaxParticipants" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="32" android:inputType="number" android:paddingHorizontal="16dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Fecha y Ubicación -->
+                <TextView   android:text="Fecha" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etDate" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="25 Ene 2026" android:paddingHorizontal="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView   android:text="Ubicación" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etLocation" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="Estadio Virtual" android:paddingHorizontal="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Premio y Código -->
+                <TextView  android:text="Premio" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etPrize" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="$5,000" android:paddingHorizontal="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView  android:text="Código de Acceso" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="32dp" app:hintEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCode" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="777" android:inputType="number" android:paddingHorizontal="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Botón Guardar -->
+                <Button
+                    android:id="@+id/btnCreateTournament"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="24dp"
+                    android:backgroundTint="@android:color/white"
+                    android:text="Crear Torneo"
+                    android:textColor="@color/blue_600"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

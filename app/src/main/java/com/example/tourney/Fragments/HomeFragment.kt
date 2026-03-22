@@ -22,58 +22,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var tournamentAdapter: TournamentAdapter
 
-    // Sample tournament data
-    private val tournaments = listOf(
-        Tournament(
-            id = 1,
-            name = "Copa League of Legends 2026",
-            game = "League of Legends",
-            participants = 32,
-            maxParticipants = 32,
-            date = "25 Ene 2026",
-            location = "KOI",
-            status = "Inscripciones Abiertas",
-            prize = "$5,000",
-            code =  777
-        ),
-        Tournament(
-            id = 2,
-            name = "Torneo Counter-Strike Relámpago",
-            game = "CS:GO",
-            participants = 6,
-            maxParticipants = 8,
-            date = "18 Ene 2026",
-            location = "Cybercafé Central",
-            status = "Inscripciones Abiertas",
-            prize = "$2,000",
-            code =  69
-        ),
-        Tournament(
-            id = 3,
-            name = "Championship Dungeons & Dragons",
-            game = "D&D 5e",
-            participants = 12,
-            maxParticipants = 12,
-            date = "20 Ene 2026",
-            location = "Tienda Gaming Local",
-            status = "En Progreso",
-            prize = "$1,500",
-            code =  1
-        ),
-        Tournament(
-            id = 4,
-            name = "Torneo Valorant Summer",
-            game = "Valorant",
-            participants = 20,
-            maxParticipants = 32,
-            date = "28 Ene 2026",
-            location = "Online/Presencial",
-            status = "Inscripciones Abiertas",
-            prize = "$3,000",
-            code =  1000
-        )
-    )
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -92,26 +40,40 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rvTournaments.layoutManager = LinearLayoutManager(context)
-        
-        tournamentAdapter = TournamentAdapter(tournaments) { tournament ->
-            onTournamentClick(tournament)
-        }
+        /*
+           @joschajov 22/03/2025
+           He tenido que cambiar esta parte ya que teniamos un array de objetos y no una lista editable
+           fue un fallo por mi parte hacerlo así si no me equivoco, ahora ya es editable y funciona
+
+           A futuro: esta función donde los recogemos se tendrá que editar un poco seguramente ya que
+           sacaremos los datos de una llamada a la base de datos
+         */
+
+        // Convertimos a MutableList para que el adaptador pueda manejarla
+        val tournaments = MainActivity.getTournaments().toMutableList()
+        //con esto llamamos al adaptador con la lista de torneos sacada del
+        // MainActivity, esta por ahora no tiene cambios
+        tournamentAdapter = TournamentAdapter(tournaments) { tournament -> onTournamentClick(tournament) }
         
         binding.rvTournaments.adapter = tournamentAdapter
     }
 
     private fun setupListeners() {
         binding.btnProfile.setOnClickListener {
-             findNavController().navigate(R.id.action_DashboardFragment_to_ProfileFragment2)
-        }
-
-        binding.btnCreateTournament.setOnClickListener {
-            Toast.makeText(requireContext(), "Próximamente: Crear Torneo", Toast.LENGTH_SHORT).show()
+             findNavController().navigate(R.id.action_DashboardFragment_to_ProfileFragment)
         }
 
         binding.btnJoinTournament.setOnClickListener {
             try {
-                findNavController().navigate(R.id.action_DashboardFragment_to_JoinTournamentFragment2)
+                findNavController().navigate(R.id.action_DashboardFragment_to_JoinTournamentFragment)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnCreateTournament.setOnClickListener {
+            try {
+                findNavController().navigate(R.id.action_DashboardFragment_to_CreateTournamentFragment)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
             }
@@ -119,14 +81,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun onTournamentClick(tournament: Tournament) {
-        // Creamos el Bundle y pasamos el objeto Parcelable
         val bundle = Bundle().apply {
             putParcelable("tournament_data", tournament)
         }
         
-        // Navegamos pasando el bundle (Asegúrate que esta acción existe en nav_graph)
         try {
-            findNavController().navigate(R.id.action_DashboardFragment_to_TournamentFragment2, bundle)
+            findNavController().navigate(R.id.action_DashboardFragment_to_TournamentFragment, bundle)
         } catch (e: Exception) {
             Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
         }
@@ -135,6 +95,15 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.tvGreeting.text = "Hola, ${MainActivity.actualUser?.nickname}"
+        /*
+            @joschajov 22/03/2025
+            He tealizado cambios en esta parte, ahora el objeto adapatador puede actualizar su array
+            con una lista que recoge del main
+
+            A futuro: se debe cambiar el meotodo ya que se hará desde una base de datos
+         */
+        // Forzamos la actualización de los datos del adaptador al volver
+        tournamentAdapter.updateTournaments(MainActivity.getTournaments())
     }
 
     override fun onDestroyView() {

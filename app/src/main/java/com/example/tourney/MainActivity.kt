@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.example.tournamentapp.models.Tournament
 import com.example.tourney.databinding.ActivityMainBinding
 import com.example.tourney.entities.User
 
@@ -35,13 +36,6 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null)
                 .setAnchorView(R.id.fab).show()
         }
-        /*
-        @Author:JL
-        @Date:04/03/2026 22:19
-        Esta es la función basica que teniamos en las demás practicas para usar fav y toolbar, en mis
-        layouts de torneo hay una imagen en la parte supeiro por lo que he desactivado la toolbar
-         */
-
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -53,10 +47,9 @@ class MainActivity : AppCompatActivity() {
                     binding.fab.hide()
                     binding.toolbar.visibility = View.GONE
                 }
-                R.id.TournamentFragment , R.id.JoinTournamentFragment  -> {
+                R.id.TournamentFragment, R.id.JoinTournamentFragment -> {
                     binding.fab.show()
                     binding.toolbar.visibility = View.GONE
-                    // Desbloquear para otras pantallas si es necesario, o mantenerlo según diseño
                 }
                 else -> {
                     binding.fab.hide()
@@ -64,19 +57,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
@@ -89,7 +77,34 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    companion object{
+    companion object {
         var actualUser: User? = null
+        /*
+           @joschajov 22/03/2025
+           He movido la declaración de torneos estaticos aquí, ya que no es un fragmento
+           que se borre todo el rato y era más practico.
+
+           A futuro: esta sigue siendo una "buena" idea o tener otro.kt para ello pero no debería
+           ser estatico como aquí, si no hacer llamadas a la base de datos
+         */
+        // Lista global de torneos
+        private val tournaments = mutableListOf(
+            Tournament(1, "Copa League of Legends 2026", "League of Legends", 32, 32, "25 Ene 2026", "KOI", "Inscripciones Abiertas", "$5,000", 777),
+            Tournament(2, "Torneo Counter-Strike Relámpago", "CS:GO", 6, 8, "18 Ene 2026", "Cybercafé Central", "Inscripciones Abiertas", "$2,000", 69),
+            Tournament(3, "Championship Dungeons & Dragons", "D&D 5e", 12, 12, "20 Ene 2026", "Tienda Gaming Local", "En Progreso", "$1,500", 1),
+            Tournament(4, "Torneo Valorant Summer", "Valorant", 20, 32, "28 Ene 2026", "Online/Presencial", "Inscripciones Abiertas", "$3,000", 1000)
+        )
+
+        fun getTournaments(): List<Tournament> {
+            return tournaments
+        }
+
+        fun addTournament(tournament: Tournament) {
+            tournaments.add(0, tournament)
+        // Lo añade al principio para que se vea primero
+        // (SE LO HE PEDIDO A LA IA PARA QUE SE VEA BIEN)
+        // pero sinceramente deberíamos ordenar los torneos por fecha
+        // y no así por ID (como lo metemos al listado mutabel)
+        }
     }
 }

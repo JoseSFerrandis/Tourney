@@ -9,7 +9,7 @@ import com.example.tournamentapp.models.Tournament
 import com.example.tourney.R
 
 class TournamentAdapter(
-    private val tournaments: List<Tournament>,
+    private var tournaments: MutableList<Tournament>,
     private val onTournamentClick: (Tournament) -> Unit
 ) : RecyclerView.Adapter<TournamentAdapter.TournamentViewHolder>() {
 
@@ -31,7 +31,6 @@ class TournamentAdapter(
             tvLocation.text = tournament.location
             tvPrize.text = tournament.prize
 
-            // Set badge background based on status
             val badgeBackground = if (tournament.status == "En Progreso") {
                 R.drawable.bg_badge_progress
             } else {
@@ -39,11 +38,23 @@ class TournamentAdapter(
             }
             tvStatusBadge.setBackgroundResource(badgeBackground)
 
-
             itemView.setOnClickListener {
                 onTournamentClick(tournament)
             }
         }
+    }
+
+
+    /*
+    @joschajov 22/03/2025
+    Esta función se ha creado con el objetivo de poder actualizar los datos del adaptador
+    ya que al llegar al onResume podemos perder los datos de la lista de torneos (i
+     */
+    // Método para actualizar los datos
+    fun updateTournaments(newTournaments: List<Tournament>) {
+        this.tournaments.clear()
+        this.tournaments.addAll(newTournaments)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TournamentViewHolder {
