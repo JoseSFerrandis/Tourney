@@ -49,6 +49,11 @@ class TournamentPage : Fragment() {
     private fun setupUI(tournament: Tournament) {
         // Rellenamos la UI con los datos recibidos
         binding.tvTournamentTitle.text = tournament.name
+        binding.tvGameName.text = tournament.game
+        binding.tvParticipants.text = "${tournament.numParticipants}/${tournament.maxParticipants}"
+        binding.tvDate.text = tournament.date
+        binding.tvLocation.text = tournament.location
+        binding.tvPrize.text = tournament.prize
         
         // Aquí podrías añadir más campos si tu XML los tuviera (ej. fecha, premios, etc.)
         // Por ahora el XML solo tiene el título y botones

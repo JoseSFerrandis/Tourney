@@ -59,12 +59,144 @@
                             android:id="@+id/tvTournamentTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
                             android:gravity="center"
                             android:text="Torneo de D&amp;D"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                             android:textColor="?attr/colorOnSurface"
+                            android:layout_marginBottom="4dp"
                             android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_game_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:text="League of Legends"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:textSize="14sp"/>
+
+                        <!-- Tournament Details Grid -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <!-- Row 1: Participants and Date -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="8dp">
+
+                                <!-- Participants -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/ic_users"
+                                        app:tint="@color/black" />
+
+                                    <TextView
+                                        android:id="@+id/tv_participants"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="32/32"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp"
+                                        android:layout_marginStart="8dp" />
+                                </LinearLayout>
+
+                                <!-- Date -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/ic_calendar"
+                                        app:tint="@color/black" />
+
+                                    <TextView
+                                        android:id="@+id/tv_date"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="25 Ene 2026"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp"
+                                        android:layout_marginStart="8dp" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Row 2: Location and Prize -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:orientation="horizontal">
+
+                                <!-- Location -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/ic_map_pin"
+                                        app:tint="@color/black" />
+
+                                    <TextView
+                                        android:id="@+id/tv_location"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Online"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp"
+                                        android:layout_marginStart="8dp"
+                                        android:ellipsize="end"
+                                        android:maxLines="1" />
+                                </LinearLayout>
+
+                                <!-- Prize -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/ic_trophy"
+                                        app:tint="@color/black" />
+
+                                    <TextView
+                                        android:id="@+id/tv_prize"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="$5,000"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp"
+                                        android:layout_marginStart="8dp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
 
                         <com.google.android.material.divider.MaterialDivider
                             android:layout_width="match_parent"
