@@ -37,7 +37,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             val code = binding.etCode.text.toString().toIntOrNull() ?: 0
 
 
-            if (name.isNotEmpty() && game.isNotEmpty()) {
+            if (name.isNotBlank() && game.isNotBlank()) {
                 val newTournament = Tournament(
                     id = (100..10000).random(),
                     name = name,
