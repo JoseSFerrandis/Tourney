@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tourney.entities.Tournament
 import com.example.tourney.R
+import android.content.Context
 
 class TournamentAdapter(
     private var allTournaments: MutableList<Tournament>,
@@ -26,13 +27,14 @@ class TournamentAdapter(
         val tvPrize: TextView = itemView.findViewById(R.id.tv_prize)
 
         fun bind(tournament: Tournament) {
-            tvTournamentName.text = tournament.name
-            tvGameName.text = tournament.game
-            tvStatusBadge.text = tournament.status
-            tvParticipants.text = "${tournament.numParticipants}/${tournament.maxParticipants}"
-            tvDate.text = tournament.date
-            tvLocation.text = tournament.location
-            tvPrize.text = tournament.prize
+            val context = itemView.context
+            tvTournamentName.text = establishedValue(context, tournament.name)
+            tvGameName.text = establishedValue(context, tournament.game)
+            tvStatusBadge.text = establishedValue(context, tournament.status)
+            tvParticipants.text = establishedValue(context, "${tournament.numParticipants}/${tournament.maxParticipants}")
+            tvDate.text = establishedValue(context, tournament.date)
+            tvLocation.text = establishedValue(context, tournament.location)
+            tvPrize.text = establishedValue(context, tournament.prize)
 
             val badgeBackground = if (tournament.status == "En Progreso") {
                 R.drawable.bg_badge_progress
@@ -87,4 +89,12 @@ class TournamentAdapter(
     }
 
     override fun getItemCount(): Int = tournaments.size
+
+    fun establishedValue(context: Context, value: String): String{
+        return if (value.isNullOrBlank() || value == "null") {
+            context.getString(R.string.no_established)
+        } else {
+            value
+        }
+    }
 }
