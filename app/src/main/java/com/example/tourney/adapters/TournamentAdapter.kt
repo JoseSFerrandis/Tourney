@@ -1,11 +1,11 @@
-package com.example.tournamentapp.adapters
+package com.example.tourney.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tournamentapp.models.Tournament
+import com.example.tourney.entities.Tournament
 import com.example.tourney.R
 
 class TournamentAdapter(
@@ -26,7 +26,7 @@ class TournamentAdapter(
             tvTournamentName.text = tournament.name
             tvGameName.text = tournament.game
             tvStatusBadge.text = tournament.status
-            tvParticipants.text = "${tournament.participants}/${tournament.maxParticipants}"
+            tvParticipants.text = "${tournament.numParticipants}/${tournament.maxParticipants}"
             tvDate.text = tournament.date
             tvLocation.text = tournament.location
             tvPrize.text = tournament.prize
@@ -45,7 +45,7 @@ class TournamentAdapter(
     }
 
 
-    /*
+    /**
     @joschajov 22/03/2025
     Esta función se ha creado con el objetivo de poder actualizar los datos del adaptador
     ya que al llegar al onResume podemos perder los datos de la lista de torneos (i

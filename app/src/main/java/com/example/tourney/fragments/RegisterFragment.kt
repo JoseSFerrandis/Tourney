@@ -1,17 +1,13 @@
-package com.example.tourney.Fragments
+package com.example.tourney.fragments
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.tourney.R
-import com.example.tourney.UsersDao
+import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentRegisterBinding
 import com.google.android.material.textfield.TextInputLayout
 

@@ -1,4 +1,4 @@
-package com.example.tourney.Fragments
+package com.example.tourney.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tournamentapp.adapters.TournamentAdapter
-import com.example.tournamentapp.models.Tournament
+import com.example.tourney.adapters.TournamentAdapter
+import com.example.tourney.entities.Tournament
 import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentHomeBinding

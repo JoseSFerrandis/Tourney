@@ -1,4 +1,4 @@
-package com.example.tourney.Fragments
+package com.example.tourney.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

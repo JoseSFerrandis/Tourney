@@ -1,4 +1,4 @@
-package com.example.tourney.Fragments
+package com.example.tourney.fragments
 
 import com.example.tourney.entities.User
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tourney.MainActivity
 import com.example.tourney.R
-import com.example.tourney.UsersDao
+import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
 

@@ -1,4 +1,4 @@
-package com.example.tourney
+package com.example.tourney.tools
 
 import android.content.ContentValues
 import android.content.Context

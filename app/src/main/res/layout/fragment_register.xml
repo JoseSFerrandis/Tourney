@@ -1,77 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_dark"
-    android:fillViewport="true">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="48dp"
-        android:paddingBottom="32dp">
+        android:layout_height="match_parent"
+        android:background="@color/bg_dark"
+        android:fillViewport="true"
+        tools:context=".fragments.RegisterFragment">
 
-        <!-- Logo / Ícono superior -->
-        <ImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_gamepad"
-            app:tint="@color/accent_purple" />
-
-        <!-- Título -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:text="Crear Cuenta"
-            android:textColor="@color/text_primary"
-            android:textSize="26sp"
-            android:textStyle="bold"/>
-
-        <!-- Subtítulo -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="6dp"
-            android:text="Únete a la arena gamer"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp"/>
-
-        <!-- Separador decorativo -->
-        <View
-            android:layout_width="48dp"
-            android:layout_height="3dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/divider_accent" />
-
-        <!-- ══════════════ CAMPO NICKNAME ══════════════ -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="NICKNAME"
-            android:textColor="@color/text_secondary"
-            android:textSize="11sp"
-            android:letterSpacing="0.12"
-            android:textStyle="bold"/>
-
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="48dp"
+            android:paddingBottom="32dp">
+
+            <!-- Logo / Ícono superior -->
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_gamepad"
+                app:tint="@color/accent_purple" />
+
+            <!-- Título -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Crear Cuenta"
+                android:textColor="@color/text_primary"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+
+            <!-- Subtítulo -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:text="Únete a la arena gamer"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"/>
+
+            <!-- Separador decorativo -->
+            <View
+                android:layout_width="48dp"
+                android:layout_height="3dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/divider_accent" />
+
+            <!-- ══════════════ CAMPO NICKNAME ══════════════ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:text="NICKNAME"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:letterSpacing="0.12"
+                android:textStyle="bold"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNickname"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@color/input_bg"
+                    app:boxStrokeColor="@color/input_stroke_selector"
+                    app:boxStrokeWidth="1.5dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:startIconTint="@color/accent_purple"
+                    app:errorTextColor="@color/error_red"
+                    app:hintTextColor="@color/text_secondary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Tu gamertag único"
+                        android:inputType="text"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint"
+                        android:textSize="15sp"
+                        android:maxLength="24"
+                        android:imeOptions="actionNext" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </FrameLayout>
+
+            <!-- Helper nickname -->
+            <TextView
+                android:id="@+id/tvNicknameHelper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:text="Letras, números y guiones bajos. Máx. 24 caracteres."
+                android:textColor="@color/text_hint"
+                android:textSize="11sp" />
+
+            <!-- ══════════════ CAMPO EMAIL ══════════════ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="EMAIL"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:letterSpacing="0.12"
+                android:textStyle="bold"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilNickname"
+                android:id="@+id/tilEmail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
                 app:boxBackgroundColor="@color/input_bg"
                 app:boxStrokeColor="@color/input_stroke_selector"
                 app:boxStrokeWidth="1.5dp"
@@ -84,237 +143,183 @@
                 app:hintTextColor="@color/text_secondary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etNickname"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tu gamertag único"
-                    android:inputType="text"
+                    android:hint="gamer@ejemplo.com"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_hint"
                     android:textSize="15sp"
-                    android:maxLength="24"
                     android:imeOptions="actionNext" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        </FrameLayout>
-
-        <!-- Helper nickname -->
-        <TextView
-            android:id="@+id/tvNicknameHelper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="4dp"
-            android:text="Letras, números y guiones bajos. Máx. 24 caracteres."
-            android:textColor="@color/text_hint"
-            android:textSize="11sp" />
-
-        <!-- ══════════════ CAMPO EMAIL ══════════════ -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="EMAIL"
-            android:textColor="@color/text_secondary"
-            android:textSize="11sp"
-            android:letterSpacing="0.12"
-            android:textStyle="bold"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:boxBackgroundColor="@color/input_bg"
-            app:boxStrokeColor="@color/input_stroke_selector"
-            app:boxStrokeWidth="1.5dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:startIconTint="@color/accent_purple"
-            app:errorTextColor="@color/error_red"
-            app:hintTextColor="@color/text_secondary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="gamer@ejemplo.com"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
-                android:textSize="15sp"
-                android:imeOptions="actionNext" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- ══════════════ CAMPO CONTRASEÑA ══════════════ -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="CONTRASEÑA"
-            android:textColor="@color/text_secondary"
-            android:textSize="11sp"
-            android:letterSpacing="0.12"
-            android:textStyle="bold"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:boxBackgroundColor="@color/input_bg"
-            app:boxStrokeColor="@color/input_stroke_selector"
-            app:boxStrokeWidth="1.5dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:startIconTint="@color/accent_purple"
-            app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_secondary"
-            app:errorTextColor="@color/error_red"
-            app:hintTextColor="@color/text_secondary"
-            app:passwordToggleEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Mínimo 8 caracteres"
-                android:inputType="textPassword"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
-                android:textSize="15sp"
-                android:imeOptions="actionNext" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- ══════════════ CAMPO CONFIRMAR CONTRASEÑA ══════════════ -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="CONFIRMAR CONTRASEÑA"
-            android:textColor="@color/text_secondary"
-            android:textSize="11sp"
-            android:letterSpacing="0.12"
-            android:textStyle="bold"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPasswordConfirm"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:boxBackgroundColor="@color/input_bg"
-            app:boxStrokeColor="@color/input_stroke_selector"
-            app:boxStrokeWidth="1.5dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:startIconTint="@color/accent_purple"
-            app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_secondary"
-            app:errorTextColor="@color/error_red"
-            app:hintTextColor="@color/text_secondary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPasswordConfirm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Repite tu contraseña"
-                android:inputType="textPassword"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
-                android:textSize="15sp"
-                android:imeOptions="actionDone" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!-- ══════════════ BOTÓN CREAR CUENTA ══════════════ -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRegister"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="28dp"
-            android:text="CREAR CUENTA"
-            android:textSize="15sp"
-            android:letterSpacing="0.1"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            app:backgroundTint="@color/accent_purple"
-            app:cornerRadius="10dp"
-            app:iconTint="@color/white"
-            app:iconPadding="8dp"
-            app:iconGravity="textStart"
-            android:stateListAnimator="@null" />
-
-        <!-- ══════════════ DIVIDER ══════════════ -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@color/divider_color" />
-
+            <!-- ══════════════ CAMPO CONTRASEÑA ══════════════ -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
-                android:text="o"
-                android:textColor="@color/text_hint"
-                android:textSize="13sp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@color/divider_color" />
-
-        </LinearLayout>
-
-
-        <!-- ══════════════ YA TENGO CUENTA ══════════════ -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="28dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="¿Ya tienes cuenta? "
+                android:layout_marginTop="24dp"
+                android:text="CONTRASEÑA"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Iniciar Sesión"
-                android:textColor="@color/accent_purple"
-                android:textSize="14sp"
+                android:textSize="11sp"
+                android:letterSpacing="0.12"
                 android:textStyle="bold"/>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPassword"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:boxBackgroundColor="@color/input_bg"
+                app:boxStrokeColor="@color/input_stroke_selector"
+                app:boxStrokeWidth="1.5dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:startIconTint="@color/accent_purple"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/text_secondary"
+                app:errorTextColor="@color/error_red"
+                app:hintTextColor="@color/text_secondary"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mínimo 8 caracteres"
+                    android:inputType="textPassword"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="15sp"
+                    android:imeOptions="actionNext" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ══════════════ CAMPO CONFIRMAR CONTRASEÑA ══════════════ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="CONFIRMAR CONTRASEÑA"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:letterSpacing="0.12"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPasswordConfirm"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:boxBackgroundColor="@color/input_bg"
+                app:boxStrokeColor="@color/input_stroke_selector"
+                app:boxStrokeWidth="1.5dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:startIconTint="@color/accent_purple"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/text_secondary"
+                app:errorTextColor="@color/error_red"
+                app:hintTextColor="@color/text_secondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPasswordConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Repite tu contraseña"
+                    android:inputType="textPassword"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="15sp"
+                    android:imeOptions="actionDone" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- ══════════════ BOTÓN CREAR CUENTA ══════════════ -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="28dp"
+                android:text="CREAR CUENTA"
+                android:textSize="15sp"
+                android:letterSpacing="0.1"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/accent_purple"
+                app:cornerRadius="10dp"
+                app:iconTint="@color/white"
+                app:iconPadding="8dp"
+                app:iconGravity="textStart"
+                android:stateListAnimator="@null" />
+
+            <!-- ══════════════ DIVIDER ══════════════ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/divider_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:text="o"
+                    android:textColor="@color/text_hint"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/divider_color" />
+
+            </LinearLayout>
+
+
+            <!-- ══════════════ YA TENGO CUENTA ══════════════ -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="28dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿Ya tienes cuenta? "
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Iniciar Sesión"
+                    android:textColor="@color/accent_purple"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
+</layout>

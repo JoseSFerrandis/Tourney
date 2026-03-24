@@ -7,7 +7,7 @@
     android:background="@drawable/bg_gradient_blue"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context=".Fragments.CreateTournamentFragment">
+    tools:context=".fragments.CreateTournamentFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

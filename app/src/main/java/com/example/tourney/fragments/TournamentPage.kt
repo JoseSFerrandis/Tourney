@@ -1,4 +1,4 @@
-package com.example.tourney.Fragments
+package com.example.tourney.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.tournamentapp.models.Tournament
+import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.FragmentTournamentPageBinding
 
 class TournamentPage : Fragment() {

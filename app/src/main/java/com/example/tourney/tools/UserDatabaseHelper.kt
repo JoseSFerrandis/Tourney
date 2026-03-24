@@ -1,10 +1,8 @@
-package com.example.tourney
+package com.example.tourney.tools
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-
-
 
 class UserDatabaseHelper(context: Context) :
     SQLiteOpenHelper(
