@@ -9,9 +9,12 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.R
 
 class TournamentAdapter(
-    private var tournaments: MutableList<Tournament>,
+    private var allTournaments: MutableList<Tournament>,
+
     private val onTournamentClick: (Tournament) -> Unit
 ) : RecyclerView.Adapter<TournamentAdapter.TournamentViewHolder>() {
+
+    private var tournaments: MutableList<Tournament> = allTournaments.toMutableList()
 
     inner class TournamentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTournamentName: TextView = itemView.findViewById(R.id.tv_tournament_name)
@@ -51,9 +54,25 @@ class TournamentAdapter(
     ya que al llegar al onResume podemos perder los datos de la lista de torneos (i
      */
     // Método para actualizar los datos
+    // Actualiza la lista maestra y resetea el filtro
     fun updateTournaments(newTournaments: List<Tournament>) {
-        this.tournaments.clear()
-        this.tournaments.addAll(newTournaments)
+        this.allTournaments.clear()
+        this.allTournaments.addAll(newTournaments)
+        this.tournaments = allTournaments.toMutableList() // Resetear a la lista completa
+        notifyDataSetChanged()
+    }
+
+    fun filterTournaments(query: String) {
+        val filteredList = if (query.isEmpty()) {
+            allTournaments // Si no hay búsqueda, mostramos todo
+        } else {
+            allTournaments.filter { tournament ->
+                tournament.name.contains(query, ignoreCase = true) ||
+                        tournament.game.contains(query, ignoreCase = true)
+            }
+        }
+
+        this.tournaments = filteredList.toMutableList()
         notifyDataSetChanged()
     }
 

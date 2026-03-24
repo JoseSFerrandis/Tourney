@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,8 +55,16 @@ class HomeFragment : Fragment() {
         //con esto llamamos al adaptador con la lista de torneos sacada del
         // MainActivity, esta por ahora no tiene cambios
         tournamentAdapter = TournamentAdapter(tournaments) { tournament -> onTournamentClick(tournament) }
-        
         binding.rvTournaments.adapter = tournamentAdapter
+
+
+        binding.etSearch.addTextChangedListener { text ->
+            /*val filteredTournaments = tournaments.filter { tournament ->
+                tournament.name.contains(text.toString(), ignoreCase = true)
+            }
+            tournamentAdapter.updateTournaments(filteredTournaments)*/
+            tournamentAdapter.filterTournaments(text.toString())
+        }
     }
 
     private fun setupListeners() {
