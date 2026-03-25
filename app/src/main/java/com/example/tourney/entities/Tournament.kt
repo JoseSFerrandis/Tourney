@@ -19,4 +19,17 @@ data class Tournament(
 ) : Parcelable {
     val numParticipants: Int
         get() = participantList.size
+
+    fun hasSpace(): Boolean {
+        return numParticipants < maxParticipants
+    }
+
+    fun addParticipant(user: User): Boolean {
+        if (hasSpace()) {
+            participantList.add(user)
+            return true
+        }
+        return false
+    }
+
 }

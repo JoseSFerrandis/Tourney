@@ -111,6 +111,9 @@
         <action
             android:id="@+id/action_TournamentFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_TournamentFragment_to_ParticipantsListFragment"
+            app:destination="@id/ParticipantsListFragment" />
     </fragment>
 
     <!-- Fragmento Crear Torneo -->
@@ -125,5 +128,12 @@
             app:popUpTo="@id/CreateTournamentFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
+    <!-- Fragmento Lista de Participantes -->
+    <fragment
+        android:id="@+id/ParticipantsListFragment"
+        android:name="com.example.tourney.fragments.ParticipantsListFragment"
+        android:label="Participantes"
+        tools:layout="@layout/fragment_participants_list" />
 
 </navigation>

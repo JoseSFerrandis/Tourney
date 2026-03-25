@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,16 +96,38 @@ class MainActivity : AppCompatActivity() {
             Tournament(4, "Torneo Valorant Summer", "Valorant", "Marquitos", mutableListOf(),32, "28 Ene 2026", "Online/Presencial", "Inscripciones Abiertas", "$3,000", 1000)
         )
 
+        private val users = mutableListOf(
+            User(1, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(2, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(3, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(4, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(5, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(6, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(7, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(8, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(9, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(10, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(11, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(12, "Marquitos", "marquitos@gmail.com", "password123", 1),
+        )
+
         fun getTournaments(): List<Tournament> {
+            tournaments[2].participantList = users
+            //sortTournaments()
             return tournaments
         }
 
         fun addTournament(tournament: Tournament) {
             tournaments.add(0, tournament)
+            //sortTournaments()
         // Lo añade al principio para que se vea primero
         // (SE LO HE PEDIDO A LA IA PARA QUE SE VEA BIEN)
         // pero sinceramente deberíamos ordenar los torneos por fecha
         // y no así por ID (como lo metemos al listado mutabel)
+        }
+
+        fun sortTournaments() {
+            tournaments.sortBy({ it.date })
         }
     }
 }

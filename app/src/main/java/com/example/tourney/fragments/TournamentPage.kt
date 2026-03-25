@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.tourney.R
 import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.FragmentTournamentPageBinding
@@ -70,12 +71,20 @@ class TournamentPage : Fragment() {
             Toast.makeText(requireContext(), "Cargando Emparejamientos...", Toast.LENGTH_SHORT).show()
         }
 
-        binding.btnViewParticipants.setOnClickListener {
-            Toast.makeText(requireContext(), "Mostrando Participantes...", Toast.LENGTH_SHORT).show()
-        }
-
         binding.btnRules.setOnClickListener {
             Toast.makeText(requireContext(), "Mostrando Reglas...", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnViewParticipants.setOnClickListener {
+            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
+            if (tournament != null) {
+                val bundle = Bundle().apply {
+                    putParcelable("tournament_data", tournament)
+                    // Convertimos la lista a ArrayList para que sea Parcelable
+                    putParcelableArrayList("participants_list", ArrayList(tournament.participantList))
+                }
+                findNavController().navigate(R.id.action_TournamentFragment_to_ParticipantsListFragment, bundle)
+            }
         }
     }
 
