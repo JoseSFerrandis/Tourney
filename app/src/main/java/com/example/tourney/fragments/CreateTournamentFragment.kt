@@ -11,6 +11,8 @@ import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentCreateTournamentBinding
 import com.google.android.material.snackbar.Snackbar
+import android.app.DatePickerDialog
+import java.util.Calendar
 
 class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
 
@@ -21,6 +23,11 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCreateTournamentBinding.bind(view)
         val context = requireContext()
+
+        // Configurar el diálogo del calendario
+        binding.etDate.setOnClickListener {
+            showDatePickerDialog()
+        }
 
 
         //parseo que he realizado con la IA, estaría bien mirar de cambiar los tipos de datos
@@ -63,12 +70,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
 
                 Toast.makeText(requireContext(), "Torneo '$name' creado con éxito", Toast.LENGTH_LONG).show()
 
-                // Volver al Dashboard (HomeFragment)
-                //findNavController().popBackStack()
-
-
-
-
+                // Ir a la pantalla del torneo recién creado
                 val bundle = Bundle().apply {
                     putParcelable("tournament_data", newTournament)
                 }
@@ -78,9 +80,6 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 } catch (e: Exception) {
                     Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
                 }
-
-
-
 
 
             } else {
@@ -100,5 +99,25 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         } else {
             value
         }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                // Formatear la fecha seleccionada
+                val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                binding.etDate.setText(selectedDate)
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
     }
 }
