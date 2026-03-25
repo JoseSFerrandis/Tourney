@@ -8,6 +8,7 @@ data class Tournament(
     var id: Int,
     var name: String,
     var game: String,
+    var creator: String,
     var participantList: MutableList<User> = mutableListOf(),
     var maxParticipants: Int,
     var date: String,

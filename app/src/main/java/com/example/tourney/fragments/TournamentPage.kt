@@ -52,6 +52,7 @@ class TournamentPage : Fragment() {
         // Rellenamos la UI con los datos recibidos
         binding.tvTournamentTitle.text = establishedValue( tournament.name )
         binding.tvGameName.text = establishedValue( tournament.game )
+        binding.tvCreator.text = establishedValue( tournament.creator )
         binding.tvParticipants.text = establishedValue( "${tournament.numParticipants}/${tournament.maxParticipants}" )
         binding.tvDate.text = establishedValue( tournament.date )
         binding.tvLocation.text = establishedValue( tournament.location )

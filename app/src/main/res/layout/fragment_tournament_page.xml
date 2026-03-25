@@ -63,18 +63,29 @@
                             android:text="Torneo de D&amp;D"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                             android:textColor="?attr/colorOnSurface"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="2dp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_game_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="4dp"
                             android:text="League of Legends"
                             android:textColor="@color/black"
                             android:gravity="center"
-                            android:textSize="14sp"/>
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_creator"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="El creador"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="16dp"/>
 
                         <!-- Tournament Details Grid -->
                         <LinearLayout

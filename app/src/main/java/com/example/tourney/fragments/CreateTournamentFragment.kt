@@ -44,6 +44,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                     id = (100..10000).random(),
                     name = name,
                     game = game,
+                    creator = establishedValue(context, MainActivity.actualUser?.nickname),
                     maxParticipants = maxParticipants,
                     date = date,
                     location = location,
@@ -93,7 +94,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         _binding = null
     }
 
-    fun establishedValue(context: Context, value: String): String{
+    fun establishedValue(context: Context, value: String?): String{
         return if (value.isNullOrBlank() || value == "null") {
             context.getString(R.string.no_established)
         } else {

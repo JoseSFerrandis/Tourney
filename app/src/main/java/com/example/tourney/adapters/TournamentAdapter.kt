@@ -20,16 +20,19 @@ class TournamentAdapter(
     inner class TournamentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTournamentName: TextView = itemView.findViewById(R.id.tv_tournament_name)
         val tvGameName: TextView = itemView.findViewById(R.id.tv_game_name)
+        val tvCreator: TextView = itemView.findViewById(R.id.tv_creator)
         val tvStatusBadge: TextView = itemView.findViewById(R.id.tv_status_badge)
         val tvParticipants: TextView = itemView.findViewById(R.id.tv_participants)
         val tvDate: TextView = itemView.findViewById(R.id.tv_date)
         val tvLocation: TextView = itemView.findViewById(R.id.tv_location)
         val tvPrize: TextView = itemView.findViewById(R.id.tv_prize)
 
+
         fun bind(tournament: Tournament) {
             val context = itemView.context
             tvTournamentName.text = establishedValue(context, tournament.name)
             tvGameName.text = establishedValue(context, tournament.game)
+            tvCreator.text = establishedValue(context, tournament.creator)
             tvStatusBadge.text = establishedValue(context, tournament.status)
             tvParticipants.text = establishedValue(context, "${tournament.numParticipants}/${tournament.maxParticipants}")
             tvDate.text = establishedValue(context, tournament.date)
