@@ -55,8 +55,19 @@ class ParticipantsListFragment : Fragment() {
                         return@setPositiveButton
                     }
 
+                    val newParticipant = User(-(tournament?.participantList?.size ?: 0), newParticipantName, "", "", 0)
+
+                    // Comprobamos que no esté ya inscrito
+                    tournament?.participantList?.forEach { participant ->
+                        if(participant.nickname == newParticipantName ||
+                            participant.id == newParticipant.id){
+                            Toast.makeText(requireContext(), "Participante ya inscrito", Toast.LENGTH_SHORT).show()
+                            return@setPositiveButton
+                        }
+                    }
+
                     // Añadimos el participante y refrescamos
-                    tournament?.addParticipant(User(-(tournament?.participantList?.size ?: 0), newParticipantName, "", "", 0))
+                    tournament?.addParticipant(newParticipant)
                     refresh()
 
                     Toast.makeText(requireContext(), "Participante añadido", Toast.LENGTH_SHORT).show()
