@@ -19,6 +19,7 @@ class ParticipantAdapter(private val users: List<User>) :
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
         holder.binding.tvUserNickname.text = user.nickname
+        holder.binding.participantNumber.text = (position + 1).toString() + "."
         // TODO: hacer que funcione las fotos de los usuarios
         //holder.binding.ivUserPhoto.setImageResource(user.photo)
     }

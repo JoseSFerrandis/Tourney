@@ -16,6 +16,16 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
+        <TextView
+            android:id="@+id/participantNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="67."
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginEnd="10dp"/>
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivUserPhoto"
             android:layout_width="48dp"
