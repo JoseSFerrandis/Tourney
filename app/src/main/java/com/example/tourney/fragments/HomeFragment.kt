@@ -69,12 +69,12 @@ class HomeFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnProfile.setOnClickListener {
-             findNavController().navigate(R.id.action_DashboardFragment_to_ProfileFragment)
+             findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
         }
 
         binding.btnJoinTournament.setOnClickListener {
             try {
-                findNavController().navigate(R.id.action_DashboardFragment_to_JoinTournamentFragment)
+                findNavController().navigate(R.id.action_HomeFragment_to_JoinTournamentFragment)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
             }
@@ -82,7 +82,7 @@ class HomeFragment : Fragment() {
 
         binding.btnCreateTournament.setOnClickListener {
             try {
-                findNavController().navigate(R.id.action_DashboardFragment_to_CreateTournamentFragment)
+                findNavController().navigate(R.id.action_HomeFragment_to_CreateTournamentFragment)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
             }
@@ -95,7 +95,7 @@ class HomeFragment : Fragment() {
         }
         
         try {
-            findNavController().navigate(R.id.action_DashboardFragment_to_TournamentFragment, bundle)
+            findNavController().navigate(R.id.action_HomeFragment_to_TournamentFragment, bundle)
         } catch (e: Exception) {
             Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
         }

@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_LoginFragment_to_DashboardFragment"
-            app:destination="@id/DashboardFragment" />
+            android:id="@+id/action_LoginFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
         <action
             android:id="@+id/action_LoginFragment_to_RegisterFragment"
             app:destination="@id/RegisterFragment" />
@@ -52,25 +52,25 @@
     </fragment>
 
     <fragment
-        android:id="@+id/DashboardFragment"
+        android:id="@+id/HomeFragment"
         android:name="com.example.tourney.fragments.HomeFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_dashboard">
 
         <action
-            android:id="@+id/action_DashboardFragment_to_LoginFragment"
+            android:id="@+id/action_HomeFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
         <action
-            android:id="@+id/action_DashboardFragment_to_JoinTournamentFragment"
+            android:id="@+id/action_HomeFragment_to_JoinTournamentFragment"
             app:destination="@id/JoinTournamentFragment" />
         <action
-            android:id="@+id/action_DashboardFragment_to_ProfileFragment"
+            android:id="@+id/action_HomeFragment_to_ProfileFragment"
             app:destination="@id/ProfileFragment" />
         <action
-            android:id="@+id/action_DashboardFragment_to_TournamentFragment"
+            android:id="@+id/action_HomeFragment_to_TournamentFragment"
             app:destination="@id/TournamentFragment" />
         <action
-            android:id="@+id/action_DashboardFragment_to_CreateTournamentFragment"
+            android:id="@+id/action_HomeFragment_to_CreateTournamentFragment"
             app:destination="@id/CreateTournamentFragment" />
     </fragment>
 
@@ -87,8 +87,8 @@
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_ProfileFragment_to_DashboardFragment"
-            app:destination="@id/DashboardFragment" />
+            android:id="@+id/action_ProfileFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
     </fragment>
 
     <!-- Fragmento Unirse a Torneo -->
@@ -109,8 +109,8 @@
         android:label="Detalles del Torneo"
         tools:layout="@layout/fragment_tournament_page" >
         <action
-            android:id="@+id/action_TournamentFragment_to_DashboardFragment"
-            app:destination="@id/DashboardFragment" />
+            android:id="@+id/action_TournamentFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
     </fragment>
 
     <!-- Fragmento Crear Torneo -->
@@ -118,6 +118,12 @@
         android:id="@+id/CreateTournamentFragment"
         android:name="com.example.tourney.fragments.CreateTournamentFragment"
         android:label="Crear Torneo"
-        tools:layout="@layout/fragment_create_tournament" />
+        tools:layout="@layout/fragment_create_tournament" >
+        <action
+            android:id="@+id/action_CreateTournamentFragment_to_TournamentFragment"
+            app:destination="@id/TournamentFragment"
+            app:popUpTo="@id/CreateTournamentFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

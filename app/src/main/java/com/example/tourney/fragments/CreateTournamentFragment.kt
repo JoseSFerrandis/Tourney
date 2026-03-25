@@ -1,5 +1,6 @@
 package com.example.tourney.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -9,6 +10,7 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentCreateTournamentBinding
+import com.google.android.material.snackbar.Snackbar
 
 class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
 
@@ -18,6 +20,8 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCreateTournamentBinding.bind(view)
+        val context = requireContext()
+
 
         //parseo que he realizado con la IA, estaría bien mirar de cambiar los tipos de datos
         // completamente ya que por ejemplo que el dinero sea una string, no es muy buena idea
@@ -27,8 +31,6 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             val name = binding.etName.text.toString()
             val game = binding.etGame.text.toString()
 
-            //esta la deberíamos de quitar, pero la dejo por si acaso
-            val numParticipants = binding.etParticipants.text.toString().toIntOrNull() ?: 0
 
             val maxParticipants = binding.etMaxParticipants.text.toString().toIntOrNull() ?: 32
             val date = binding.etDate.text.toString()
@@ -59,9 +61,27 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 MainActivity.addTournament(newTournament)
 
                 Toast.makeText(requireContext(), "Torneo '$name' creado con éxito", Toast.LENGTH_LONG).show()
-                
+
                 // Volver al Dashboard (HomeFragment)
-                findNavController().popBackStack()
+                //findNavController().popBackStack()
+
+
+
+
+                val bundle = Bundle().apply {
+                    putParcelable("tournament_data", newTournament)
+                }
+
+                try {
+                    findNavController().navigate(R.id.action_CreateTournamentFragment_to_TournamentFragment, bundle)
+                } catch (e: Exception) {
+                    Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
+                }
+
+
+
+
+
             } else {
                 Toast.makeText(requireContext(), "Por favor completa los campos obligatorios", Toast.LENGTH_SHORT).show()
             }
@@ -71,5 +91,13 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun establishedValue(context: Context, value: String): String{
+        return if (value.isNullOrBlank() || value == "null") {
+            context.getString(R.string.no_established)
+        } else {
+            value
+        }
     }
 }

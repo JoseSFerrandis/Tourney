@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.DashboardFragment -> {
+                R.id.HomeFragment -> {
                     binding.fab.show()
                     binding.toolbar.visibility = View.VISIBLE
                 }

@@ -49,52 +49,41 @@
                 <TextView
                     android:text="Nombre del Torneo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
                 <com.google.android.material.textfield.TextInputLayout  android:id="@+id/tilName" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etName" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="Copa Mundial 2026" android:paddingHorizontal="16dp" />
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_input_white" android:hint="Copa Mundial 2026" android:paddingHorizontal="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Juego -->
                 <TextView   android:text="Videojuego" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
                 <com.google.android.material.textfield.TextInputLayout  android:id="@+id/tilGame" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etGame" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="League of Legends" android:paddingHorizontal="16dp" />
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etGame" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_input_white" android:hint="League of Legends" android:paddingHorizontal="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                    <!-- Participantes Actuales -->
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
-                        <TextView   android:text="Part. Actuales" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
-                        <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
-                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etParticipants" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="0" android:inputType="number" android:paddingHorizontal="16dp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
-                    <!-- Máximo Participantes -->
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="8dp">
-                        <TextView   android:text="Máx. Participantes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
-                        <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
-                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etMaxParticipants" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="32" android:inputType="number" android:paddingHorizontal="16dp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
-                </LinearLayout>
+                <!-- Máximo Participantes -->
+                <TextView   android:text="Máx. Participantes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
+                <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etMaxParticipants" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_input_white" android:hint="32" android:inputType="number" android:paddingHorizontal="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Fecha y Ubicación -->
                 <TextView   android:text="Fecha" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
                 <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etDate" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="25 Ene 2026" android:paddingHorizontal="16dp" />
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etDate" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_input_white" android:hint="25 Ene 2026" android:paddingHorizontal="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView   android:text="Ubicación" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
                 <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etLocation" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="Estadio Virtual" android:paddingHorizontal="16dp" />
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etLocation" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_input_white" android:hint="Estadio Virtual" android:paddingHorizontal="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Premio y Código -->
                 <TextView  android:text="Premio" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
                 <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:hintEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etPrize" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="$5,000" android:paddingHorizontal="16dp" />
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etPrize" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_input_white" android:hint="$5,000" android:paddingHorizontal="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView  android:text="Código de Acceso" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@android:color/white" android:layout_marginBottom="6dp" />
                 <com.google.android.material.textfield.TextInputLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="32dp" app:hintEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCode" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/bg_input_white" android:hint="777" android:inputType="number" android:paddingHorizontal="16dp" />
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCode" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_input_white" android:hint="777" android:inputType="number" android:paddingHorizontal="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Botón Guardar -->

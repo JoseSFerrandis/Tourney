@@ -45,7 +45,7 @@ class LoginFragment : Fragment() {
             //if(loginByButton()) {
             if(login()) {
                 Snackbar.make(view, "Hola, ${MainActivity.actualUser?.nickname}", Snackbar.LENGTH_LONG).show()
-                findNavController().navigate(R.id.action_LoginFragment_to_DashboardFragment)
+                findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
             }
         }
 

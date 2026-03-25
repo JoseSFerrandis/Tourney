@@ -1,5 +1,6 @@
 package com.example.tourney.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.tourney.R
 import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.FragmentTournamentPageBinding
 
@@ -48,14 +50,13 @@ class TournamentPage : Fragment() {
 
     private fun setupUI(tournament: Tournament) {
         // Rellenamos la UI con los datos recibidos
-        binding.tvTournamentTitle.text = tournament.name
-        binding.tvGameName.text = tournament.game
-        binding.tvParticipants.text = "${tournament.numParticipants}/${tournament.maxParticipants}"
-        binding.tvDate.text = tournament.date
-        binding.tvLocation.text = tournament.location
-        binding.tvPrize.text = tournament.prize
-        
-        // Aquí podrías añadir más campos si tu XML los tuviera (ej. fecha, premios, etc.)
+        binding.tvTournamentTitle.text = establishedValue( tournament.name )
+        binding.tvGameName.text = establishedValue( tournament.game )
+        binding.tvParticipants.text = establishedValue( "${tournament.numParticipants}/${tournament.maxParticipants}" )
+        binding.tvDate.text = establishedValue( tournament.date )
+        binding.tvLocation.text = establishedValue( tournament.location )
+        binding.tvPrize.text = establishedValue( tournament.prize )
+
         // Por ahora el XML solo tiene el título y botones
     }
 
@@ -80,5 +81,13 @@ class TournamentPage : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun establishedValue(value: String): String{
+        return if (value.isNullOrBlank() || value == "null") {
+            requireContext().getString(R.string.no_established)
+        } else {
+            value
+        }
     }
 }
