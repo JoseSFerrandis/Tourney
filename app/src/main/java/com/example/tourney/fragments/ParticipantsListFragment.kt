@@ -12,6 +12,7 @@ import com.example.tourney.R
 import com.example.tourney.adapters.ParticipantAdapter
 import com.example.tourney.databinding.FragmentParticipantsListBinding
 import com.example.tourney.entities.Tournament
+import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
 
 class ParticipantsListFragment : Fragment() {
@@ -37,6 +38,10 @@ class ParticipantsListFragment : Fragment() {
         refresh()
 
         binding.addParticipant.setOnClickListener {
+            if(tournament?.tournamentStatus != TournamentStatus.EDITABLE){
+                Toast.makeText(requireContext(), "No se puede editar el torneo", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if(tournament?.hasSpace() == false){
                 Toast.makeText(requireContext(), "No hay espacio para más participantes", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -105,7 +110,7 @@ class ParticipantsListFragment : Fragment() {
     }
 
     val updateInfo = fun() {
-        val canAdd = tournament?.hasSpace() ?: false
+        val canAdd = tournament?.hasSpace() ?: false && tournament?.tournamentStatus == TournamentStatus.EDITABLE
         binding.addParticipant.setBackgroundColor(
             if(canAdd) resources.getColor(R.color.accent_purple)
             else resources.getColor(R.color.text_hint)

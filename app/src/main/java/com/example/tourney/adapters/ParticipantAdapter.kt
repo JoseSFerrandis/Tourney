@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tourney.databinding.ItemUserBinding
 import com.example.tourney.entities.Tournament
+import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
 
 class ParticipantAdapter(private val tournament : Tournament, private val refresh : () -> Unit) :
@@ -21,6 +22,8 @@ class ParticipantAdapter(private val tournament : Tournament, private val refres
         val user = tournament.participantList[position]
         holder.binding.tvUserNickname.text = user.nickname
         holder.binding.participantNumber.text = (position + 1).toString() + "."
+
+        holder.binding.btnRemove.isEnabled = tournament.tournamentStatus == TournamentStatus.EDITABLE
 
         holder.binding.btnRemove.setOnClickListener {
             tournament.participantList.removeAt(position)
