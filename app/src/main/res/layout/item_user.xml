@@ -32,7 +32,7 @@
             android:layout_height="48dp"
             android:padding="2dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/database_query_notimplemented"
+            android:src="@drawable/ic_default"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
             app:strokeColor="@color/Blue1"
             app:strokeWidth="2dp" />
