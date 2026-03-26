@@ -81,9 +81,9 @@ class MainActivity : AppCompatActivity() {
          */
         // Lista global de torneos
         private val tournaments = mutableListOf(
+            Tournament(3, "Championship Dungeons & Dragons", "D&D 5e",  "Marquitos", mutableListOf(),12, "20 Ene 2026", "Tienda Gaming Local", "En Progreso", "$1,500", 1),
             Tournament(1, "Copa League of Legends 2026", "League of Legends", "Marquitos", mutableListOf(), 32, "25 Ene 2026", "KOI", "Inscripciones Abiertas", "$5,000", 777),
             Tournament(2, "Torneo Counter-Strike Relámpago", "CS:GO", "Marquitos", mutableListOf(), 8, "18 Ene 2026", "Cybercafé Central", "Inscripciones Abiertas", "$2,000", 69),
-            Tournament(3, "Championship Dungeons & Dragons", "D&D 5e",  "Marquitos", mutableListOf(),12, "20 Ene 2026", "Tienda Gaming Local", "En Progreso", "$1,500", 1),
             Tournament(4, "Torneo Valorant Summer", "Valorant", "Marquitos", mutableListOf(),32, "28 Ene 2026", "Online/Presencial", "Inscripciones Abiertas", "$3,000", 1000)
         )
 
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         fun getTournaments(): List<Tournament> {
-            tournaments[2].participantList = users
+            tournaments[0].participantList = users
             //sortTournaments()
             return tournaments
         }
