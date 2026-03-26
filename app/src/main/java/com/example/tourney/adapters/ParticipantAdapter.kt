@@ -7,9 +7,8 @@ import com.example.tourney.databinding.ItemUserBinding
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.User
 
-class ParticipantAdapter(/*users: List<User>, */ private val tournament : Tournament, private val refresh : () -> Unit) :
+class ParticipantAdapter(private val tournament : Tournament, private val refresh : () -> Unit) :
     RecyclerView.Adapter<ParticipantAdapter.UserViewHolder>() {
-        //var participantList = users as MutableList<User>
 
     class UserViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
 

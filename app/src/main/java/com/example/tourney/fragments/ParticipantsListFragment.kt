@@ -55,7 +55,8 @@ class ParticipantsListFragment : Fragment() {
                         return@setPositiveButton
                     }
 
-                    val newParticipant = User(-(tournament?.participantList?.size ?: 0), newParticipantName, "", "", 0)
+                    val nextId = (tournament?.participantList?.minOfOrNull { it.id } ?: 0).coerceAtMost(0) - 1
+                    val newParticipant = User(nextId, newParticipantName, "", "", 0)
 
                     // Comprobamos que no esté ya inscrito
                     tournament?.participantList?.forEach { participant ->
@@ -93,7 +94,6 @@ class ParticipantsListFragment : Fragment() {
 
             // Si no tiene adapter, se lo ponemos. Si ya tiene, notificamos cambios.
             if (binding.rvParticipants.adapter == null) {
-                //binding.rvParticipants.adapter = ParticipantAdapter(participants)
                 binding.rvParticipants.adapter = ParticipantAdapter(tournament!!, updateInfo)
             } else {
                 binding.rvParticipants.adapter?.notifyDataSetChanged()
