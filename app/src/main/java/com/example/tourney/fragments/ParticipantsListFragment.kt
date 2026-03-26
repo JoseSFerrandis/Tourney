@@ -80,7 +80,7 @@ class ParticipantsListFragment : Fragment() {
         }
     }
 
-    fun refresh() {
+    val refresh = fun() {
         val participants = tournament?.participantList
 
         // 1. Gestionar visibilidad y Adapter
@@ -93,18 +93,25 @@ class ParticipantsListFragment : Fragment() {
 
             // Si no tiene adapter, se lo ponemos. Si ya tiene, notificamos cambios.
             if (binding.rvParticipants.adapter == null) {
-                binding.rvParticipants.adapter = ParticipantAdapter(participants)
+                //binding.rvParticipants.adapter = ParticipantAdapter(participants)
+                binding.rvParticipants.adapter = ParticipantAdapter(tournament!!, updateInfo)
             } else {
                 binding.rvParticipants.adapter?.notifyDataSetChanged()
             }
         }
 
         // 2. Actualizar estado del botón de añadir
+        updateInfo.invoke()
+    }
+
+    val updateInfo = fun() {
         val canAdd = tournament?.hasSpace() ?: false
         binding.addParticipant.setBackgroundColor(
             if(canAdd) resources.getColor(R.color.accent_purple)
             else resources.getColor(R.color.text_hint)
         )
+
+        binding.tvNumParticipants.text = "Participantes: ${tournament?.numParticipants}/${tournament?.maxParticipants}"
     }
 
     override fun onDestroyView() {

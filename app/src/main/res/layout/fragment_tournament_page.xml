@@ -217,7 +217,7 @@
 
                         <!-- Clasificación y Emparejamiento con estilo de botón -->
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnJoin"
+                            android:id="@+id/btnClassification"
                             style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -230,7 +230,7 @@
                             app:iconTint="@color/white" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnReject"
+                            android:id="@+id/btnMatches"
                             style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
