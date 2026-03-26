@@ -20,7 +20,6 @@ data class Tournament(
     var maxParticipants: Int,
     var date: String,
     var location: String,
-    var status: String,
     var prize: String,
     var code: Int,
     var tournamentStatus: TournamentStatus = TournamentStatus.EDITABLE,

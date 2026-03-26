@@ -55,7 +55,6 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                     maxParticipants = maxParticipants,
                     date = date,
                     location = location,
-                    status = "Inscripciones Abiertas",
                     prize = prize,
                     code = code
                 )

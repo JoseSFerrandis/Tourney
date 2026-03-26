@@ -33,18 +33,22 @@ class TournamentAdapter(
             tvTournamentName.text = establishedValue(context, tournament.name)
             tvGameName.text = establishedValue(context, tournament.game)
             tvCreator.text = establishedValue(context, tournament.creator)
-            tvStatusBadge.text = establishedValue(context, tournament.status)
             tvParticipants.text = establishedValue(context, "${tournament.numParticipants}/${tournament.maxParticipants}")
             tvDate.text = establishedValue(context, tournament.date)
             tvLocation.text = establishedValue(context, tournament.location)
             tvPrize.text = establishedValue(context, tournament.prize)
+            //tvStatusBadge.text = establishedValue(context, tournament.status)
 
-            val badgeBackground = if (tournament.status == "En Progreso") {
+            // Inscripciones abiertas
+            // En progreso
+            // Finalizado
+
+            /*val badgeBackground = if (tournament.tournamentStatus == "En Progreso") {
                 R.drawable.bg_badge_progress
             } else {
                 R.drawable.bg_badge_open
             }
-            tvStatusBadge.setBackgroundResource(badgeBackground)
+            tvStatusBadge.setBackgroundResource(badgeBackground)*/
 
             itemView.setOnClickListener {
                 onTournamentClick(tournament)
