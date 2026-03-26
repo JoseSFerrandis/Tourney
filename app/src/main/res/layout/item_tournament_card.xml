@@ -81,7 +81,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:text="Inscripciones Abiertas"
-                android:textColor="@color/blue_600"
+                android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>
 

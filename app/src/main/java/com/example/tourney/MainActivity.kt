@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Inicializa datos
         tournaments[0].participantList = users
     }
 

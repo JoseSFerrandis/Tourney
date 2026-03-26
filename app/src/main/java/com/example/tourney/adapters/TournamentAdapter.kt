@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tourney.entities.Tournament
 import com.example.tourney.R
 import android.content.Context
+import com.example.tourney.entities.TournamentStatus
 
 class TournamentAdapter(
     private var allTournaments: MutableList<Tournament>,
@@ -37,18 +38,23 @@ class TournamentAdapter(
             tvDate.text = establishedValue(context, tournament.date)
             tvLocation.text = establishedValue(context, tournament.location)
             tvPrize.text = establishedValue(context, tournament.prize)
-            //tvStatusBadge.text = establishedValue(context, tournament.status)
 
             // Inscripciones abiertas
             // En progreso
             // Finalizado
 
-            /*val badgeBackground = if (tournament.tournamentStatus == "En Progreso") {
-                R.drawable.bg_badge_progress
-            } else {
-                R.drawable.bg_badge_open
+            val badgeBackground = when (tournament.tournamentStatus) {
+                TournamentStatus.EDITABLE -> R.drawable.bg_badge_open
+                TournamentStatus.IN_PROGRESS -> R.drawable.bg_badge_progress
+                TournamentStatus.FINISHED -> R.drawable.bg_badge_finished
             }
-            tvStatusBadge.setBackgroundResource(badgeBackground)*/
+            tvStatusBadge.setBackgroundResource(badgeBackground)
+
+            tvStatusBadge.text = when (tournament.tournamentStatus) {
+                TournamentStatus.EDITABLE -> "Abierto"
+                TournamentStatus.IN_PROGRESS -> "En progreso"
+                TournamentStatus.FINISHED -> "Finalizado"
+            }
 
             itemView.setOnClickListener {
                 onTournamentClick(tournament)
