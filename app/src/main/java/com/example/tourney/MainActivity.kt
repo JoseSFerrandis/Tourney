@@ -98,17 +98,17 @@ class MainActivity : AppCompatActivity() {
 
         private val users = mutableListOf(
             User(1, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(2, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(3, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(4, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(5, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(6, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(7, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(8, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(9, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(10, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(11, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(12, "Marquitos", "marquitos@gmail.com", "password123", 1),
+            User(2, "Pepito", "pepito@gmail.com", "password123", 1),
+            User(3, "Juan", "juan@gmail.com", "password123", 1),
+            User(4, "Pedro", "pedro@gmail.com", "password123", 1),
+            User(5, "Jose", "jose@gmail.com", "password123", 1),
+            User(6, "Esteban", "esteban@gmail.com", "password123", 1),
+            User(7, "Sebastián", "sebastián@gmail.com", "password123", 1),
+            User(8, "Julio", "julio@gmail.com", "password123", 1),
+            User(9, "Marcos", "marcos@gmail.com", "password123", 1),
+            User(10, "Erik", "erik@gmail.com", "password123", 1),
+            User(11, "Javier", "javier@gmail.com", "password123", 1),
+            User(12, "Lucas", "lucas@gmail.com", "password123", 1),
         )
 
         fun getTournaments(): List<Tournament> {
