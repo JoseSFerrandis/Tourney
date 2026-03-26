@@ -42,15 +42,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.LoginFragment -> {
                     binding.fab.hide()
                     binding.toolbar.visibility = View.GONE
-                }/*
-                R.id.HomeFragment -> {
-                    binding.fab.show()
-                    binding.toolbar.visibility = View.VISIBLE
                 }
-                R.id.TournamentFragment, R.id.JoinTournamentFragment -> {
-                    binding.fab.show()
-                    binding.toolbar.visibility = View.GONE
-                }*/
                 else -> {
                     binding.fab.hide()
                     binding.toolbar.visibility = View.VISIBLE
