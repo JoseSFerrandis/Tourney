@@ -1,6 +1,5 @@
 package com.example.tourney.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -63,12 +62,18 @@ class TournamentPage : Fragment() {
     }
 
     private fun setupClickListeners() {
-        binding.btnJoin.setOnClickListener {
+        binding.btnClassification.setOnClickListener {
             Toast.makeText(requireContext(), "Cargando Clasificación...", Toast.LENGTH_SHORT).show()
         }
 
-        binding.btnReject.setOnClickListener {
-            Toast.makeText(requireContext(), "Cargando Emparejamientos...", Toast.LENGTH_SHORT).show()
+        binding.btnMatches.setOnClickListener {
+            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
+            if (tournament != null) {
+                val bundle = Bundle().apply {
+                    putParcelable("tournament_data", tournament)
+                }
+                findNavController().navigate(R.id.action_TournamentFragment_to_MatchesFragment, bundle)
+            }
         }
 
         binding.btnRules.setOnClickListener {
@@ -81,7 +86,7 @@ class TournamentPage : Fragment() {
                 val bundle = Bundle().apply {
                     putParcelable("tournament_data", tournament)
                     // Convertimos la lista a ArrayList para que sea Parcelable
-                    putParcelableArrayList("participants_list", ArrayList(tournament.participantList))
+                    //putParcelableArrayList("participants_list", ArrayList(tournament.participantList))
                 }
                 findNavController().navigate(R.id.action_TournamentFragment_to_ParticipantsListFragment, bundle)
             }
