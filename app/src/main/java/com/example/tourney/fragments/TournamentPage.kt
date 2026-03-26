@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tourney.R
 import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.FragmentTournamentPageBinding
+import com.example.tourney.entities.TournamentStatus
 
 class TournamentPage : Fragment() {
 
@@ -57,6 +58,20 @@ class TournamentPage : Fragment() {
         binding.tvDate.text = establishedValue( tournament.date )
         binding.tvLocation.text = establishedValue( tournament.location )
         binding.tvPrize.text = establishedValue( tournament.prize )
+
+        // Actualiza el color del badge según el estado del torneo
+        val badgeBackground = when (tournament.tournamentStatus) {
+            TournamentStatus.EDITABLE -> R.drawable.bg_badge_open
+            TournamentStatus.IN_PROGRESS -> R.drawable.bg_badge_progress
+            TournamentStatus.FINISHED -> R.drawable.bg_badge_finished
+        }
+        binding.tvStatusBadge.setBackgroundResource(badgeBackground)
+
+        binding.tvStatusBadge.text = when (tournament.tournamentStatus) {
+            TournamentStatus.EDITABLE -> "Abierto"
+            TournamentStatus.IN_PROGRESS -> "En progreso"
+            TournamentStatus.FINISHED -> "Finalizado"
+        }
 
         // Por ahora el XML solo tiene el título y botones
     }
