@@ -5,7 +5,9 @@ import com.ventura.bracketslib.model.ColomnData
 import kotlinx.parcelize.Parcelize
 
 enum class TournamentStatus {
-    EDITABLE, FINISHED, IN_PROGRESS
+    EDITABLE,
+    FINISHED,
+    IN_PROGRESS
 }
 
 @Parcelize
