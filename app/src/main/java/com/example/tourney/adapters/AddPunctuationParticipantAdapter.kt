@@ -61,6 +61,21 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
     }
 
     private fun setUIBasedOnStatus(holder: UserViewHolder, isAlive: Boolean, position: Int, participant: User){
+        holder.binding.tvUserNickname.text = participant.nickname
+        holder.binding.participantNumber.text = (position + 1).toString() + "."
+
+        holder.binding.participantPoints.isEnabled = isAlive
+        // Cambia el color de la tarjeta si el participante no está vivo
+        if(!isAlive){
+            holder.binding.participantCard.setCardBackgroundColor(
+                holder.binding.participantCard.context.resources.getColor(R.color.text_secondary)
+            )
+        } else {
+            holder.binding.participantCard.setCardBackgroundColor(
+                holder.binding.participantCard.context.resources.getColor(R.color.white)
+            )
+        }
+
         when(tournament.tournamentStatus){
             TournamentStatus.EDITABLE -> {
                 holder.binding.participantPoints.visibility = View.GONE
@@ -76,21 +91,6 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
                 holder.binding.participantPoints.isEnabled = false
                 holder.binding.participantNumber.visibility = View.VISIBLE
             }
-        }
-
-        holder.binding.tvUserNickname.text = participant.nickname
-        holder.binding.participantNumber.text = (position + 1).toString() + "."
-
-        holder.binding.participantPoints.isEnabled = isAlive
-        // Cambia el color de la tarjeta si el participante no está vivo
-        if(!isAlive){
-            holder.binding.participantCard.setCardBackgroundColor(
-                holder.binding.participantCard.context.resources.getColor(R.color.text_secondary)
-            )
-        } else {
-            holder.binding.participantCard.setCardBackgroundColor(
-                holder.binding.participantCard.context.resources.getColor(R.color.white)
-            )
         }
     }
 

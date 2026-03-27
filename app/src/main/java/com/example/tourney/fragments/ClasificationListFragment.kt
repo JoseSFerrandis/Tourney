@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.example.tourney.R
 import com.example.tourney.adapters.AddPunctuationParticipantAdapter
 import com.example.tourney.databinding.FragmentClasificationListBinding
 import com.example.tourney.entities.Tournament
@@ -51,6 +53,13 @@ class ClasificationListFragment : Fragment() {
 
             refresh()
         }
+
+        binding.goToMatchs.setOnClickListener {
+            val bundle = Bundle().apply {
+                putParcelable("tournament_data", tournament)
+            }
+            findNavController().navigate(R.id.action_ClasificationListFragment_to_MatchesFragment, bundle)
+        }
     }
 
     // TODO: Crear el adapter, hacer que funcione, actualizar la vista, etc.
@@ -92,6 +101,8 @@ class ClasificationListFragment : Fragment() {
             TournamentStatus.FINISHED -> "Torneo finalizado"
             else -> "Empezar torneo"
         }
+
+        binding.nextRound.isEnabled = tournament?.tournamentStatus != TournamentStatus.FINISHED
     }
 
     override fun onDestroyView() {

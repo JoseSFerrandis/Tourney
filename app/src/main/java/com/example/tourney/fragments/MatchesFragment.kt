@@ -62,6 +62,12 @@ class MatchesFragment : Fragment() {
             nextRound()
             updateNextRoundBtn()
         }
+        binding.goToClasification.setOnClickListener {
+            val bundle = Bundle().apply {
+                putParcelable("tournament_data", tournament)
+            }
+            findNavController().navigate(R.id.action_MatchesFragment_to_ClasificationListFragment, bundle)
+        }
 
         // Genera la primera ronda
         binding.bracketContainer.post {

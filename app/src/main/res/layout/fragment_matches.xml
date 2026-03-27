@@ -6,13 +6,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.MatchesFragment"
     android:orientation="vertical">
-
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnNextRound"
-        android:text="Siguiente Ronda"
-        android:layout_gravity="center"/>
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="15dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNextRound"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Siguiente Ronda"
+            app:cornerRadius="12dp"
+            android:backgroundTint="@color/green_100"
+            android:layout_marginEnd="15dp">
+        </com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/goToClasification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ir a clasificación"
+            app:cornerRadius="12dp">
+        </com.google.android.material.button.MaterialButton>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/bracket_container"

@@ -31,13 +31,32 @@
                     android:textSize="20sp"
                     />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/nextRound"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Empezar torneo"
-                    app:cornerRadius="12dp">
-                </com.google.android.material.button.MaterialButton>
+                    android:orientation="horizontal">
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/nextRound"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Empezar torneo"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="@color/green_100"
+                            android:layout_marginEnd="15dp">
+                        </com.google.android.material.button.MaterialButton>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/goToMatchs"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Ir a emparejamiento"
+                            app:cornerRadius="12dp">
+                        </com.google.android.material.button.MaterialButton>
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

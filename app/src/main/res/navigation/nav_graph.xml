@@ -146,12 +146,20 @@
         android:id="@+id/MatchesFragment"
         android:name="com.example.tourney.fragments.MatchesFragment"
         android:label="Emparejamiento"
-        tools:layout="@layout/fragment_matches" />
+        tools:layout="@layout/fragment_matches">
+        <action
+            android:id="@+id/action_MatchesFragment_to_ClasificationListFragment"
+            app:destination="@id/ClasificationListFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/ClasificationListFragment"
         android:name="com.example.tourney.fragments.ClasificationListFragment"
         android:label="Clasificaciones"
-        tools:layout="@layout/fragment_clasification_list"/>
+        tools:layout="@layout/fragment_clasification_list">
+        <action
+            android:id="@+id/action_ClasificationListFragment_to_MatchesFragment"
+            app:destination="@id/MatchesFragment" />
+    </fragment>
 
 </navigation>
