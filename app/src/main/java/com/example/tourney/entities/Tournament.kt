@@ -100,8 +100,10 @@ data class Tournament(
 
             for (match in lastMatches) {
                 // Lógica para decidir quién pasa (ejemplo: el que tenga más puntuación)
-                val score1 = match.competitorOne.score.toIntOrNull() ?: -1
-                val score2 = match.competitorTwo.score.toIntOrNull() ?: -1
+                //val score1 = match.competitorOne.score.toIntOrNull() ?: -1
+                val score1 = match.competitorOne.score.toFloatOrNull() ?: -Float.MIN_VALUE
+                //val score2 = match.competitorTwo.score.toIntOrNull() ?: -
+                val score2 = match.competitorTwo.score.toFloatOrNull() ?: Float.MIN_VALUE
 
                 val winner =
                     if (score1 > score2)

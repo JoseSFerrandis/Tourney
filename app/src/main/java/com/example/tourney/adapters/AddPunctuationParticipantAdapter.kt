@@ -45,6 +45,13 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
 
         setUIBasedOnStatus(holder, isAlive, position, participant)
 
+        // Mostrar el divisor cada dos tarjetas (después de la posición 1, 3, 5...)
+        if ((position + 1) % 2 == 0 && position != tournament.participantList.size - 1) {
+            holder.binding.divider.visibility = View.VISIBLE
+        } else {
+            holder.binding.divider.visibility = View.GONE
+        }
+
         val newWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
