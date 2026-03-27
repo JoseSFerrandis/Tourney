@@ -17,6 +17,9 @@
     <string name="emailbox">prueba@prueba.com</string>
     <string name="password">Contraseña</string>
     <string name="ayuda">El correo de prueba es prueba@prueba.com y la pass debe tener al menos 8 carácteres 1 mayus y 1 número</string>
+    <!-- Crear torneo -->
+    <string name="nombre_Torneo">Nombre del torneo *</string>
+    <string name="competicion">Competicion *</string>
 
 
     <string name="lorem_ipsum">

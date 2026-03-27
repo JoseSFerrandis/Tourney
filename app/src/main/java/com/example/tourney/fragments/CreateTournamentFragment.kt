@@ -12,6 +12,11 @@ import com.example.tourney.R
 import com.example.tourney.databinding.FragmentCreateTournamentBinding
 import com.google.android.material.snackbar.Snackbar
 import android.app.DatePickerDialog
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.widget.TextView
 import java.util.Calendar
 
 class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
@@ -85,7 +90,12 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 Toast.makeText(requireContext(), "Por favor completa los campos obligatorios", Toast.LENGTH_SHORT).show()
             }
         }
+
+        //Poner el asterisco en rojo
+        colorearAsteriscoNombre()
+        colorearAsteriscoCompeti()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -118,5 +128,45 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             day
         )
         datePickerDialog.show()
+    }
+    private fun colorearAsteriscoNombre() {
+        val originalText = getString(R.string.nombre_Torneo)
+        val spannable = SpannableString(originalText)
+
+        // Buscamos la posición del asterisco
+        val asteriskIndex = originalText.indexOf('*')
+
+        if (asteriskIndex != -1) {
+            // Aplicamos el color rojo solo al carácter del asterisco
+            spannable.setSpan(
+                ForegroundColorSpan(Color.RED),
+                asteriskIndex,
+                asteriskIndex + 1,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        // Asignamos el texto procesado al TextView mediante el binding
+        binding.tvName.text = spannable
+    }
+    private fun colorearAsteriscoCompeti() {
+        val originalText = getString(R.string.competicion)
+        val spannable = SpannableString(originalText)
+
+        // Buscamos la posición del asterisco
+        val asteriskIndex = originalText.indexOf('*')
+
+        if (asteriskIndex != -1) {
+            // Aplicamos el color rojo solo al carácter del asterisco
+            spannable.setSpan(
+                ForegroundColorSpan(Color.RED),
+                asteriskIndex,
+                asteriskIndex + 1,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        // Asignamos el texto procesado al TextView mediante el binding
+        binding.tvGame.text = spannable
     }
 }
