@@ -73,11 +73,12 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="5dp"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/blue_600"
-        android:visibility="gone" />
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="@color/black"
+        android:visibility="visible" />
 
 </LinearLayout>

@@ -74,6 +74,7 @@ class ParticipantsListFragment : Fragment() {
 
                     // Añadimos el participante y refrescamos
                     tournament?.addParticipant(newParticipant)
+                    tournament?.restartMatches()
                     refresh()
 
                     Toast.makeText(requireContext(), "Participante añadido", Toast.LENGTH_SHORT).show()
