@@ -78,7 +78,13 @@ class TournamentPage : Fragment() {
 
     private fun setupClickListeners() {
         binding.btnClassification.setOnClickListener {
-            Toast.makeText(requireContext(), "Cargando Clasificación...", Toast.LENGTH_SHORT).show()
+            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
+            if (tournament != null) {
+                val bundle = Bundle().apply {
+                    putParcelable("tournament_data", tournament)
+                }
+                findNavController().navigate(R.id.action_TournamentFragment_to_ClasificationListFragment, bundle)
+            }
         }
 
         binding.btnMatches.setOnClickListener {

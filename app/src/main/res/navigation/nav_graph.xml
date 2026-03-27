@@ -117,6 +117,9 @@
         <action
             android:id="@+id/action_TournamentFragment_to_MatchesFragment"
             app:destination="@id/MatchesFragment" />
+        <action
+            android:id="@+id/action_TournamentFragment_to_ClasificationListFragment"
+            app:destination="@id/ClasificationListFragment" />
     </fragment>
 
     <!-- Fragmento Crear Torneo -->
@@ -144,5 +147,11 @@
         android:name="com.example.tourney.fragments.MatchesFragment"
         android:label="Emparejamiento"
         tools:layout="@layout/fragment_matches" />
+
+    <fragment
+        android:id="@+id/ClasificationListFragment"
+        android:name="com.example.tourney.fragments.ClasificationListFragment"
+        android:label="Clasificaciones"
+        tools:layout="@layout/fragment_clasification_list"/>
 
 </navigation>

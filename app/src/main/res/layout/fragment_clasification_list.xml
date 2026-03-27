@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorSurface"
-        tools:context=".fragments.ParticipantsListFragment">
+        tools:context=".fragments.ClasificationListFragment">
 
         <LinearLayout
             android:id="@+id/showParticipants"
@@ -26,16 +26,16 @@
                     android:id="@+id/tvNumParticipants"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Participantes: 1/1"
+                    android:text="Participantes vivos: 1/1"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/addParticipant"
+                    android:id="@+id/nextRound"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Añadir participante"
+                    android:text="Empezar torneo"
                     app:cornerRadius="12dp">
                 </com.google.android.material.button.MaterialButton>
             </LinearLayout>
@@ -46,7 +46,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_user" />
+                tools:listitem="@layout/item_user_add_puntuation" />
 
             <TextView
                 android:id="@+id/tvEmptyList"

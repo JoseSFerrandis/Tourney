@@ -1,7 +1,12 @@
 package com.example.tourney.entities
 
+import android.content.Context
 import android.os.Parcelable
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.ventura.bracketslib.model.ColomnData
+import com.ventura.bracketslib.model.CompetitorData
+import com.ventura.bracketslib.model.MatchData
 import kotlinx.parcelize.Parcelize
 
 enum class TournamentStatus {
@@ -23,16 +28,17 @@ data class Tournament(
     var prize: String,
     var code: Int,
     var tournamentStatus: TournamentStatus = TournamentStatus.EDITABLE,
-    var matches: MutableList<ColomnData> = mutableListOf()
+    var columnMatches: MutableList<ColomnData> = mutableListOf(),
+    private var notDead: MutableList<CompetitorData> = mutableListOf()
 ) : Parcelable {
     val numParticipants: Int
         get() = participantList.size
 
-
-
-    fun hasSpace(): Boolean {
-        return numParticipants < maxParticipants
-    }
+    /**
+     * Comprueba si hay espacio para más participantes
+     * @return true si hay espacio, false en caso contrario
+     */
+    fun hasSpace(): Boolean { return numParticipants < maxParticipants }
 
     fun addParticipant(user: User): Boolean {
         if (hasSpace()) {
@@ -48,5 +54,130 @@ data class Tournament(
         }
         return false
     }
+
+    /**
+     * Inicializa la lista de columnas con el primer emparejamiento
+     * Si ya se ha inicializado, no hace nada
+     */
+    fun initMatches(){
+        // Inicializa la lista de columnas con el primer emparejamiento
+        if(columnMatches.isEmpty()) {
+            notDead = getCompetitorList(participantList)
+
+            // Evita desajuste por el número de participantes impar
+            if(notDead.size%2 != 0)
+                notDead.add(CompetitorData("", ""))
+
+            columnMatches.add(createColumn(createMatches(notDead)))
+        }
+    }
+
+    /**
+     * Reinicia la lista de columnas con el primer emparejamiento
+     */
+    fun restartMatches(){
+        columnMatches.clear()
+        initMatches()
+    }
+
+    fun nextRound(context: Context?) : Boolean{
+        if(notDead.isNotEmpty() && tournamentStatus != TournamentStatus.FINISHED){
+
+            //val columnMatches = createMatches(notDead)
+            /*val matches = getLastMatchList()
+
+            // IMPORTANTE: Para que la vista "refresque" visualmente algo distinto,
+            // avanzamos a los ganadores (simulado: pasa el primero de cada match)
+            val winners = mutableListOf<CompetitorData>()
+            for (match in matches!!) {
+                winners.add(match.competitorOne)
+            }
+            notDead = winners*/
+
+            // Lista de partidos de la ronda actual (la última guardada)
+            val lastMatches = getLastMatchList()
+            val winners = mutableListOf<CompetitorData>()
+
+            for (match in lastMatches) {
+                // Lógica para decidir quién pasa (ejemplo: el que tenga más puntuación)
+                val score1 = match.competitorOne.score.toIntOrNull() ?: 0
+                val score2 = match.competitorTwo.score.toIntOrNull() ?: 0
+
+                val winner =
+                    if (score1 > score2)
+                        match.competitorOne
+                    else if(score1 < score2)
+                        match.competitorTwo
+                    else { // Empate
+                        Toast.makeText(context, "No puede haber empate en el torneo", Toast.LENGTH_SHORT).show()
+                        return false
+                    }
+
+                //winners.add(winner)
+
+                // CLAVE: Creamos una instancia TOTALMENTE NUEVA para la siguiente ronda.
+                // Esto equivale al 'new CompetitorData' de Java.
+                // Si la librería no tiene .copy(), usa el constructor:
+                winners.add(CompetitorData(winner.name, "0"))
+            }
+
+            notDead = winners
+
+            // Comprueba si ha terminado el torneo (solo queda un participante vivo)
+            if(notDead.size == 1)
+                setStatusFinished(context)
+
+            // Evita desajuste por el número de participantes impar
+            if(notDead.size%2 != 0){
+                notDead.add(CompetitorData("", ""))
+            }
+
+            columnMatches.add(createColumn(createMatches(notDead)))
+
+            return true
+        } else {
+            setStatusFinished(context)
+            return false
+        }
+    }
+
+    private fun createMatches(competitors : MutableList<CompetitorData>) : MutableList<MatchData>{
+        val matches = mutableListOf<MatchData>()
+        for(i in 0 until competitors.size - 1 step 2){
+            matches.add(MatchData(competitors[i], competitors[i + 1]))
+        }
+        return matches
+    }
+
+    private fun createColumn(matches : MutableList<MatchData>) : ColomnData{ return ColomnData(matches) }
+
+    private fun getCompetitorList(participants : MutableList<User>) : MutableList<CompetitorData>{
+        return participants.map { CompetitorData(it.nickname, "0") }.toMutableList()
+    }
+    
+    fun getLastMatchList() : MutableList<MatchData>{ return columnMatches.last().matches }
+    fun getNotDead() : MutableList<CompetitorData>{ return notDead }
+    fun setNotDead(notDead: MutableList<CompetitorData>){ this.notDead = notDead }
+
+
+    fun setStatusEditable(){ tournamentStatus = TournamentStatus.EDITABLE }
+    fun setStatusInProgress(context: Context?){
+        tournamentStatus = TournamentStatus.IN_PROGRESS
+        if(context != null)
+            Toast.makeText(context, "Torneo iniciado", Toast.LENGTH_SHORT).show()
+    }
+    fun setStatusFinished(context: Context?){
+        tournamentStatus = TournamentStatus.FINISHED
+        if(context != null)
+            Toast.makeText(context, "Torneo finalizado", Toast.LENGTH_SHORT).show()
+    }
+
+    fun removeParticipantAtPosition(position: Int){
+        participantList.removeAt(position)
+        if(tournamentStatus == TournamentStatus.EDITABLE){
+            restartMatches()
+        }
+    }
+
 
 }

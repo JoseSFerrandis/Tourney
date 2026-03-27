@@ -14,7 +14,6 @@ import com.example.tourney.databinding.FragmentMatchesBinding
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
-import com.google.android.material.snackbar.Snackbar
 import com.ventura.bracketslib.BracketsView
 import com.ventura.bracketslib.model.ColomnData
 import com.ventura.bracketslib.model.CompetitorData
@@ -71,46 +70,18 @@ class MatchesFragment : Fragment() {
     }
 
     private fun nextRound(){
-        if(notDead.size > 0 && tournament?.tournamentStatus != TournamentStatus.FINISHED){
-
-            //val matches = createMatches(notDead)
-            val matches = columns.last().matches
-
-            // IMPORTANTE: Para que la vista "refresque" visualmente algo distinto,
-            // avanzamos a los ganadores (simulado: pasa el primero de cada match)
-            val winners = mutableListOf<CompetitorData>()
-            for (match in matches) {
-                winners.add(match.competitorOne)
+        if(notDead.isNotEmpty() && tournament?.tournamentStatus != TournamentStatus.FINISHED){
+            if(tournament?.nextRound(requireContext())?: false) {
+                // Forzamos el refresco re inflando la vista de forma segura
+                refreshBracketView()
             }
-            notDead = winners
-
-            // Comprueba si ha terminado el torneo
-            if(notDead.size == 1)
-                tournament?.tournamentStatus = TournamentStatus.FINISHED
-
-            // Evita desajuste por el número de participantes impar
-            if(notDead.size%2 != 0){
-                notDead.add(CompetitorData("", ""))
-            }
-
-            columns.add(createColumn(createMatches(notDead)))
-            tournament?.matches = columns
-
-            // Forzamos el refresco re inflando la vista de forma segura
-            refreshBracketView()
         } else {
-            Toast.makeText(requireContext(), "Torneo finalizado", Toast.LENGTH_SHORT).show()
+            updateNextRoundBtn()
         }
     }
 
     private fun initBracketView() {
-        // Evita desajuste por el número de participantes impar
-        if(notDead.size%2 != 0){
-            notDead.add(CompetitorData("", ""))
-        }
-        if(tournament?.matches.isNullOrEmpty())
-            columns.add(createColumn(createMatches(notDead)))
-        else columns = tournament?.matches!!
+        tournament?.initMatches()
 
         // Forzamos el refresco re-inflando la vista de forma segura
         refreshBracketView()
@@ -134,7 +105,7 @@ class MatchesFragment : Fragment() {
                 bracketsView = newBracketsView
 
                 // 4. Seteamos los datos (usando ArrayList para asegurar compatibilidad con la librería)
-                bracketsView?.setBracketsData(ArrayList(columns))
+                bracketsView?.setBracketsData(ArrayList(tournament?.columnMatches))
 
             } catch (e: Exception) {
                 // Si aun así hay problemas de inflación, el log nos dirá por qué

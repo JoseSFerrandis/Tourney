@@ -26,8 +26,8 @@ class ParticipantAdapter(private val tournament : Tournament, private val refres
         holder.binding.btnRemove.isEnabled = tournament.tournamentStatus == TournamentStatus.EDITABLE
 
         holder.binding.btnRemove.setOnClickListener {
-            tournament.participantList.removeAt(position)
-            refresh.invoke()
+            tournament.removeParticipantAtPosition(position)
+            refresh()
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, tournament.participantList.size)
         }
