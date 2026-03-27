@@ -59,6 +59,10 @@ class ClasificationListFragment : Fragment() {
 
         val participants = tournament?.participantList
 
+        participants?.sortByDescending { p ->
+            tournament?.getNotDead()?.any { it.name == p.nickname } ?: false
+        }
+
         // 1. Gestionar visibilidad y Adapter
         if (participants.isNullOrEmpty()) {
             binding.tvEmptyList.visibility = View.VISIBLE
@@ -76,7 +80,6 @@ class ClasificationListFragment : Fragment() {
         }
         val notDead = tournament?.getNotDead()?.filterNot { it.name == "" }
         binding.tvNumParticipants.text = "Participantes vivos: ${notDead?.size}/${tournament?.numParticipants}"
-
 
         // 2. Actualizar estado del botón NextRound
         updateNextRoundBtn()

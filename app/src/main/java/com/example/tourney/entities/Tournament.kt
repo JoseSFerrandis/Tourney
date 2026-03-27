@@ -100,8 +100,8 @@ data class Tournament(
 
             for (match in lastMatches) {
                 // Lógica para decidir quién pasa (ejemplo: el que tenga más puntuación)
-                val score1 = match.competitorOne.score.toIntOrNull() ?: 0
-                val score2 = match.competitorTwo.score.toIntOrNull() ?: 0
+                val score1 = match.competitorOne.score.toIntOrNull() ?: -1
+                val score2 = match.competitorTwo.score.toIntOrNull() ?: -1
 
                 val winner =
                     if (score1 > score2)
@@ -110,6 +110,7 @@ data class Tournament(
                         match.competitorTwo
                     else { // Empate
                         Toast.makeText(context, "No puede haber empate en el torneo", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Empate en ${match.competitorOne.name}: ${match.competitorOne.score} y ${match.competitorTwo.name}: ${match.competitorTwo.score}", Toast.LENGTH_SHORT).show()
                         return false
                     }
 
