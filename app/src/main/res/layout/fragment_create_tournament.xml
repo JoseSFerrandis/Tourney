@@ -36,12 +36,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="5dp"
                     android:text="Completa los detalles del evento"
                     android:textColor="#CCDCFF"
                     android:textSize="14sp" />
 
                 <!-- Formulario -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="32dp"
+                    android:text="Con *, son campos obligatorios"
+                    android:textColor="#CC0A00"
+                    android:textSize="12sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,10 +58,11 @@
 
                     <!-- Nombre del Torneo -->
                     <TextView
+                        android:id="@+id/tvName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
-                        android:text="Nombre del Torneo"
+                        android:text="@string/nombre_Torneo"
                         android:textColor="@android:color/white" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -74,10 +84,11 @@
 
                     <!-- Juego -->
                     <TextView
+                        android:id="@+id/tvGame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
-                        android:text="Videojuego"
+                        android:text="@string/competicion"
                         android:textColor="@android:color/white" />
 
                     <com.google.android.material.textfield.TextInputLayout
