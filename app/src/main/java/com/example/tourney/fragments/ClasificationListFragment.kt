@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.example.tourney.R
 import com.example.tourney.adapters.AddPunctuationParticipantAdapter
 import com.example.tourney.databinding.FragmentClasificationListBinding
@@ -58,11 +59,17 @@ class ClasificationListFragment : Fragment() {
             val bundle = Bundle().apply {
                 putParcelable("tournament_data", tournament)
             }
-            findNavController().navigate(R.id.action_ClasificationListFragment_to_MatchesFragment, bundle)
+            //findNavController().navigate(R.id.action_ClasificationListFragment_to_MatchesFragment, bundle)
+
+            val navigationOptions = navOptions {
+                popUpTo(R.id.ClasificationListFragment) {
+                    inclusive = true
+                }
+            }
+            findNavController().navigate(R.id.action_ClasificationListFragment_to_MatchesFragment, bundle, navigationOptions)
         }
     }
 
-    // TODO: Crear el adapter, hacer que funcione, actualizar la vista, etc.
     val refresh = fun() {
         tournament?.initMatches()
 

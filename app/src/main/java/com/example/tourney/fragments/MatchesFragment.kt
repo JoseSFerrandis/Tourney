@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.Navigator
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentMatchesBinding
 import com.example.tourney.entities.Tournament
@@ -66,7 +68,15 @@ class MatchesFragment : Fragment() {
             val bundle = Bundle().apply {
                 putParcelable("tournament_data", tournament)
             }
-            findNavController().navigate(R.id.action_MatchesFragment_to_ClasificationListFragment, bundle)
+            //findNavController().navigate(R.id.action_MatchesFragment_to_ClasificationListFragment, bundle)
+
+
+            val navigationOptions = navOptions {
+                popUpTo(R.id.MatchesFragment) {
+                    inclusive = true
+                }
+            }
+            findNavController().navigate(R.id.action_MatchesFragment_to_ClasificationListFragment, bundle, navigationOptions)
         }
 
         // Genera la primera ronda
