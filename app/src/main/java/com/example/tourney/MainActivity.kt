@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         // Inicializa datos
         tournaments[0].participantList = users
+        Tournament.setTournaments(tournaments)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,14 +74,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        var actualUser: User? = null
         /*
-           @joschajov 22/03/2025
-           He movido la declaración de torneos estaticos aquí, ya que no es un fragmento
-           que se borre todo el rato y era más practico.
-
-           A futuro: esta sigue siendo una "buena" idea o tener otro.kt para ello pero no debería
-           ser estatico como aquí, si no hacer llamadas a la base de datos
+            Se declaran aquí los torneos y los usuarios para tenerlos "a mano" pero están instanciados estáticamente en Tournament
          */
         // Lista global de torneos
         private val tournaments = mutableListOf(
@@ -104,20 +99,6 @@ class MainActivity : AppCompatActivity() {
             User(11, "Javier", "javier@gmail.com", "password123", 1),
             User(12, "Lucas", "lucas@gmail.com", "password123", 1),
         )
-
-        fun getTournaments(): List<Tournament> {
-            //sortTournaments()
-            return tournaments
-        }
-
-        fun addTournament(tournament: Tournament) {
-            tournaments.add(0, tournament)
-            //sortTournaments()
-        // Lo añade al principio para que se vea primero
-        // (SE LO HE PEDIDO A LA IA PARA QUE SE VEA BIEN)
-        // pero sinceramente deberíamos ordenar los torneos por fecha
-        // y no así por ID (como lo metemos al listado mutabel)
-        }
 
         fun sortTournaments() {
             tournaments.sortBy({ it.date })

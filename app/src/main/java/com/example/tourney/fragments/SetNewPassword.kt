@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentSetNewPasswordBinding
+import com.example.tourney.entities.User
 import com.google.android.material.snackbar.Snackbar
 
 class SetNewPassword : Fragment() {
@@ -79,7 +79,7 @@ class SetNewPassword : Fragment() {
         if(binding.tilNewPassword.error != null ||
             binding.tilRepeatPassword.error != null){ return false }
 
-        val userEmail = MainActivity.actualUser?.email ?: return false
+        val userEmail = User.actualUser?.email ?: return false
 
         if(
             UsersDao(requireContext())

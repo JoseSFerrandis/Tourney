@@ -15,6 +15,7 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentHomeBinding
+import com.example.tourney.entities.User
 import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
@@ -52,9 +53,7 @@ class HomeFragment : Fragment() {
          */
 
         // Convertimos a MutableList para que el adaptador pueda manejarla
-        val tournaments = MainActivity.getTournaments().toMutableList()
-        //con esto llamamos al adaptador con la lista de torneos sacada del
-        // MainActivity, esta por ahora no tiene cambios
+        val tournaments = Tournament.getTournaments().toMutableList()
         tournamentAdapter = TournamentAdapter(tournaments) { tournament -> onTournamentClick(tournament) }
         binding.rvTournaments.adapter = tournamentAdapter
 
@@ -104,7 +103,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        binding.tvGreeting.text = "Hola, ${MainActivity.actualUser?.nickname}"
+        binding.tvGreeting.text = "Hola, ${User.actualUser?.nickname}"
         /*
             @joschajov 22/03/2025
             He tealizado cambios en esta parte, ahora el objeto adapatador puede actualizar su array
@@ -113,7 +112,7 @@ class HomeFragment : Fragment() {
             A futuro: se debe cambiar el meotodo ya que se hará desde una base de datos
          */
         // Forzamos la actualización de los datos del adaptador al volver
-        tournamentAdapter.updateTournaments(MainActivity.getTournaments())
+        tournamentAdapter.updateTournaments(Tournament.getTournaments())
     }
 
     override fun onDestroyView() {

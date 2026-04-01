@@ -11,4 +11,9 @@ data class User (
     var email: String,
     var password: String,
     var photo: Int
-): Parcelable
+): Parcelable{
+    // Usuario actual
+    companion object{
+        var actualUser: User? = null
+    }
+}

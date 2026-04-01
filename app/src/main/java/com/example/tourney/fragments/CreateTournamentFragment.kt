@@ -17,6 +17,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
+import com.example.tourney.entities.User
 import java.util.Calendar
 
 class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
@@ -56,7 +57,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                     id = (100..10000).random(),
                     name = name,
                     game = game,
-                    creator = establishedValue(context, MainActivity.actualUser?.nickname),
+                    creator = establishedValue(context, User.actualUser?.nickname),
                     maxParticipants = maxParticipants,
                     date = date,
                     location = location,
@@ -70,7 +71,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 // A futuro: tras las comprobaciones, se añadirá el torneo a la base de datos con insert
                 //falta meter el campo de usuario dueño (ID clave foranea) y lista mutable de usuarios
 
-                MainActivity.addTournament(newTournament)
+                Tournament.addTournament(newTournament)
 
                 Toast.makeText(requireContext(), "Torneo '$name' creado con éxito", Toast.LENGTH_LONG).show()
 

@@ -44,7 +44,7 @@ class LoginFragment : Fragment() {
         binding.btnLoginLogin.setOnClickListener {
             //if(loginByButton()) {
             if(login()) {
-                Snackbar.make(view, "Hola, ${MainActivity.actualUser?.nickname}", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(view, "Hola, ${User.actualUser?.nickname}", Snackbar.LENGTH_LONG).show()
                 findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
             }
         }
@@ -113,7 +113,7 @@ class LoginFragment : Fragment() {
         //ESTO ES SOLO PARA DEBUGGING
         if(binding.loginEmailInput.text.toString() == "" &&
             binding.loginPasswordInput.text.toString() == ""){
-            MainActivity.actualUser = User(-1, "admin", "admin@admin.com", "admin", 0)
+            User.actualUser = User(-1, "admin", "admin@admin.com", "admin", 0)
 
             return true
         }
@@ -126,7 +126,7 @@ class LoginFragment : Fragment() {
         for(user in allUsers){
             if(binding.loginEmailInput.text.toString() == user.email &&
                 binding.loginPasswordInput.text.toString() == user.password){
-                MainActivity.actualUser = user;
+                User.actualUser = user;
 
                 return true
             }

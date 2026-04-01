@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcelable
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.tourney.MainActivity
 import com.ventura.bracketslib.model.ColomnData
 import com.ventura.bracketslib.model.CompetitorData
 import com.ventura.bracketslib.model.MatchData
@@ -82,18 +83,6 @@ data class Tournament(
 
     fun nextRound(context: Context?) : Boolean{
         if(notDead.isNotEmpty() && tournamentStatus != TournamentStatus.FINISHED){
-
-            //val columnMatches = createMatches(notDead)
-            /*val matches = getLastMatchList()
-
-            // IMPORTANTE: Para que la vista "refresque" visualmente algo distinto,
-            // avanzamos a los ganadores (simulado: pasa el primero de cada match)
-            val winners = mutableListOf<CompetitorData>()
-            for (match in matches!!) {
-                winners.add(match.competitorOne)
-            }
-            notDead = winners*/
-
             // Lista de partidos de la ronda actual (la última guardada)
             val lastMatches = getLastMatchList()
             val winners = mutableListOf<CompetitorData>()
@@ -116,9 +105,7 @@ data class Tournament(
                         return false
                     }
 
-                //winners.add(winner)
-
-                // CLAVE: Creamos una instancia TOTALMENTE NUEVA para la siguiente ronda.
+                // Creamos una instancia nueva para la siguiente ronda.
                 // Esto equivale al 'new CompetitorData' de Java.
                 // Si la librería no tiene .copy(), usa el constructor:
                 winners.add(CompetitorData(winner.name, "0"))
@@ -182,5 +169,29 @@ data class Tournament(
         }
     }
 
+    fun shufleParticipants(): Boolean{
+        if(tournamentStatus == TournamentStatus.EDITABLE){
+            participantList.shuffle()
+            restartMatches()
+            return true
+        } else {
+            return false
+        }
+    }
 
+    // Funciones de acceso estático
+    companion object{
+        private var tournaments: MutableList<Tournament> = mutableListOf()
+        fun getTournaments() : MutableList<Tournament> { return tournaments }
+        fun setTournaments(tournaments: MutableList<Tournament>){ this.tournaments = tournaments}
+
+        fun addTournament(tournament: Tournament){ tournaments.add(tournament) }
+        fun removeTournament(tournament: Tournament){ tournaments.remove(tournament) }
+        fun removeTournament(id: Int){ tournaments.removeIf { it.id == id } }
+
+        fun searchTournamentByCode(code: Int) : Tournament ? {
+            tournaments.find { it.code == code }?.let { return it }
+            return null
+        }
+    }
 }

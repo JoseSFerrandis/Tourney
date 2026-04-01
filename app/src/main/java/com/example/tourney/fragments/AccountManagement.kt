@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentAccountManagementBinding
+import com.example.tourney.entities.User
 
 // Añadimos R.layout.fragment_account_management aquí para que el Fragment sepa qué inflar
 class AccountManagement : Fragment(R.layout.fragment_account_management) {
@@ -39,8 +40,8 @@ class AccountManagement : Fragment(R.layout.fragment_account_management) {
 
     override fun onResume() {
         super.onResume()
-        binding.tvName.text = MainActivity.actualUser?.nickname
-        binding.tvEmail.text = MainActivity.actualUser?.email
+        binding.tvName.text = User.actualUser?.nickname
+        binding.tvEmail.text = User.actualUser?.email
     }
 
     override fun onDestroyView() {

@@ -5,8 +5,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentJoinTournamentPageBinding
+import com.example.tourney.entities.Tournament
 
 class JoinTournamentPage : Fragment(R.layout.fragment_join_tournament_page) {
 
@@ -19,17 +21,30 @@ class JoinTournamentPage : Fragment(R.layout.fragment_join_tournament_page) {
 
         binding.btnAcceptJoin.setOnClickListener {
             val code = binding.etTournamentCode.text.toString()
-            if (code.isNotEmpty()) {
-                Toast.makeText(requireContext(), "Código aceptado: $code", Toast.LENGTH_SHORT).show()
-                // Navegación a la página del torneo
-                findNavController().navigate(R.id.action_JoinTournamentFragment_to_TournamentFragment)
+            var foundTournament: Tournament?
+            if (code.isNotBlank()) {
+                try{
+                    foundTournament = Tournament.searchTournamentByCode(code.toInt())
+                } catch (e: NumberFormatException){
+                    binding.tilTournamentCode.error = "Por favor, introduce un código válido"
+                    return@setOnClickListener
+                }
+                if (foundTournament == null) {
+                    binding.tilTournamentCode.error = "Código no encontrado"
+                    return@setOnClickListener
+                }else{
+                    binding.tilTournamentCode.error = null
+                    Toast.makeText(requireContext(), "Código aceptado: $code", Toast.LENGTH_SHORT).show()
+
+                    val bundle = Bundle().apply {
+                        putParcelable("tournament_data", foundTournament)
+                    }
+                    findNavController().navigate(R.id.action_JoinTournamentFragment_to_TournamentFragment, bundle)
+                    return@setOnClickListener
+                }
             } else {
                 binding.tilTournamentCode.error = "Por favor, introduce un código"
             }
-        }
-
-        binding.btnViewParticipants.setOnClickListener {
-            Toast.makeText(requireContext(), "Próximamente", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnAyuda.setOnClickListener {

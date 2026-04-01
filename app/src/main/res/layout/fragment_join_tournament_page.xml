@@ -134,18 +134,6 @@
                     app:layout_constraintVertical_bias="0">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnViewParticipants"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:text="NonFunctional"
-                        android:textColor="@color/Blue3"
-                        app:iconTint="@color/Blue3"
-                        app:strokeColor="@color/Blue3" />
-
-                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnAyuda"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"

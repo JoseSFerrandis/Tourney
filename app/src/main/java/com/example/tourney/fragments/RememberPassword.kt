@@ -10,6 +10,7 @@ import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentRememberPasswordBinding
+import com.example.tourney.entities.User
 import com.google.android.material.snackbar.Snackbar
 
 class RememberPassword : Fragment() {
@@ -49,7 +50,7 @@ class RememberPassword : Fragment() {
         for(user in allUsers){
             if(binding.rememberEmailInput.text.toString() == user.email &&
                 binding.rememberNicknameInput.text.toString() == user.nickname){
-                MainActivity.actualUser = user;
+                User.actualUser = user;
                 return true
             }
         }
