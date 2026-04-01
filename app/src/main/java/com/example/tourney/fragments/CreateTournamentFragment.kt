@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tourney.entities.Tournament
-import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentCreateTournamentBinding
 import com.google.android.material.snackbar.Snackbar
@@ -16,8 +15,8 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.widget.TextView
 import com.example.tourney.entities.User
+import com.example.tourney.tools.UsersDao
 import java.util.Calendar
 
 class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
@@ -54,7 +53,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
 
             if (name.isNotBlank() && game.isNotBlank()) {
                 val newTournament = Tournament(
-                    id = (100..10000).random(),
+                    id = (100L..10000L).random(),
                     name = name,
                     game = game,
                     creator = establishedValue(context, User.actualUser?.nickname),
@@ -69,9 +68,10 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 //faltaría meter unos cuantos trycatch con debugs
 
                 // A futuro: tras las comprobaciones, se añadirá el torneo a la base de datos con insert
-                //falta meter el campo de usuario dueño (ID clave foranea) y lista mutable de usuarios
 
                 Tournament.addTournament(newTournament)
+                User.actualUser?.addShowableTournament(newTournament.id)
+                UsersDao(context).updateShowableTournamentList(User.actualUser?.email ?: "", User.actualUser?.showableTournamentList.toString().replace("[", "").replace("]", ""))
 
                 Toast.makeText(requireContext(), "Torneo '$name' creado con éxito", Toast.LENGTH_LONG).show()
 

@@ -10,8 +10,17 @@ data class User (
     var nickname: String,
     var email: String,
     var password: String,
-    var photo: Int
+    var photo: Int,
+    var showableTournamentList: MutableList<Long> = mutableListOf()
 ): Parcelable{
+    fun addShowableTournament(id: Long){ showableTournamentList.add(id) }
+    fun removeShowableTournament(id: Long){ showableTournamentList.remove(id) }
+    fun hasShowableTournament(id: Long): Boolean{ return showableTournamentList.contains(id) }
+    fun setShowableTournamentList(stringList: String){
+        showableTournamentList = stringList.split(",").map { it.trim().toLong() }.toMutableList()
+    }
+
+
     // Usuario actual
     companion object{
         var actualUser: User? = null

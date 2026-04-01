@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
          */
 
         // Convertimos a MutableList para que el adaptador pueda manejarla
-        val tournaments = Tournament.getTournaments().toMutableList()
+        val tournaments = Tournament.searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf())
         tournamentAdapter = TournamentAdapter(tournaments) { tournament -> onTournamentClick(tournament) }
         binding.rvTournaments.adapter = tournamentAdapter
 
@@ -112,7 +112,7 @@ class HomeFragment : Fragment() {
             A futuro: se debe cambiar el meotodo ya que se hará desde una base de datos
          */
         // Forzamos la actualización de los datos del adaptador al volver
-        tournamentAdapter.updateTournaments(Tournament.getTournaments())
+        tournamentAdapter.updateTournaments(Tournament.searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf()))
     }
 
     override fun onDestroyView() {

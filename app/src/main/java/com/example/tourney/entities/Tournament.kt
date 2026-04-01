@@ -18,7 +18,7 @@ enum class TournamentStatus {
 
 @Parcelize
 data class Tournament(
-    var id: Int,
+    var id: Long,
     var name: String,
     var game: String,
     var creator: String,
@@ -187,11 +187,32 @@ data class Tournament(
 
         fun addTournament(tournament: Tournament){ tournaments.add(tournament) }
         fun removeTournament(tournament: Tournament){ tournaments.remove(tournament) }
-        fun removeTournament(id: Int){ tournaments.removeIf { it.id == id } }
+        fun removeTournament(id: Long){ tournaments.removeIf { it.id == id } }
 
         fun searchTournamentByCode(code: Int) : Tournament ? {
             tournaments.find { it.code == code }?.let { return it }
             return null
         }
+
+        fun searchTournamentById(id: Long) : Tournament ? {
+            tournaments.find { it.id == id }?.let { return it }
+            return null
+        }
+
+        fun searchTournamentListByIds(ids: MutableList<Long>) : MutableList<Tournament> {
+            val foundTournaments = mutableListOf<Tournament>()
+            for (id in ids) {
+                searchTournamentById(id)?.let { foundTournaments.add(it) }
+            }
+            return foundTournaments
+        }
+
+        /*fun searchTournamentListByIds(ids: MutableList<Long>) : MutableList<Tournament> {
+            val list = mutableListOf<Tournament>()
+            for(id in ids){
+                tournaments.find { it.id == id }?.let { list.add(it) }
+            }
+            return list
+        }*/
     }
 }

@@ -20,15 +20,16 @@ class UserDatabaseHelper(context: Context) :
                    $COL_NICKNAME TEXT NOT NULL,
                    $COL_EMAIL TEXT NOT NULL,
                    $COL_PASSWORD TEXT NOT NULL,
-                   $COL_PHOTO INTEGER NOT NULL
+                   $COL_PHOTO INTEGER NOT NULL,
+                   $COL_LIST_SHOWABLE_TOURNAMENTS TEXT
                    );
                    """.trimIndent()
         db.execSQL(createTable)
 
         val insert = """
-            INSERT INTO $TABLE_USERS ($COL_NICKNAME, $COL_EMAIL, $COL_PASSWORD, $COL_PHOTO) VALUES
-            ('admin', 'admin@admin.com', 'admin', 0),
-            ('user', 'user@user.com', 'user', 0)
+            INSERT INTO $TABLE_USERS ($COL_NICKNAME, $COL_EMAIL, $COL_PASSWORD, $COL_PHOTO, $COL_LIST_SHOWABLE_TOURNAMENTS) VALUES
+            ('admin', 'admin@admin.com', 'admin', 0, ""),
+            ('user', 'user@user.com', 'user', 0, "")
         """.trimIndent()
         db.execSQL(insert)
     }
@@ -44,5 +45,6 @@ class UserDatabaseHelper(context: Context) :
         const val COL_EMAIL = "email"
         const val COL_PASSWORD = "password"
         const val COL_PHOTO = "photo"
+        const val COL_LIST_SHOWABLE_TOURNAMENTS = "list_showable_tournaments"
     }
 }
