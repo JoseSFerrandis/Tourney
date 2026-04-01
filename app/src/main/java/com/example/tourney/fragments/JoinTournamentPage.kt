@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentJoinTournamentPageBinding
@@ -39,7 +40,12 @@ class JoinTournamentPage : Fragment(R.layout.fragment_join_tournament_page) {
                     val bundle = Bundle().apply {
                         putParcelable("tournament_data", foundTournament)
                     }
-                    findNavController().navigate(R.id.action_JoinTournamentFragment_to_TournamentFragment, bundle)
+                    val navigationOptions = navOptions {
+                        popUpTo(R.id.JoinTournamentFragment) {
+                            inclusive = true
+                        }
+                    }
+                    findNavController().navigate(R.id.action_JoinTournamentFragment_to_TournamentFragment, bundle, navigationOptions)
                     return@setOnClickListener
                 }
             } else {
