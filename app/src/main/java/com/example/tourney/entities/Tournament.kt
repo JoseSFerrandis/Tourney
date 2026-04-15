@@ -30,7 +30,8 @@ data class Tournament(
     var code: Int,
     var tournamentStatus: TournamentStatus = TournamentStatus.EDITABLE,
     var columnMatches: MutableList<ColomnData> = mutableListOf(),
-    private var notDead: MutableList<CompetitorData> = mutableListOf()
+    private var notDead: MutableList<CompetitorData> = mutableListOf(),
+    private var competitors: MutableList<CompetitorData> = mutableListOf()
 ) : Parcelable {
     val numParticipants: Int
         get() = participantList.size
@@ -90,7 +91,7 @@ data class Tournament(
             for (match in lastMatches) {
                 // Lógica para decidir quién pasa (ejemplo: el que tenga más puntuación)
                 //val score1 = match.competitorOne.score.toIntOrNull() ?: -1
-                val score1 = match.competitorOne.score.toFloatOrNull() ?: -Float.MIN_VALUE
+                val score1 = match.competitorOne.score.toFloatOrNull() ?: Float.MIN_VALUE
                 //val score2 = match.competitorTwo.score.toIntOrNull() ?: -
                 val score2 = match.competitorTwo.score.toFloatOrNull() ?: Float.MIN_VALUE
 
@@ -107,7 +108,6 @@ data class Tournament(
 
                 // Creamos una instancia nueva para la siguiente ronda.
                 // Esto equivale al 'new CompetitorData' de Java.
-                // Si la librería no tiene .copy(), usa el constructor:
                 winners.add(CompetitorData(winner.name, "0"))
             }
 
@@ -169,7 +169,7 @@ data class Tournament(
         }
     }
 
-    fun shufleParticipants(): Boolean{
+    fun shuffleParticipants(): Boolean{
         if(tournamentStatus == TournamentStatus.EDITABLE){
             participantList.shuffle()
             restartMatches()
