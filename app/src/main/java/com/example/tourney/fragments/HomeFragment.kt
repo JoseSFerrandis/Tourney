@@ -16,6 +16,7 @@ import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentHomeBinding
 import com.example.tourney.entities.User
+import com.example.tourney.repositories.TournamentRepository
 import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
@@ -53,7 +54,7 @@ class HomeFragment : Fragment() {
          */
 
         // Convertimos a MutableList para que el adaptador pueda manejarla
-        val tournaments = Tournament.searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf())
+        val tournaments = TournamentRepository.getInstance().searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf())
         tournamentAdapter = TournamentAdapter(tournaments) { tournament -> onTournamentClick(tournament) }
         binding.rvTournaments.adapter = tournamentAdapter
 
@@ -112,7 +113,7 @@ class HomeFragment : Fragment() {
             A futuro: se debe cambiar el meotodo ya que se hará desde una base de datos
          */
         // Forzamos la actualización de los datos del adaptador al volver
-        tournamentAdapter.updateTournaments(Tournament.searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf()))
+        tournamentAdapter.updateTournaments(TournamentRepository.getInstance().searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf()))
     }
 
     override fun onDestroyView() {

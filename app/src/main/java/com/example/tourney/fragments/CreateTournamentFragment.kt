@@ -16,6 +16,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import com.example.tourney.entities.User
+import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.UsersDao
 import java.util.Calendar
 
@@ -69,7 +70,8 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
 
                 // A futuro: tras las comprobaciones, se añadirá el torneo a la base de datos con insert
 
-                Tournament.addTournament(newTournament)
+
+                TournamentRepository.getInstance().addTournament(newTournament)
                 User.actualUser?.addShowableTournament(newTournament.id)
                 UsersDao(context).updateShowableTournamentList(User.actualUser?.email ?: "", User.actualUser?.showableTournamentList.toString().replace("[", "").replace("]", ""))
 

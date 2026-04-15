@@ -16,6 +16,12 @@ enum class TournamentStatus {
     IN_PROGRESS
 }
 
+enum class TournamentType {
+    ELIMINATION,
+    LIGUILLA,
+    SUIZO
+}
+
 @Parcelize
 data class Tournament(
     var id: Long,
@@ -89,11 +95,11 @@ data class Tournament(
             val winners = mutableListOf<CompetitorData>()
 
             for (match in lastMatches) {
-                // Lógica para decidir quién pasa (ejemplo: el que tenga más puntuación)
+                // Lógica para decidir quién pasa al siguiente round
                 //val score1 = match.competitorOne.score.toIntOrNull() ?: -1
-                val score1 = match.competitorOne.score.toFloatOrNull() ?: Float.MIN_VALUE
+                val score1 = match.competitorOne.score.toFloatOrNull() ?: Float.NEGATIVE_INFINITY
                 //val score2 = match.competitorTwo.score.toIntOrNull() ?: -
-                val score2 = match.competitorTwo.score.toFloatOrNull() ?: Float.MIN_VALUE
+                val score2 = match.competitorTwo.score.toFloatOrNull() ?: Float.NEGATIVE_INFINITY
 
                 val winner =
                     if (score1 > score2)
@@ -177,42 +183,5 @@ data class Tournament(
         } else {
             return false
         }
-    }
-
-    // Funciones de acceso estático
-    companion object{
-        private var tournaments: MutableList<Tournament> = mutableListOf()
-        fun getTournaments() : MutableList<Tournament> { return tournaments }
-        fun setTournaments(tournaments: MutableList<Tournament>){ this.tournaments = tournaments}
-
-        fun addTournament(tournament: Tournament){ tournaments.add(tournament) }
-        fun removeTournament(tournament: Tournament){ tournaments.remove(tournament) }
-        fun removeTournament(id: Long){ tournaments.removeIf { it.id == id } }
-
-        fun searchTournamentByCode(code: Int) : Tournament ? {
-            tournaments.find { it.code == code }?.let { return it }
-            return null
-        }
-
-        fun searchTournamentById(id: Long) : Tournament ? {
-            tournaments.find { it.id == id }?.let { return it }
-            return null
-        }
-
-        fun searchTournamentListByIds(ids: MutableList<Long>) : MutableList<Tournament> {
-            val foundTournaments = mutableListOf<Tournament>()
-            for (id in ids) {
-                searchTournamentById(id)?.let { foundTournaments.add(it) }
-            }
-            return foundTournaments
-        }
-
-        /*fun searchTournamentListByIds(ids: MutableList<Long>) : MutableList<Tournament> {
-            val list = mutableListOf<Tournament>()
-            for(id in ids){
-                tournaments.find { it.id == id }?.let { list.add(it) }
-            }
-            return list
-        }*/
     }
 }

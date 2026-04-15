@@ -13,6 +13,7 @@ import android.view.View
 import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.ActivityMainBinding
 import com.example.tourney.entities.User
+import com.example.tourney.repositories.TournamentRepository
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,10 +50,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // Inicializa datos
-        tournaments[0].participantList = users
-        Tournament.setTournaments(tournaments)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -71,37 +68,5 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
-    }
-
-    companion object {
-        /*
-            Se declaran aquí los torneos y los usuarios para tenerlos "a mano" pero están instanciados estáticamente en Tournament
-         */
-        // Lista global de torneos
-        private val tournaments = mutableListOf(
-            Tournament(3, "Championship Dungeons & Dragons", "D&D 5e",  "Marquitos", mutableListOf(),12, "20 Ene 2026", "Tienda Gaming Local", "$1,500", 1),
-            Tournament(1, "Copa League of Legends 2026", "League of Legends", "Marquitos", mutableListOf(), 32, "25 Ene 2026", "KOI", "$5,000", 777),
-            Tournament(2, "Torneo Counter-Strike Relámpago", "CS:GO", "Marquitos", mutableListOf(), 8, "18 Ene 2026", "Cybercafé Central", "$2,000", 69),
-            Tournament(4, "Torneo Valorant Summer", "Valorant", "Marquitos", mutableListOf(),32, "28 Ene 2026", "Online/Presencial", "$3,000", 1000)
-        )
-
-        private val users = mutableListOf(
-            User(1, "Marquitos", "marquitos@gmail.com", "password123", 1),
-            User(2, "Pepito", "pepito@gmail.com", "password123", 1),
-            User(3, "Juan", "juan@gmail.com", "password123", 1),
-            User(4, "Pedro", "pedro@gmail.com", "password123", 1),
-            User(5, "Jose", "jose@gmail.com", "password123", 1),
-            User(6, "Esteban", "esteban@gmail.com", "password123", 1),
-            User(7, "Sebastián", "sebastián@gmail.com", "password123", 1),
-            User(8, "Julio", "julio@gmail.com", "password123", 1),
-            User(9, "Marcos", "marcos@gmail.com", "password123", 1),
-            User(10, "Erik", "erik@gmail.com", "password123", 1),
-            User(11, "Javier", "javier@gmail.com", "password123", 1),
-            User(12, "Lucas", "lucas@gmail.com", "password123", 1),
-        )
-
-        fun sortTournaments() {
-            tournaments.sortBy({ it.date })
-        }
     }
 }
