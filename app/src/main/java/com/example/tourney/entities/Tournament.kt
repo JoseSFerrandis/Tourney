@@ -16,6 +16,13 @@ enum class TournamentStatus {
     IN_PROGRESS
 }
 
+enum class TournamentType {
+    ELIMINATION,
+    LIGUILLA,
+    SUIZO,
+    OTRO
+}
+
 @Parcelize
 data class Tournament(
     var id: Long,
@@ -28,12 +35,27 @@ data class Tournament(
     var location: String,
     var prize: String,
     var code: Int,
+    var type: TournamentType = TournamentType.ELIMINATION,
     var tournamentStatus: TournamentStatus = TournamentStatus.EDITABLE,
     var columnMatches: MutableList<ColomnData> = mutableListOf(),
-    private var notDead: MutableList<CompetitorData> = mutableListOf()
+    private var notDead: MutableList<CompetitorData> = mutableListOf(),
+    private var competitors: MutableList<CompetitorData> = mutableListOf()
 ) : Parcelable {
     val numParticipants: Int
         get() = participantList.size
+
+    /**
+     * Selecciona el formato de torneo correspondiente
+     * @return TournamentFormat correspondiente al tipo de torneo
+     */
+    private fun getFormat(): TournamentFormat {
+        return when (type) {
+            TournamentType.ELIMINATION -> EliminationTournamentFormat()
+            TournamentType.LIGUILLA -> TODO("LiguillaTournamentFormat()")
+            TournamentType.SUIZO -> TODO("SuizoTournamentFormat()")
+            else -> TODO("OtroTournamentFormat()")
+        }
+    }
 
     /**
      * Comprueba si hay espacio para más participantes
@@ -60,92 +82,32 @@ data class Tournament(
      * Inicializa la lista de columnas con el primer emparejamiento
      * Si ya se ha inicializado, no hace nada
      */
-    fun initMatches(){
-        // Inicializa la lista de columnas con el primer emparejamiento
-        if(columnMatches.isEmpty()) {
-            notDead = getCompetitorList(participantList)
+    fun initMatches() = getFormat().initMatches(this)
 
-            // Evita desajuste por el número de participantes impar
-            if(notDead.size%2 != 0)
-                notDead.add(CompetitorData("", ""))
-
-            columnMatches.add(createColumn(createMatches(notDead)))
-        }
-    }
 
     /**
      * Reinicia la lista de columnas con el primer emparejamiento
      */
-    fun restartMatches(){
-        columnMatches.clear()
-        initMatches()
-    }
+    fun restartMatches() = getFormat().restartMatches(this)
 
-    fun nextRound(context: Context?) : Boolean{
-        if(notDead.isNotEmpty() && tournamentStatus != TournamentStatus.FINISHED){
-            // Lista de partidos de la ronda actual (la última guardada)
-            val lastMatches = getLastMatchList()
-            val winners = mutableListOf<CompetitorData>()
+    /**
+     * Ejecuta el round actual del torneo, actualiza la lista de columnas y crea el siguiente emparejamiento
+     * @return true si se ha ejecutado correctamente, false en caso contrario
+     */
+    fun nextRound(context: Context?) : Boolean = getFormat().nextRound(this, context)
 
-            for (match in lastMatches) {
-                // Lógica para decidir quién pasa (ejemplo: el que tenga más puntuación)
-                //val score1 = match.competitorOne.score.toIntOrNull() ?: -1
-                val score1 = match.competitorOne.score.toFloatOrNull() ?: -Float.MIN_VALUE
-                //val score2 = match.competitorTwo.score.toIntOrNull() ?: -
-                val score2 = match.competitorTwo.score.toFloatOrNull() ?: Float.MIN_VALUE
 
-                val winner =
-                    if (score1 > score2)
-                        match.competitorOne
-                    else if(score1 < score2)
-                        match.competitorTwo
-                    else { // Empate
-                        Toast.makeText(context, "No puede haber empate en el torneo", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(context, "Empate en ${match.competitorOne.name}: ${match.competitorOne.score} y ${match.competitorTwo.name}: ${match.competitorTwo.score}", Toast.LENGTH_SHORT).show()
-                        return false
-                    }
+    private fun createMatches(competitors : MutableList<CompetitorData>) : MutableList<MatchData> = getFormat().createMatches(competitors)
 
-                // Creamos una instancia nueva para la siguiente ronda.
-                // Esto equivale al 'new CompetitorData' de Java.
-                // Si la librería no tiene .copy(), usa el constructor:
-                winners.add(CompetitorData(winner.name, "0"))
-            }
 
-            notDead = winners
+    private fun createColumn(matches : MutableList<MatchData>) : ColomnData = getFormat().createColumn(matches)
 
-            // Comprueba si ha terminado el torneo (solo queda un participante vivo)
-            if(notDead.size == 1)
-                setStatusFinished(context)
 
-            // Evita desajuste por el número de participantes impar
-            if(notDead.size%2 != 0){
-                notDead.add(CompetitorData("", ""))
-            }
+    private fun getCompetitorList(participants : MutableList<User>) : MutableList<CompetitorData> = getFormat().getCompetitorList(participants)
 
-            columnMatches.add(createColumn(createMatches(notDead)))
 
-            return true
-        } else {
-            setStatusFinished(context)
-            return false
-        }
-    }
+    fun getLastMatchList() : MutableList<MatchData> = getFormat().getLastMatchList(this)
 
-    private fun createMatches(competitors : MutableList<CompetitorData>) : MutableList<MatchData>{
-        val matches = mutableListOf<MatchData>()
-        for(i in 0 until competitors.size - 1 step 2){
-            matches.add(MatchData(competitors[i], competitors[i + 1]))
-        }
-        return matches
-    }
-
-    private fun createColumn(matches : MutableList<MatchData>) : ColomnData{ return ColomnData(matches) }
-
-    private fun getCompetitorList(participants : MutableList<User>) : MutableList<CompetitorData>{
-        return participants.map { CompetitorData(it.nickname, "0") }.toMutableList()
-    }
-    
-    fun getLastMatchList() : MutableList<MatchData>{ return columnMatches.last().matches }
     fun getNotDead() : MutableList<CompetitorData>{ return notDead }
     fun setNotDead(notDead: MutableList<CompetitorData>){ this.notDead = notDead }
 
@@ -169,7 +131,7 @@ data class Tournament(
         }
     }
 
-    fun shufleParticipants(): Boolean{
+    fun shuffleParticipants(): Boolean{
         if(tournamentStatus == TournamentStatus.EDITABLE){
             participantList.shuffle()
             restartMatches()
@@ -179,40 +141,23 @@ data class Tournament(
         }
     }
 
-    // Funciones de acceso estático
     companion object{
-        private var tournaments: MutableList<Tournament> = mutableListOf()
-        fun getTournaments() : MutableList<Tournament> { return tournaments }
-        fun setTournaments(tournaments: MutableList<Tournament>){ this.tournaments = tournaments}
-
-        fun addTournament(tournament: Tournament){ tournaments.add(tournament) }
-        fun removeTournament(tournament: Tournament){ tournaments.remove(tournament) }
-        fun removeTournament(id: Long){ tournaments.removeIf { it.id == id } }
-
-        fun searchTournamentByCode(code: Int) : Tournament ? {
-            tournaments.find { it.code == code }?.let { return it }
-            return null
-        }
-
-        fun searchTournamentById(id: Long) : Tournament ? {
-            tournaments.find { it.id == id }?.let { return it }
-            return null
-        }
-
-        fun searchTournamentListByIds(ids: MutableList<Long>) : MutableList<Tournament> {
-            val foundTournaments = mutableListOf<Tournament>()
-            for (id in ids) {
-                searchTournamentById(id)?.let { foundTournaments.add(it) }
+        fun getTournamentTypeString(type: TournamentType): String {
+            return when (type) {
+                TournamentType.ELIMINATION -> "Eliminación"
+                TournamentType.LIGUILLA -> "Liguilla"
+                TournamentType.SUIZO -> "Suizo"
+                else -> "Otro"
             }
-            return foundTournaments
         }
 
-        /*fun searchTournamentListByIds(ids: MutableList<Long>) : MutableList<Tournament> {
-            val list = mutableListOf<Tournament>()
-            for(id in ids){
-                tournaments.find { it.id == id }?.let { list.add(it) }
+        fun getTournamentTypeFromString(type: String): TournamentType {
+            return when (type) {
+                "Eliminación" -> TournamentType.ELIMINATION
+                "Liguilla" -> TournamentType.LIGUILLA
+                "Suizo" -> TournamentType.SUIZO
+                else -> TournamentType.OTRO
             }
-            return list
-        }*/
+        }
     }
 }

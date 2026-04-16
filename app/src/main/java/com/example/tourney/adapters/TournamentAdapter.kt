@@ -27,6 +27,8 @@ class TournamentAdapter(
         val tvDate: TextView = itemView.findViewById(R.id.tv_date)
         val tvLocation: TextView = itemView.findViewById(R.id.tv_location)
         val tvPrize: TextView = itemView.findViewById(R.id.tv_prize)
+        val tvTournamentType: TextView = itemView.findViewById(R.id.tv_tournament_type)
+
 
 
         fun bind(tournament: Tournament) {
@@ -38,6 +40,8 @@ class TournamentAdapter(
             tvDate.text = establishedValue(context, tournament.date)
             tvLocation.text = establishedValue(context, tournament.location)
             tvPrize.text = establishedValue(context, tournament.prize)
+            tvTournamentType.text = establishedValue(context, Tournament.getTournamentTypeString(tournament.type))
+
 
             // Inscripciones abiertas
             // En progreso

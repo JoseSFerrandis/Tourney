@@ -58,6 +58,8 @@ class TournamentPage : Fragment() {
         binding.tvDate.text = establishedValue( tournament.date )
         binding.tvLocation.text = establishedValue( tournament.location )
         binding.tvPrize.text = establishedValue( tournament.prize )
+        binding.tvTournamentType.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
+
 
         // Actualiza el color del badge según el estado del torneo
         val badgeBackground = when (tournament.tournamentStatus) {

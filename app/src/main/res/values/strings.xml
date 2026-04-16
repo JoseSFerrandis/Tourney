@@ -29,8 +29,4 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="no_established">No establecido</string>
-    <string name="crear_torneo">Crear Torneo</string>
-    <string name="Join_Tournament">Unirse a un Torneo</string>
-    <string name="JoinTournament">Unirse al Torneo</string>
-    <string name="NeedHelp">¿Necesitas ayuda?</string>
 </resources>

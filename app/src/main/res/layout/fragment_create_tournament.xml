@@ -133,6 +133,22 @@
                             android:paddingHorizontal="16dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Tipo de torneo -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:text="Tipo de Torneo"/>
+
+                    <Spinner
+                        android:id="@+id/spTournamentType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/bg_input_white"
+                        android:paddingHorizontal="16dp"/>
+
                     <!-- Fecha -->
                     <TextView
                         android:layout_width="wrap_content"
