@@ -70,22 +70,68 @@
                             android:id="@+id/tv_game_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
                             android:text="League of Legends"
                             android:textColor="@color/black"
                             android:gravity="center"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:layout_marginBottom="16dp"/>
 
-                        <TextView
-                            android:id="@+id/tv_creator"
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="El creador"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            android:layout_marginBottom="16dp"/>
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+                            <!-- Creador -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:src="@drawable/admin"
+                                    app:tint="@color/black" />
+
+                                <TextView
+                                    android:id="@+id/tv_creator"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="El creador"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp"
+                                    android:layout_marginStart="8dp" />
+                            </LinearLayout>
+
+                            <!-- Tipo de torneo -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:src="@drawable/ic_gravel"
+                                    app:tint="@color/black" />
+
+                                <TextView
+                                    android:id="@+id/tv_tournament_type"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Eliminación"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp"
+                                    android:layout_marginStart="8dp" />
+                            </LinearLayout>
+                        </LinearLayout>
 
                         <!-- Tournament Details Grid -->
                         <LinearLayout
