@@ -18,7 +18,7 @@
 
             <LinearLayout
                 android:layout_width="760dp"
-                android:layout_height="1197dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bg_circle_white"
                 android:backgroundTint="#1AFFFFFF"
@@ -57,10 +57,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_gravity="end|center"
                         android:orientation="vertical"
                         android:layout_marginEnd="16dp">
-
 
                         <TextView
                             android:id="@+id/tvName"
@@ -80,7 +78,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etName"
-                                android:layout_width="330dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
                                 android:hint="Copa Mundial 2026"
@@ -104,7 +102,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etMaxParticipants"
-                                android:layout_width="330dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
                                 android:hint="32"
@@ -129,7 +127,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etLocation"
-                                android:layout_width="330dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
                                 android:hint="Estadio Virtual"
@@ -165,7 +163,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etGame"
-                                android:layout_width="330dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
                                 android:hint="League of Legends"
@@ -192,7 +190,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etDate"
-                                android:layout_width="330dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
                                 android:hint="Seleccionar fecha"
@@ -218,7 +216,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPrize"
-                                android:layout_width="330dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
                                 android:hint="$5,000"
@@ -228,6 +226,25 @@
 
                     </LinearLayout>
                 </LinearLayout>
+
+                <!-- Tipo de Torneo (Añadido para evitar error de compilación) -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:text="Tipo de Torneo"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/spTournamentType"
+                    android:layout_width="400dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="32dp"
+                    android:background="@drawable/bg_input_white"
+                    android:paddingHorizontal="16dp" />
 
                 <!-- Código (Centrado abajo) -->
                 <TextView

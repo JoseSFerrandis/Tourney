@@ -19,21 +19,21 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:layout_width="700dp"
+                android:layout_width="800dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:layout_width="177dp"
-                    android:layout_height="101dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_greeting"
-                        android:layout_width="222dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hola, Usuario"
                         android:textColor="@color/white"
@@ -44,10 +44,10 @@
                         android:id="@+id/tv_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:text="Encuentra tu próximo desafío"
-                        android:textColor="@color/white"
-                        android:textSize="23sp" />
+                        android:textColor="@color/blue_600"
+                        android:textSize="18sp"
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
                 <FrameLayout
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="30dp">
+                android:padding="40dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -120,7 +120,7 @@
                     android:textColor="@color/black"
                     android:textSize="28sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="22dp" />
+                    android:layout_marginBottom="32dp" />
 
                 <!-- Action Buttons (Side by Side on Tablet) -->
                 <LinearLayout
@@ -140,7 +140,7 @@
                         android:drawablePadding="16dp"
                         android:paddingStart="24dp"
                         android:paddingEnd="24dp"
-                        android:text="@string/crear_torneo"
+                        android:text="Crear Torneo"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="18sp"
@@ -157,7 +157,7 @@
                         android:drawablePadding="16dp"
                         android:paddingStart="24dp"
                         android:paddingEnd="24dp"
-                        android:text="@string/Join_Tournament"
+                        android:text="Unirse a un Torneo"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="18sp"
