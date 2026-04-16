@@ -34,6 +34,7 @@ data class Tournament(
     var location: String,
     var prize: String,
     var code: Int,
+    var type: TournamentType = TournamentType.ELIMINATION,
     var tournamentStatus: TournamentStatus = TournamentStatus.EDITABLE,
     var columnMatches: MutableList<ColomnData> = mutableListOf(),
     private var notDead: MutableList<CompetitorData> = mutableListOf(),
@@ -41,6 +42,18 @@ data class Tournament(
 ) : Parcelable {
     val numParticipants: Int
         get() = participantList.size
+
+    /**
+     * Selecciona el formato de torneo correspondiente
+     * @return TournamentFormat correspondiente al tipo de torneo
+     */
+    private fun getFormat(): TournamentFormat {
+        return when (type) {
+            TournamentType.ELIMINATION -> EliminationTournamentFormat()
+            TournamentType.LIGUILLA -> TODO("LiguillaTournamentFormat()")
+            TournamentType.SUIZO -> TODO("SuizoTournamentFormat()")
+        }
+    }
 
     /**
      * Comprueba si hay espacio para más participantes
@@ -67,91 +80,32 @@ data class Tournament(
      * Inicializa la lista de columnas con el primer emparejamiento
      * Si ya se ha inicializado, no hace nada
      */
-    fun initMatches(){
-        // Inicializa la lista de columnas con el primer emparejamiento
-        if(columnMatches.isEmpty()) {
-            notDead = getCompetitorList(participantList)
+    fun initMatches() = getFormat().initMatches(this)
 
-            // Evita desajuste por el número de participantes impar
-            if(notDead.size%2 != 0)
-                notDead.add(CompetitorData("", ""))
-
-            columnMatches.add(createColumn(createMatches(notDead)))
-        }
-    }
 
     /**
      * Reinicia la lista de columnas con el primer emparejamiento
      */
-    fun restartMatches(){
-        columnMatches.clear()
-        initMatches()
-    }
+    fun restartMatches() = getFormat().restartMatches(this)
 
-    fun nextRound(context: Context?) : Boolean{
-        if(notDead.isNotEmpty() && tournamentStatus != TournamentStatus.FINISHED){
-            // Lista de partidos de la ronda actual (la última guardada)
-            val lastMatches = getLastMatchList()
-            val winners = mutableListOf<CompetitorData>()
+    /**
+     * Ejecuta el round actual del torneo, actualiza la lista de columnas y crea el siguiente emparejamiento
+     * @return true si se ha ejecutado correctamente, false en caso contrario
+     */
+    fun nextRound(context: Context?) : Boolean = getFormat().nextRound(this, context)
 
-            for (match in lastMatches) {
-                // Lógica para decidir quién pasa al siguiente round
-                //val score1 = match.competitorOne.score.toIntOrNull() ?: -1
-                val score1 = match.competitorOne.score.toFloatOrNull() ?: Float.NEGATIVE_INFINITY
-                //val score2 = match.competitorTwo.score.toIntOrNull() ?: -
-                val score2 = match.competitorTwo.score.toFloatOrNull() ?: Float.NEGATIVE_INFINITY
 
-                val winner =
-                    if (score1 > score2)
-                        match.competitorOne
-                    else if(score1 < score2)
-                        match.competitorTwo
-                    else { // Empate
-                        Toast.makeText(context, "No puede haber empate en el torneo", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(context, "Empate en ${match.competitorOne.name}: ${match.competitorOne.score} y ${match.competitorTwo.name}: ${match.competitorTwo.score}", Toast.LENGTH_SHORT).show()
-                        return false
-                    }
+    private fun createMatches(competitors : MutableList<CompetitorData>) : MutableList<MatchData> = getFormat().createMatches(competitors)
 
-                // Creamos una instancia nueva para la siguiente ronda.
-                // Esto equivale al 'new CompetitorData' de Java.
-                winners.add(CompetitorData(winner.name, "0"))
-            }
 
-            notDead = winners
+    private fun createColumn(matches : MutableList<MatchData>) : ColomnData = getFormat().createColumn(matches)
 
-            // Comprueba si ha terminado el torneo (solo queda un participante vivo)
-            if(notDead.size == 1)
-                setStatusFinished(context)
 
-            // Evita desajuste por el número de participantes impar
-            if(notDead.size%2 != 0){
-                notDead.add(CompetitorData("", ""))
-            }
+    private fun getCompetitorList(participants : MutableList<User>) : MutableList<CompetitorData> = getFormat().getCompetitorList(participants)
 
-            columnMatches.add(createColumn(createMatches(notDead)))
 
-            return true
-        } else {
-            setStatusFinished(context)
-            return false
-        }
-    }
+    fun getLastMatchList() : MutableList<MatchData> = getFormat().getLastMatchList(this)
 
-    private fun createMatches(competitors : MutableList<CompetitorData>) : MutableList<MatchData>{
-        val matches = mutableListOf<MatchData>()
-        for(i in 0 until competitors.size - 1 step 2){
-            matches.add(MatchData(competitors[i], competitors[i + 1]))
-        }
-        return matches
-    }
-
-    private fun createColumn(matches : MutableList<MatchData>) : ColomnData{ return ColomnData(matches) }
-
-    private fun getCompetitorList(participants : MutableList<User>) : MutableList<CompetitorData>{
-        return participants.map { CompetitorData(it.nickname, "0") }.toMutableList()
-    }
-    
-    fun getLastMatchList() : MutableList<MatchData>{ return columnMatches.last().matches }
     fun getNotDead() : MutableList<CompetitorData>{ return notDead }
     fun setNotDead(notDead: MutableList<CompetitorData>){ this.notDead = notDead }
 
