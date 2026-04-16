@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient_blue">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="32dp">
+
+                <!-- MAIN CONTENT CARD (Centered for Tablet) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardJoin"
+                    android:layout_width="600dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#1AFFFFFF"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#33FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:padding="48dp">
+
+                        <!-- Imagen Decorativa en la tarjeta -->
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginBottom="32dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/dnd_thumbnail"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.MediumComponent" />
+
+                        <!-- Título de la acción -->
+                        <TextView
+                            android:id="@+id/tvJoinTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/JoinTournament"
+                            android:textColor="@android:color/white"
+                            android:textSize="40sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="4dp"
+                            android:layout_marginVertical="24dp"
+                            android:background="@android:color/white" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="40dp"
+                            android:gravity="center"
+                            android:text="Introduce el código de invitación para inscribirte."
+                            android:textColor="#CCDCFF"
+                            android:textSize="27sp" />
+
+                        <!-- Input para el código -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilTournamentCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="32dp"
+                            android:hint="Código del Torneo"
+                            app:hintEnabled="true"
+                            app:hintTextColor="@android:color/white"
+                            android:textColorHint="#4E588C"
+                            app:endIconMode="clear_text"
+                            app:endIconTint="@android:color/white">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournamentCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="76dp"
+                                android:textColor="@color/blue_600"
+                                android:background="@drawable/bg_input_white"
+                                android:inputType="textCapCharacters"
+                                android:maxLength="10"
+                                android:paddingHorizontal="20dp"
+                                android:textSize="25sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Botón de Aceptar -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAcceptJoin"
+                            android:layout_width="match_parent"
+                            android:layout_height="76dp"
+                            android:text="Confirmar Inscripción"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/blue_600"
+                            app:backgroundTint="@android:color/white"
+                            app:icon="@drawable/ic_check"
+                            app:iconTint="@color/blue_600"
+                            app:iconGravity="textStart"
+                            app:iconSize="28dp"
+                            app:cornerRadius="16dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAyuda"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/NeedHelp"
+                            android:textColor="@android:color/white"
+                            android:textSize="22sp"
+                            app:icon="@drawable/ic_help"
+                            app:iconTint="@android:color/white" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

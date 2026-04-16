@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient_blue"
+        tools:context=".fragments.RegisterFragment">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="700dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="32dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#1AFFFFFF"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#33FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="48dp">
+
+                    <!-- Logo / Ícono superior -->
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="16dp"
+                        android:src="@drawable/ic_gamepad"
+                        app:tint="@android:color/white" />
+
+                    <!-- Título -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Crear Cuenta"
+                        android:textColor="@android:color/white"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
+
+                    <!-- Subtítulo -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Únete a la arena gamer"
+                        android:textColor="#CCDCFF"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="4dp"
+                        android:layout_marginVertical="32dp"
+                        android:background="@android:color/white" />
+
+                    <!-- Formulario en Rejilla (2 columnas) -->
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2">
+
+                        <!-- NICKNAME -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="24dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="NICKNAME"
+                                android:textColor="#CCDCFF"
+                                android:textSize="13sp"
+                                android:letterSpacing="0.1"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilNickname"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintEnabled="false"
+                                app:errorEnabled="true">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etNickname"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="64dp"
+                                    android:background="@drawable/bg_input_white"
+                                    android:hint="Tu gamertag"
+                                    android:inputType="text"
+                                    android:paddingHorizontal="16dp"
+                                    android:textColor="@color/blue_600"
+                                    android:textSize="18sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <!-- EMAIL -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginBottom="24dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="EMAIL"
+                                android:textColor="#CCDCFF"
+                                android:textSize="13sp"
+                                android:letterSpacing="0.1"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintEnabled="false"
+                                app:errorEnabled="true">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etEmail"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="64dp"
+                                    android:background="@drawable/bg_input_white"
+                                    android:hint="gamer@ejemplo.com"
+                                    android:inputType="textEmailAddress"
+                                    android:paddingHorizontal="16dp"
+                                    android:textColor="@color/blue_600"
+                                    android:textSize="18sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <!-- CONTRASEÑA -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="24dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="CONTRASEÑA"
+                                android:textColor="#CCDCFF"
+                                android:textSize="13sp"
+                                android:letterSpacing="0.1"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilPassword"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintEnabled="false"
+                                app:errorEnabled="true"
+                                app:endIconMode="password_toggle">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etPassword"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="64dp"
+                                    android:background="@drawable/bg_input_white"
+                                    android:hint="Mínimo 8 caracteres"
+                                    android:inputType="textPassword"
+                                    android:paddingHorizontal="16dp"
+                                    android:textColor="@color/blue_600"
+                                    android:textSize="18sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <!-- CONFIRMAR CONTRASEÑA -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginBottom="24dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="CONFIRMAR"
+                                android:textColor="#CCDCFF"
+                                android:textSize="13sp"
+                                android:letterSpacing="0.1"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilPasswordConfirm"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintEnabled="false"
+                                app:errorEnabled="true"
+                                app:endIconMode="password_toggle">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etPasswordConfirm"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="64dp"
+                                    android:background="@drawable/bg_input_white"
+                                    android:hint="Repite la clave"
+                                    android:inputType="textPassword"
+                                    android:paddingHorizontal="16dp"
+                                    android:textColor="@color/blue_600"
+                                    android:textSize="18sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </GridLayout>
+
+                    <!-- Botón Crear Cuenta -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRegister"
+                        android:layout_width="500dp"
+                        android:layout_height="72dp"
+                        android:layout_marginTop="16dp"
+                        android:text="CREAR CUENTA"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue_600"
+                        app:backgroundTint="@android:color/white"
+                        app:cornerRadius="16dp" />
+
+                    <!-- ¿Ya tienes cuenta? -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="¿Ya tienes cuenta? "
+                            android:textColor="#CCDCFF"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tvLogin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Iniciar Sesión"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:clickable="true"
+                            android:focusable="true" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

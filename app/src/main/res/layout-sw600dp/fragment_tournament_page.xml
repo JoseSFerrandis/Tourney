@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient_blue">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="700dp"
+            android:layout_height="1150dp"
+            android:layout_gravity="center"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="24dp">
+
+                <!-- MAIN CONTENT CARD -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardManagement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#1AFFFFFF"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#33FFFFFF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Top Hero Image -->
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/headerImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/dnd_thumbnail"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.MediumComponent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="32dp">
+
+                            <!-- Header Info: Title and Game -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tvTournamentTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Torneo de D&amp;D"
+                                    android:textAlignment="center"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="36sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_game_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="League of Legends"
+                                    android:textAlignment="center"
+                                    android:textColor="#CCDCFF"
+                                    android:textSize="20sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_status_badge"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:background="@drawable/bg_badge_open"
+                                    android:paddingHorizontal="20dp"
+                                    android:paddingVertical="8dp"
+                                    android:text="Inscripciones Abiertas"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Details Row (2 columns for better fit in 700dp) -->
+                            <GridLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="32dp"
+                                android:columnCount="2">
+
+                                <!-- Participants -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_columnWeight="1"
+                                    android:layout_marginBottom="16dp"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginBottom="4dp"
+                                        android:src="@drawable/ic_users"
+                                        app:tint="@android:color/white" />
+
+                                    <TextView
+                                        android:id="@+id/tv_participants"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="32/32"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <!-- Date -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_columnWeight="1"
+                                    android:layout_marginBottom="16dp"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginBottom="4dp"
+                                        android:src="@drawable/ic_calendar"
+                                        app:tint="@android:color/white" />
+
+                                    <TextView
+                                        android:id="@+id/tv_date"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="25 Ene 2026"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <!-- Location -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_columnWeight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginBottom="4dp"
+                                        android:src="@drawable/ic_map_pin"
+                                        app:tint="@android:color/white" />
+
+                                    <TextView
+                                        android:id="@+id/tv_location"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Online"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <!-- Prize -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_columnWeight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginBottom="4dp"
+                                        android:src="@drawable/ic_trophy"
+                                        app:tint="@android:color/white" />
+
+                                    <TextView
+                                        android:id="@+id/tv_prize"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="$5,000"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+                            </GridLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginBottom="32dp"
+                                android:background="#33FFFFFF" />
+
+                            <!-- Main Actions -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:orientation="vertical">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnClassification"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="64dp"
+                                    android:layout_marginBottom="12dp"
+                                    android:text="Ver Clasificación"
+                                    android:textColor="@color/blue_600"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:backgroundTint="@android:color/white"
+                                    app:cornerRadius="16dp"
+                                    app:icon="@drawable/ic_check"
+                                    app:iconSize="24dp"
+                                    app:iconTint="@color/blue_600" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnMatches"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="64dp"
+                                    android:layout_marginBottom="12dp"
+                                    android:text="Emparejamientos"
+                                    android:textColor="@color/blue_600"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    app:backgroundTint="@android:color/white"
+                                    app:cornerRadius="16dp"
+                                    app:icon="@drawable/ic_settings"
+                                    app:iconSize="24dp"
+                                    app:iconTint="@color/blue_600" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnViewParticipants"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="56dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_weight="1"
+                                    android:text="Participantes"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    app:cornerRadius="12dp"
+                                    app:icon="@drawable/ic_people"
+                                    app:iconTint="@android:color/white"
+                                    app:strokeColor="@android:color/white" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnRules"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="56dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_weight="1"
+                                    android:text="Reglas"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    app:cornerRadius="12dp"
+                                    app:icon="@drawable/ic_gravel"
+                                    app:iconTint="@android:color/white"
+                                    app:strokeColor="@android:color/white" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_creator"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="24dp"
+                                android:fontStyle="italic"
+                                android:gravity="center"
+                                android:text="Torneo creado por El Creador"
+                                android:textColor="#CCDCFF"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

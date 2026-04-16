@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient_blue"
+        android:padding="32dp"
+        tools:context=".fragments.LoginFragment">
+
+        <!-- Contenedor de la Tarjeta de Login -->
+        <!-- En tablet, limitamos el ancho para que no se vea estirado -->
+        <LinearLayout
+            android:layout_width="760dp"
+            android:layout_height="1197dp"
+            android:background="@drawable/bg_circle_white"
+            android:backgroundTint="#1AFFFFFF"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Ícono trofeo -->
+            <FrameLayout
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_marginBottom="14dp"
+                android:background="@drawable/bg_circle_white">
+
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="TorneoApp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/tourney_logo"
+                    app:tint="@color/blue_600" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Tourney"
+                android:textColor="@android:color/white"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Organiza y participa en torneos"
+                android:textColor="#CCDCFF"
+                android:textSize="18sp" />
+            <TextView
+                android:layout_width="600dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="6dp"
+                android:text="@string/email"
+                android:textColor="@android:color/white"
+                android:textSize="34sp" />
+            <!-- Email -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilLoginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:layout_marginBottom="20dp"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/loginEmailInput"
+                    android:layout_width="600dp"
+                    android:layout_height="76dp"
+                    android:background="@drawable/bg_input_white"
+                    android:hint="tu@email.com"
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="25sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="600dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="6dp"
+                android:text="@string/password"
+                android:textColor="@android:color/white"
+                android:textSize="34sp" />
+            <!-- Contraseña -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilLoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:endIconMode="password_toggle"
+                android:gravity="center"
+
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/loginPasswordInput"
+                    android:layout_width="600dp"
+                    android:layout_height="76dp"
+                    android:background="@drawable/bg_input_white"
+                    android:hint="••••••••"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="25sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnLoginLogin"
+                android:gravity="center"
+
+                android:layout_width="600dp"
+                android:layout_height="76dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@android:color/white"
+                android:text="Iniciar Sesión"
+                android:textColor="@color/blue_600"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnForgotPassword"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="600dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+
+                android:text="¿Olvidaste tu contraseña?"
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="3dp"
+                android:text="¿No tienes cuenta?"
+                android:textColor="#CCDCFF"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/btnCreateAccount"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="600dp"
+                android:layout_height="66dp"
+                android:background="@drawable/bg_button_outline_white"
+                android:text="Crear Cuenta"
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:layout_width="198dp"
+                android:layout_height="187dp"
+                android:contentDescription="TorneoApp"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/tourney_logo"
+                app:tint="@color/blue_600" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
