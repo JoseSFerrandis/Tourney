@@ -15,6 +15,8 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.widget.ArrayAdapter
+import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.UsersDao
@@ -29,6 +31,18 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCreateTournamentBinding.bind(view)
         val context = requireContext()
+
+        // Infla el spinner de selección de tipo de torneo
+        binding.spTournamentType.adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.tournament_types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        binding.spTournamentType.setSelection(0)
+
+
 
         // Configurar el diálogo del calendario
         binding.etDate.setOnClickListener {
@@ -50,6 +64,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             val location = binding.etLocation.text.toString()
             val prize = binding.etPrize.text.toString()
             val code = binding.etCode.text.toString().toIntOrNull() ?: 0
+            val type = Tournament.getTournamentTypeFromString(binding.spTournamentType.selectedItem.toString())
 
 
             if (name.isNotBlank() && game.isNotBlank()) {
@@ -62,7 +77,8 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                     date = date,
                     location = location,
                     prize = prize,
-                    code = code
+                    code = code,
+                    type = type
                 )
 
                 // IMPORTANTE - si tocamos esto fallará, por ahora no hay comprobaciónes

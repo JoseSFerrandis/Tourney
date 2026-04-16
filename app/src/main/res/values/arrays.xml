@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tournament_types">
+        <item>Eliminación</item>
+        <item>Liguilla</item>
+        <item>Suizo</item>
+    </string-array>
+</resources>

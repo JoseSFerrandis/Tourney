@@ -19,7 +19,8 @@ enum class TournamentStatus {
 enum class TournamentType {
     ELIMINATION,
     LIGUILLA,
-    SUIZO
+    SUIZO,
+    OTRO
 }
 
 @Parcelize
@@ -52,6 +53,7 @@ data class Tournament(
             TournamentType.ELIMINATION -> EliminationTournamentFormat()
             TournamentType.LIGUILLA -> TODO("LiguillaTournamentFormat()")
             TournamentType.SUIZO -> TODO("SuizoTournamentFormat()")
+            else -> TODO("OtroTournamentFormat()")
         }
     }
 
@@ -136,6 +138,26 @@ data class Tournament(
             return true
         } else {
             return false
+        }
+    }
+
+    companion object{
+        fun getTournamentTypeString(type: TournamentType): String {
+            return when (type) {
+                TournamentType.ELIMINATION -> "Eliminación"
+                TournamentType.LIGUILLA -> "Liguilla"
+                TournamentType.SUIZO -> "Suizo"
+                else -> "Otro"
+            }
+        }
+
+        fun getTournamentTypeFromString(type: String): TournamentType {
+            return when (type) {
+                "Eliminación" -> TournamentType.ELIMINATION
+                "Liguilla" -> TournamentType.LIGUILLA
+                "Suizo" -> TournamentType.SUIZO
+                else -> TournamentType.OTRO
+            }
         }
     }
 }
