@@ -25,6 +25,7 @@ class TournamentRepository {
         User(11, "Javier", "javier@gmail.com", "password123", 1),
         User(12, "Lucas", "lucas@gmail.com", "password123", 1),
     )
+    private var tournaments: MutableList<Tournament> = mutableListOf()
 
     init {
         // Inicializa datos
@@ -39,7 +40,6 @@ class TournamentRepository {
         }
     }
 
-    private var tournaments: MutableList<Tournament> = mutableListOf()
     fun getTournaments() : MutableList<Tournament> { return tournaments }
     fun setTournaments(tournaments: MutableList<Tournament>){ this.tournaments = tournaments}
 
