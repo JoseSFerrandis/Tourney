@@ -1,8 +1,9 @@
-package com.example.tourney.entities
+package com.example.tourney.models
 
 import android.content.Context
 import android.widget.Toast
-import com.ventura.bracketslib.model.ColomnData
+import com.example.tourney.entities.Tournament
+import com.example.tourney.entities.TournamentStatus
 import com.ventura.bracketslib.model.CompetitorData
 import com.ventura.bracketslib.model.MatchData
 

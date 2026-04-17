@@ -3,8 +3,8 @@ package com.example.tourney.entities
 import android.content.Context
 import android.os.Parcelable
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.tourney.MainActivity
+import com.example.tourney.models.EliminationTournamentFormat
+import com.example.tourney.models.TournamentFormat
 import com.ventura.bracketslib.model.ColomnData
 import com.ventura.bracketslib.model.CompetitorData
 import com.ventura.bracketslib.model.MatchData
