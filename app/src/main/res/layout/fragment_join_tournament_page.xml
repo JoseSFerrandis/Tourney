@@ -6,7 +6,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSurface">
+        android:background="@drawable/bg_gradient_blue">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

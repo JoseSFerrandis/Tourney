@@ -171,8 +171,8 @@
                 android:layout_height="48dp"
                 android:background="@drawable/bg_button_outline_white"
                 android:text="Crear Cuenta"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
