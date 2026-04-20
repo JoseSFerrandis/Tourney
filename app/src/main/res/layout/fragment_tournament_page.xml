@@ -16,7 +16,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_gradient_blue">
 
                 <!-- HEADER SECTOR CON IMAGEN DE FONDO -->
                 <ImageView
@@ -325,29 +326,29 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnViewParticipants"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:backgroundTint="@color/Blue3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:text="Participantes"
-                        android:textColor="@color/Blue3"
+                        android:textColor="@color/white"
                         app:icon="@drawable/ic_people"
-                        app:iconTint="@color/Blue3"
-                        app:strokeColor="@color/Blue3" />
+                        app:iconTint="@color/white"
+                        app:strokeColor="@color/white" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRules"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:backgroundTint="@color/Blue3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:text="Reglas"
-                        android:textColor="@color/Blue3"
+                        android:textColor="@color/white"
                         app:icon="@drawable/ic_gravel"
-                        app:iconTint="@color/Blue3"
-                        app:strokeColor="@color/Blue3" />
+                        app:iconTint="@color/white"
+                        app:strokeColor="@color/white" />
 
                 </LinearLayout>
 

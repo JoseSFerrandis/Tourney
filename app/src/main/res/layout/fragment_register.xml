@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Tu gamertag único"
                         android:inputType="text"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textColorHint="@color/text_hint"
                         android:textSize="15sp"
                         android:maxLength="24"
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:hint="gamer@ejemplo.com"
                     android:inputType="textEmailAddress"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/text_hint"
                     android:textSize="15sp"
                     android:imeOptions="actionNext" />
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Mínimo 8 caracteres"
                     android:inputType="textPassword"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/text_hint"
                     android:textSize="15sp"
                     android:imeOptions="actionNext" />
@@ -235,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Repite tu contraseña"
                     android:inputType="textPassword"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/text_hint"
                     android:textSize="15sp"
                     android:imeOptions="actionDone" />

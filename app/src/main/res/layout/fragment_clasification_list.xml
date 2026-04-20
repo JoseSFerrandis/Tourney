@@ -42,7 +42,7 @@
                             android:layout_weight="1"
                             android:text="Empezar torneo"
                             app:cornerRadius="12dp"
-                            android:backgroundTint="@color/green_100"
+                            android:backgroundTint="@color/Blue3"
                             android:layout_marginEnd="15dp">
                         </com.google.android.material.button.MaterialButton>
 
@@ -52,6 +52,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Ir a emparejamiento"
+                            android:backgroundTint="@color/Blue3"
                             app:cornerRadius="12dp">
                         </com.google.android.material.button.MaterialButton>
                 </LinearLayout>

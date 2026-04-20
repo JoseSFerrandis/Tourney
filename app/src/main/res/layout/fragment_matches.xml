@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:text="Siguiente Ronda"
             app:cornerRadius="12dp"
-            android:backgroundTint="@color/green_100"
+            android:backgroundTint="@color/Blue3"
             android:layout_marginEnd="15dp">
         </com.google.android.material.button.MaterialButton>
 
@@ -27,6 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/Blue3"
             android:text="Ir a clasificación"
             app:cornerRadius="12dp">
         </com.google.android.material.button.MaterialButton>

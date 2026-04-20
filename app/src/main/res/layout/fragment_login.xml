@@ -87,7 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/bg_input_white"
-                        android:hint="tu@email.com"
+                        android:hint="tucorreo@email.com"
                         android:inputType="textEmailAddress"
                         android:paddingHorizontal="16dp"
                         android:textSize="14sp" />
