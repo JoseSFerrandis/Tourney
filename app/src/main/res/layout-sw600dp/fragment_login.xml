@@ -149,15 +149,20 @@
                 android:textColor="#CCDCFF"
                 android:textSize="25sp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCreateAccount"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="600dp"
-                android:layout_height="66dp"
-                android:background="@drawable/bg_button_outline_white"
+                android:layout_height="74dp"
                 android:text="Crear Cuenta"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@android:color/white"
-                android:textSize="25sp" />
+                android:textSize="28sp"
+                android:letterSpacing="0.02"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="1.5dp"
+                app:cornerRadius="12dp" />
 
             <ImageView
                 android:layout_width="198dp"

@@ -113,16 +113,16 @@
                 android:orientation="vertical"
                 android:padding="40dp">
 
+                <!-- Action Buttons (Side by Side on Tablet) -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
                     android:text="Torneos Disponibles"
                     android:textColor="@color/black"
                     android:textSize="28sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="32dp" />
+                    android:textStyle="bold" />
 
-                <!-- Action Buttons (Side by Side on Tablet) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
