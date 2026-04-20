@@ -80,6 +80,23 @@ class UsersDao(context: Context){
         return rowsUpdated
     }
 
+    fun updateAvatar(email: String, photo: Int): Int {
+        val db = helper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(UserDatabaseHelper.COL_PHOTO, photo)
+        }
+
+        val rowsUpdated = db.update(
+            UserDatabaseHelper.TABLE_USERS,
+            values,
+            "${UserDatabaseHelper.COL_EMAIL}=?",
+            arrayOf(email)
+        )
+        db.close()
+        return rowsUpdated
+    }
+
     public fun updateShowableTournamentList(email: String, showableTournamentList: String): Int {
         val db = helper.writableDatabase
 

@@ -1,47 +1,70 @@
 package com.example.tourney.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentAccountManagementBinding
 import com.example.tourney.entities.User
 
-// Añadimos R.layout.fragment_account_management aquí para que el Fragment sepa qué inflar
-class AccountManagement : Fragment(R.layout.fragment_account_management) {
+class AccountManagement : Fragment() {
 
     private var _binding: FragmentAccountManagementBinding? = null
     private val binding get() = _binding!!
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentAccountManagementBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentAccountManagementBinding.bind(view)
+        
+        // Cargar datos del usuario actual
+        User.actualUser?.let { user ->
+            binding.tvName.text = user.nickname
+            binding.tvEmail.text = user.email
+            updateProfileImage() // Usamos la función centralizada para la imagen
+        }
 
-        // Datos de ejemplo
-        binding.tvName.text = "Enrique"
-        binding.tvEmail.text = "EnriqueLaura@edu.gva.es"
-
-        binding.btnLogout.setOnClickListener {
-            // Volvemos al Login (asegúrate de que este ID existe en tu nav_graph)
-            try {
-                findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
-            }
+        // Navegación al selector de avatar
+        binding.btnPreferences.text = "Cambiar Avatar"
+        binding.btnPreferences.setOnClickListener {
+            findNavController().navigate(R.id.action_ProfileFragment_to_ProfileChooseFragment)
         }
 
         binding.btnEditProfile.setOnClickListener {
-            Toast.makeText(requireContext(), "Editar perfil", Toast.LENGTH_SHORT).show()
+            // Acción para editar perfil
+        }
+
+        binding.btnLogout.setOnClickListener {
+            User.actualUser = null
+            findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.tvName.text = User.actualUser?.nickname
-        binding.tvEmail.text = User.actualUser?.email
+    private fun updateProfileImage() {
+        val pn = User.actualUser?.photo ?: 0
+
+        // Si el número es válido (del 1 al 18)
+        if (pn > 0) {
+            val resId = resources.getIdentifier("ic_user_pfp$pn", "drawable", requireContext().packageName)
+            if (resId != 0) {
+                binding.ivProfile.setImageResource(resId)
+            } else {
+                // Si getIdentifier falla por alguna razón, usamos la 1 por defecto
+                binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
+            }
+        } else {
+            // Imagen por defecto si photo es 0 o null
+            binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
+        }
     }
 
     override fun onDestroyView() {

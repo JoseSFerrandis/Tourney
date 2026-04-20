@@ -89,6 +89,22 @@
         <action
             android:id="@+id/action_ProfileFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_ProfileChooseFragment"
+            app:destination="@id/ProfileChooseFragment" />
+    </fragment>
+
+    <!-- Fragmento Elegir Avatar -->
+    <fragment
+        android:id="@+id/ProfileChooseFragment"
+        android:name="com.example.tourney.fragments.ProfileChooseFragment"
+        android:label="Elegir Avatar"
+        tools:layout="@layout/fragment_profile_choose">
+        <action
+            android:id="@+id/action_ProfileChooseFragment_to_ProfileFragment"
+            app:destination="@id/ProfileFragment"
+            app:popUpTo="@id/ProfileFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <!-- Fragmento Unirse a Torneo -->

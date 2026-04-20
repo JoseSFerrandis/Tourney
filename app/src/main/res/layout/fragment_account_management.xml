@@ -6,6 +6,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:background="?attr/colorSurface">
 
         <androidx.core.widget.NestedScrollView
@@ -22,7 +23,7 @@
                     android:id="@+id/headerBackground"
                     android:layout_width="match_parent"
                     android:layout_height="260dp"
-                    android:background="@color/Blue1"
+                    android:background="@drawable/bg_gradient_blue"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -95,6 +96,9 @@
                             app:iconTint="@color/Blue1" />
 
                         <!-- Item: Editar Perfil -->
+
+                        <!-- Item: Preferencias -->
+
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnEditProfile"
                             style="@style/Widget.Material3.Button.TextButton.Icon"
@@ -105,9 +109,8 @@
                             android:textColor="?attr/colorOnSurface"
                             app:icon="@drawable/ic_edit"
                             app:iconSize="23dp"
-                            app:iconTint="@color/Blue1" />
+                            app:iconTint="@color/DarkBlue1" />
 
-                        <!-- Item: Preferencias -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnPreferences"
                             style="@style/Widget.Material3.Button.TextButton.Icon"
@@ -117,7 +120,7 @@
                             android:text="Preferencias"
                             android:textColor="?attr/colorOnSurface"
                             app:icon="@drawable/ic_settings"
-                            app:iconTint="@color/Blue1" />
+                            app:iconTint="@color/DarkBlue1" />
 
                         <com.google.android.material.divider.MaterialDivider
                             android:layout_width="match_parent"
@@ -132,7 +135,7 @@
                             android:layout_height="wrap_content"
                             android:text="Cerrar Sesión"
                             android:textColor="@color/white"
-                            app:backgroundTint="@color/Blue1"
+                            app:backgroundTint="@color/DarkBlue1"
                             app:icon="@drawable/ic_logout"
                             app:iconTint="@color/white" />
 

@@ -1,6 +1,7 @@
 package com.example.tourney
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -14,6 +15,7 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.ActivityMainBinding
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.UsersDao
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,7 +52,29 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // --- LOGS DE DEPURACIÓN PARA BASE DE DATOS Y TORNEOS ---
+//        logDatabaseInfo()
     }
+//
+//    private fun logDatabaseInfo() {
+//        val TAG = "DATABASE_DEBUG"
+//
+//        // 1. Usuarios en la Base de Datos Local
+//        val users = UsersDao(this).getAllUsers()
+//        Log.d(TAG, "===== USUARIOS REGISTRADOS (${users.size}) =====")
+//        users.forEach { user ->
+//            Log.d(TAG, "ID: ${user.id} | Nick: ${user.nickname} | Email: ${user.email} | Photo: ${user.photo}  | Password ${user.password}" )
+//        }
+//
+//        // 2. Torneos Existentes en el Repositorio
+//        val tournaments = TournamentRepository.getInstance().getTournaments()
+//        Log.d(TAG, "===== TORNEOS DISPONIBLES (${tournaments.size}) =====")
+//        tournaments.forEach { tournament ->
+//            Log.d(TAG, "ID: ${tournament.id} | Nombre: ${tournament.name} | Juego: ${tournament.game} | Creador: ${tournament.creator}")
+//        }
+//        Log.d(TAG, "==============================================")
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)

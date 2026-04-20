@@ -1,6 +1,5 @@
 package com.example.tourney.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tourney.adapters.TournamentAdapter
 import com.example.tourney.entities.Tournament
-import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentHomeBinding
 import com.example.tourney.entities.User
@@ -40,30 +38,33 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
         setupListeners()
+        updateProfileImage()
+    }
+
+    private fun updateProfileImage() {
+        val pn = User.actualUser?.photo ?: 0
+        
+        // Si el número es válido (del 1 al 18)
+        if (pn > 0) {
+            val resId = resources.getIdentifier("ic_user_pfp$pn", "drawable", requireContext().packageName)
+            if (resId != 0) {
+                binding.ivProfile?.setImageResource(resId)
+            } else {
+                binding.ivProfile?.setImageResource(R.drawable.ic_user_pfp1)
+            }
+        } else {
+            // Imagen por defecto si es 0 o nulo
+            binding.ivProfile?.setImageResource(R.drawable.ic_user_pfp1)
+        }
     }
 
     private fun setupRecyclerView() {
         binding.rvTournaments.layoutManager = LinearLayoutManager(context)
-        /*
-           @joschajov 22/03/2025
-           He tenido que cambiar esta parte ya que teniamos un array de objetos y no una lista editable
-           fue un fallo por mi parte hacerlo así si no me equivoco, ahora ya es editable y funciona
-
-           A futuro: esta función donde los recogemos se tendrá que editar un poco seguramente ya que
-           sacaremos los datos de una llamada a la base de datos
-         */
-
-        // Convertimos a MutableList para que el adaptador pueda manejarla
         val tournaments = TournamentRepository.getInstance().searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf())
         tournamentAdapter = TournamentAdapter(tournaments) { tournament -> onTournamentClick(tournament) }
         binding.rvTournaments.adapter = tournamentAdapter
 
-
         binding.etSearch.addTextChangedListener { text ->
-            /*val filteredTournaments = tournaments.filter { tournament ->
-                tournament.name.contains(text.toString(), ignoreCase = true)
-            }
-            tournamentAdapter.updateTournaments(filteredTournaments)*/
             tournamentAdapter.filterTournaments(text.toString())
         }
     }
@@ -105,14 +106,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.tvGreeting.text = "Hola, ${User.actualUser?.nickname}"
-        /*
-            @joschajov 22/03/2025
-            He tealizado cambios en esta parte, ahora el objeto adapatador puede actualizar su array
-            con una lista que recoge del main
-
-            A futuro: se debe cambiar el meotodo ya que se hará desde una base de datos
-         */
-        // Forzamos la actualización de los datos del adaptador al volver
+        updateProfileImage() // Actualizamos la imagen también al volver
         tournamentAdapter.updateTournaments(TournamentRepository.getInstance().searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf()))
     }
 
