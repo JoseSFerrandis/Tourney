@@ -36,7 +36,7 @@ class EliminationTournamentFormat : TournamentFormat {
 
     override fun nextRound(t: Tournament, context: Context?) : Boolean{
         if(t.participantList.isEmpty()){
-            Toast.makeText(context, "No hay participantes", Toast.LENGTH_SHORT).show()
+            if(context != null) Toast.makeText(context, "No hay participantes", Toast.LENGTH_SHORT).show()
             return false
         }
         if(t.getNotDead().isNotEmpty() && t.tournamentStatus != TournamentStatus.FINISHED){
@@ -57,8 +57,10 @@ class EliminationTournamentFormat : TournamentFormat {
                     else if(score1 < score2)
                         match.competitorTwo
                     else { // Empate
-                        Toast.makeText(context, "No puede haber empate en el torneo", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(context, "Empate en ${match.competitorOne.name}: ${match.competitorOne.score} y ${match.competitorTwo.name}: ${match.competitorTwo.score}", Toast.LENGTH_SHORT).show()
+                        if(context != null) {
+                            Toast.makeText(context, "No puede haber empate en el torneo", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Empate en ${match.competitorOne.name}: ${match.competitorOne.score} y ${match.competitorTwo.name}: ${match.competitorTwo.score}", Toast.LENGTH_SHORT).show()
+                        }
                         return false
                     }
 
