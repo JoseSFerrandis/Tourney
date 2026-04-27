@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tourney.R
 import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.FragmentTournamentPageBinding
 import com.example.tourney.entities.TournamentStatus
+import com.example.tourney.entities.TournamentType
 
 class TournamentPage : Fragment() {
 
@@ -100,7 +102,23 @@ class TournamentPage : Fragment() {
         }
 
         binding.btnRules.setOnClickListener {
-            Toast.makeText(requireContext(), "Mostrando Reglas...", Toast.LENGTH_SHORT).show()
+            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
+            if (tournament != null) {
+                val rulesTextId = when (tournament.type) {
+                    TournamentType.ELIMINATION -> R.string.rules_elimination
+                    TournamentType.LIGUILLA -> R.string.rules_liguilla
+                    TournamentType.SUIZO -> R.string.rules_suizo
+                    TournamentType.OTRO -> R.string.rules_otro
+                }
+                
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.rules_title)
+                    .setMessage(rulesTextId)
+                    .setPositiveButton("OK", null)
+                    .show()
+            } else {
+                Toast.makeText(requireContext(), "Error al cargar las reglas", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnViewParticipants.setOnClickListener {

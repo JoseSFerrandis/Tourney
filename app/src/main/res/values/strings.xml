@@ -30,4 +30,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="no_established">No establecido</string>
+
+    <!-- Reglas de Torneos -->
+    <string name="rules_title">Reglas del Torneo</string>
+    <string name="rules_elimination">En un torneo de eliminación directa, los participantes se emparejan en cada ronda y el perdedor de cada enfrentamiento es eliminado de la competencia. El ganador avanza a la siguiente ronda hasta que solo queda un campeón.</string>
+    <string name="rules_liguilla">En un torneo de liga (liguilla), todos los participantes se enfrentan entre sí a lo largo de varias jornadas. Se otorgan puntos por cada victoria o empate, y el ganador es el que acumula más puntos al final de todas las jornadas.</string>
+    <string name="rules_suizo">En un torneo suizo, los participantes se emparejan en cada ronda con oponentes que tienen una puntuación similar. No hay eliminación; todos juegan un número predeterminado de rondas. El ganador es el que acumula más puntos al final del torneo.</string>
+    <string name="rules_otro">Reglas personalizadas del torneo. Consulta con el creador del torneo para más detalles.</string>
 </resources>
