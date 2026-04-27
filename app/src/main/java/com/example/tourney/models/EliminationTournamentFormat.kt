@@ -15,7 +15,7 @@ class EliminationTournamentFormat : TournamentFormat {
             t.setNotDead(getCompetitorList(t.participantList))
 
             // Evita desajuste por el número de participantes impar
-            if(t.getNotDead().size%2 != 0) t.getNotDead().add(CompetitorData("", ""))
+            if(t.getNotDead().size%2 != 0) t.getNotDead().add(CompetitorData("DESCANSO", ""))
 
             t.columnMatches.add(createColumn(createMatches(t.getNotDead())))
         }
@@ -46,9 +46,8 @@ class EliminationTournamentFormat : TournamentFormat {
 
             for (match in lastMatches) {
                 // Lógica para decidir quién pasa al siguiente round
-                //val score1 = match.competitorOne.score.toIntOrNull() ?: -1
+                //TODO("En un futuro, no siempre va a ganar el que más puntuación tenga, sino el que menos puntos consiga (p.ej: golf)")
                 val score1 = match.competitorOne.score.toFloatOrNull() ?: Float.NEGATIVE_INFINITY
-                //val score2 = match.competitorTwo.score.toIntOrNull() ?: -
                 val score2 = match.competitorTwo.score.toFloatOrNull() ?: Float.NEGATIVE_INFINITY
 
                 val winner =
@@ -78,7 +77,7 @@ class EliminationTournamentFormat : TournamentFormat {
 
             // Evita desajuste por el número de participantes impar
             if(t.getNotDead().size%2 != 0){
-                t.getNotDead().add(CompetitorData("", ""))
+                t.getNotDead().add(CompetitorData("DESCANSO", ""))
             }
 
             t.columnMatches.add(createColumn(createMatches(t.getNotDead())))

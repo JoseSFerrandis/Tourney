@@ -6,14 +6,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tourney.R
 import com.example.tourney.databinding.ItemUserAddPuntuationBinding
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
+import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
-import com.ventura.bracketslib.model.CompetitorData
 
 class AddPunctuationParticipantAdapter(private val tournament : Tournament, private val context: Context) :
     RecyclerView.Adapter<AddPunctuationParticipantAdapter.UserViewHolder>() {
@@ -30,41 +29,94 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val participant = tournament.participantList[position]
-        val notDeadList = tournament.getNotDead()
+        val lastMatches = tournament.getLastMatchList()
+        val competitor = lastMatches.flatMap { listOf(it.competitorOne, it.competitorTwo) }
+            .find { it.name == participant.nickname }
 
-        val competitor = notDeadList.find { it.name == participant.nickname }
         val isAlive = competitor != null
 
-        holder.binding.participantPoints.tag = null
-
-        // 1. ELIMINAMOS el listener anterior si existe para evitar que actualice al competidor equivocado
+        // 1. Eliminar listener anterior
         holder.textWatcher?.let {
             holder.binding.participantPoints.removeTextChangedListener(it)
+            holder.textWatcher = null
         }
-        holder.binding.participantPoints.setText(competitor?.score ?: "")
+
+        // 2. Mostrar texto según tipo y estado
+        if (tournament.tournamentStatus == TournamentStatus.FINISHED) {
+            if (tournament.type == TournamentType.LIGUILLA) {
+                holder.binding.participantPoints.setText(calculateTotalScore(participant.nickname).toString())
+            } else {
+                // En Eliminación, si está en notDead al finalizar, es el Ganador
+                val isWinner = tournament.getNotDead().any { it.name == participant.nickname }
+                if (isWinner) {
+                    holder.binding.participantPoints.setText("WIN")
+                } else {
+                    holder.binding.participantPoints.setText(getLastMatchScore(participant.nickname))
+                }
+            }
+        } else {
+            holder.binding.participantPoints.setText(competitor?.score ?: "")
+        }
 
         setUIBasedOnStatus(holder, isAlive, position, participant)
 
-        // Mostrar el divisor cada dos tarjetas (después de la posición 1, 3, 5...)
-        if ((position + 1) % 2 == 0 && position != tournament.participantList.size - 1) {
+        // 3. Añadir el divisor basado en los emparejamientos reales
+        if (tournament.tournamentStatus == TournamentStatus.IN_PROGRESS) {
+            val match = lastMatches.find { it.competitorOne.name == participant.nickname || it.competitorTwo.name == participant.nickname }
+            val isSecondInMatch = match?.competitorTwo?.name == participant.nickname
+            val opponentIsDescanso = (match?.competitorOne?.name == "DESCANSO" || match?.competitorTwo?.name == "DESCANSO")
+
+            if ((isSecondInMatch || opponentIsDescanso) && position != tournament.participantList.size - 1) {
+                holder.binding.divider.visibility = View.VISIBLE
+            } else {
+                holder.binding.divider.visibility = View.GONE
+            }
+        } else if ((position + 1) % 2 == 0 && position != tournament.participantList.size - 1) {
+             // Lógica por defecto para otros estados
             holder.binding.divider.visibility = View.VISIBLE
         } else {
             holder.binding.divider.visibility = View.GONE
         }
 
-        val newWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Actualizamos el score en el objeto competitor directamente
-                competitor?.score = s.toString()
+        // 4. SOLO añadir el Watcher si el torneo está en progreso
+        if (tournament.tournamentStatus == TournamentStatus.IN_PROGRESS && isAlive) {
+            val newWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    // Solo actualizamos si el usuario está escribiendo realmente
+                    if (holder.binding.participantPoints.hasFocus()) {
+                        competitor?.score = s.toString()
+                    }
+                }
+                override fun afterTextChanged(s: Editable?) {}
             }
-            override fun afterTextChanged(s: Editable?) {}
+            holder.textWatcher = newWatcher
+            holder.binding.participantPoints.addTextChangedListener(newWatcher)
         }
+    }
 
-        holder.textWatcher = newWatcher
-        holder.binding.participantPoints.addTextChangedListener(newWatcher)
+    private fun getLastMatchScore(nickname: String): String {
+        tournament.columnMatches.reversed().forEach { column ->
+            val match = column.matches.find { it.competitorOne.name == nickname || it.competitorTwo.name == nickname }
+            if (match != null) {
+                return if (match.competitorOne.name == nickname) match.competitorOne.score else match.competitorTwo.score
+            }
+        }
+        return "0"
+    }
 
-        //tournament.getNotDead()[position].score = holder.binding.participantPoints.text.toString()
+    private fun calculateTotalScore(nickname: String): Float {
+        var total = 0f
+        tournament.columnMatches.forEach { column ->
+            column.matches.forEach { match ->
+                if (match.competitorOne.name == nickname) {
+                    total += match.competitorOne.score.toFloatOrNull() ?: 0f
+                } else if (match.competitorTwo.name == nickname) {
+                    total += match.competitorTwo.score.toFloatOrNull() ?: 0f
+                }
+            }
+        }
+        return total
     }
 
     private fun setUIBasedOnStatus(holder: UserViewHolder, isAlive: Boolean, position: Int, participant: User){
@@ -72,7 +124,6 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
         holder.binding.participantNumber.text = (position + 1).toString() + "."
 
         holder.binding.participantPoints.isEnabled = isAlive
-        // Cambia el color de la tarjeta si el participante no está vivo
         if(!isAlive){
             holder.binding.participantCard.setCardBackgroundColor(
                 holder.binding.participantCard.context.resources.getColor(R.color.text_secondary)

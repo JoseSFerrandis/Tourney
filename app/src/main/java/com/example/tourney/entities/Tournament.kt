@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Parcelable
 import android.widget.Toast
 import com.example.tourney.models.EliminationTournamentFormat
+import com.example.tourney.models.LiguillaTournamentFormat
 import com.example.tourney.models.TournamentFormat
 import com.ventura.bracketslib.model.ColomnData
 import com.ventura.bracketslib.model.CompetitorData
 import com.ventura.bracketslib.model.MatchData
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 enum class TournamentStatus {
@@ -37,10 +39,15 @@ data class Tournament(
     var code: Int,
     var type: TournamentType = TournamentType.ELIMINATION,
     var tournamentStatus: TournamentStatus = TournamentStatus.EDITABLE,
-    var columnMatches: MutableList<ColomnData> = mutableListOf(),
-    private var notDead: MutableList<CompetitorData> = mutableListOf(),
+
+    private var matches: MutableList<TournamentMatch> = mutableListOf(),
     private var competitors: MutableList<CompetitorData> = mutableListOf()
 ) : Parcelable {
+    @IgnoredOnParcel
+    var columnMatches: MutableList<ColomnData> = mutableListOf()
+    @IgnoredOnParcel
+    private var notDead: MutableList<CompetitorData> = mutableListOf()
+
     val numParticipants: Int
         get() = participantList.size
 
@@ -51,7 +58,7 @@ data class Tournament(
     private fun getFormat(): TournamentFormat {
         return when (type) {
             TournamentType.ELIMINATION -> EliminationTournamentFormat()
-            TournamentType.LIGUILLA -> TODO("LiguillaTournamentFormat()")
+            TournamentType.LIGUILLA -> LiguillaTournamentFormat()
             TournamentType.SUIZO -> TODO("SuizoTournamentFormat()")
             else -> TODO("OtroTournamentFormat()")
         }
