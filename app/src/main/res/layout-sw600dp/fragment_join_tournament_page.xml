@@ -23,7 +23,7 @@
                     android:id="@+id/cardJoin"
                     android:layout_width="600dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#1AFFFFFF"
+                    android:backgroundTint="@color/fondo_tablet_card"
                     app:cardCornerRadius="32dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="1dp"

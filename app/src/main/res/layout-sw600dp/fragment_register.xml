@@ -22,11 +22,11 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#1AFFFFFF"
+                android:backgroundTint="@color/fondo_tablet_card"
                 app:cardCornerRadius="32dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#33FFFFFF">
+                app:strokeColor="@color/fondo_tablet_card">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                                     android:inputType="text"
                                     android:paddingHorizontal="16dp"
                                     android:textColor="@color/blue_600"
-                                    android:textSize="18sp" />
+                                    android:textSize="20sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -147,7 +147,7 @@
                                     android:inputType="textEmailAddress"
                                     android:paddingHorizontal="16dp"
                                     android:textColor="@color/blue_600"
-                                    android:textSize="18sp" />
+                                    android:textSize="20sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -187,7 +187,7 @@
                                     android:inputType="textPassword"
                                     android:paddingHorizontal="16dp"
                                     android:textColor="@color/blue_600"
-                                    android:textSize="18sp" />
+                                    android:textSize="20sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -227,7 +227,7 @@
                                     android:inputType="textPassword"
                                     android:paddingHorizontal="16dp"
                                     android:textColor="@color/blue_600"
-                                    android:textSize="18sp" />
+                                    android:textSize="20sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </GridLayout>
@@ -239,7 +239,7 @@
                         android:layout_height="72dp"
                         android:layout_marginTop="16dp"
                         android:text="CREAR CUENTA"
-                        android:textSize="20sp"
+                        android:textSize="25sp"
                         android:textStyle="bold"
                         android:textColor="@color/blue_600"
                         app:backgroundTint="@android:color/white"
@@ -258,7 +258,7 @@
                             android:layout_height="wrap_content"
                             android:text="¿Ya tienes cuenta? "
                             android:textColor="#CCDCFF"
-                            android:textSize="18sp" />
+                            android:textSize="28sp" />
 
                         <TextView
                             android:id="@+id/tvLogin"
@@ -266,7 +266,7 @@
                             android:layout_height="wrap_content"
                             android:text="Iniciar Sesión"
                             android:textColor="@android:color/white"
-                            android:textSize="18sp"
+                            android:textSize="28sp"
                             android:textStyle="bold"
                             android:clickable="true"
                             android:focusable="true" />

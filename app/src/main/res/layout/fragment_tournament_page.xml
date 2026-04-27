@@ -292,7 +292,7 @@
                             android:textSize="17dp"
                             android:text="Clasificación"
                             android:textColor="@color/white"
-                            app:backgroundTint="@color/Blue3"
+                            app:backgroundTint="@color/boton_tablet_card"
                             app:icon="@drawable/ic_check"
                             app:iconTint="@color/white" />
 
@@ -304,7 +304,7 @@
                             android:textSize="17dp"
                             android:text="Emparejamientos"
                             android:textColor="@color/white"
-                            app:backgroundTint="@color/Blue3"
+                            app:backgroundTint="@color/boton_tablet_card"
                             app:icon="@drawable/ic_settings"
                             app:iconTint="@color/white" />
 
@@ -326,7 +326,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnViewParticipants"
-                        android:backgroundTint="@color/Blue3"
+                        android:backgroundTint="@color/boton_tablet_card_white"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -339,7 +339,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRules"
-                        android:backgroundTint="@color/Blue3"
+                        android:backgroundTint="@color/boton_tablet_card_white"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"

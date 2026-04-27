@@ -19,6 +19,16 @@
     <color name="input_bg">#1A1A2E</color>
     <color name="input_stroke">#2D2D4E</color>
     <color name="divider_color">#2D2D4E</color>
+
+    <color name="fondo_tablet_card">#1AFFFFFF</color>
+    <color name="fondo_movil_card">#1AFFFFFF</color>
+
+    <color name="boton_tablet_card">#1e4fd9</color>
+    <color name="boton_movil_card">#1e4fd9</color>
+
+    <color name="boton_tablet_card_white">#33FFFFFF</color>
+    <color name="boton_movil_card_white">#33FFFFFF</color>
+
     <!--  ── Acento principal ────────────────────────────────────────────  -->
     <color name="accent_purple">#7C3AED</color>
     <color name="accent_purple_light">#A78BFA</color>
@@ -26,6 +36,9 @@
     <color name="text_primary">#F1F0FF</color>
     <color name="text_secondary">#9CA3AF</color>
     <color name="text_hint">#4B5563</color>
+    <color name="tablet_secondary">#CCDCFF</color>
+    <color name="tablet_title_black">#1e4fd9</color>
+
     <!--  ── Estado de error ─────────────────────────────────────────────  -->
     <color name="error_red">#EF4444</color>
     <!--  ── Indicador de fortaleza ──────────────────────────────────────  -->

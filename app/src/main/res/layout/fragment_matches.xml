@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.MatchesFragment"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="15dp">
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNextRound"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Siguiente Ronda"
-            app:cornerRadius="12dp"
-            android:backgroundTint="@color/Blue3"
-            android:layout_marginEnd="15dp">
-        </com.google.android.material.button.MaterialButton>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragments.MatchesFragment">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/goToClasification"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/Blue3"
-            android:text="Ir a clasificación"
-            app:cornerRadius="12dp">
-        </com.google.android.material.button.MaterialButton>
+            android:layout_marginHorizontal="15dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNextRound"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Blue3"
+                android:text="Siguiente Ronda"
+                app:cornerRadius="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/goToClasification"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Blue3"
+                android:text="Ir a clasificación"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/bracket_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/bracket_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+</layout>

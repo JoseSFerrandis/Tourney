@@ -6,13 +6,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSurface"
+        android:background="@drawable/bg_gradient_blue"
         tools:context=".fragments.ParticipantsListFragment">
 
         <LinearLayout
             android:id="@+id/showParticipants"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -28,15 +29,19 @@
                     android:layout_height="wrap_content"
                     android:text="Participantes: 1/1"
                     android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
+                    android:paddingBottom="10dp"
+
                     />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addParticipant"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/Blue3"
+                    android:backgroundTint="@color/boton_tablet_card_white"
                     android:text="Añadir participante"
+                    android:textSize="19dp"
                     app:cornerRadius="12dp">
                 </com.google.android.material.button.MaterialButton>
             </LinearLayout>

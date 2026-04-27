@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient_blue"
+        tools:context=".fragments.AccountManagementFragment">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="750dp"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/fondo_tablet_card"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#33FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="60dp">
+
+                    <!-- Profile Section -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivProfile"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp"
+                        android:padding="4dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/database_query_notimplemented"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                        app:strokeColor="@android:color/white"
+                        app:strokeWidth="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Nombre de Usuario"
+                        android:textColor="@android:color/white"
+                        android:textSize="42sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="usuario@ejemplo.com"
+                        android:textColor="#CCDCFF"
+                        android:textSize="24sp" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="4dp"
+                        android:layout_marginVertical="48dp"
+                        android:background="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:letterSpacing="0.1"
+                        android:text="Gestión de cuenta"
+                        android:textColor="#CCDCFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <!-- Management Options -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEditProfile"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="32dp"
+                        android:text="Editar Cuenta"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"
+                        app:backgroundTint="@color/boton_tablet_card_white"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_edit"
+                        app:iconSize="32dp"
+                        app:iconTint="@android:color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPreferences"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="32dp"
+                        android:text="Preferencias"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"
+                        app:backgroundTint="@color/boton_tablet_card_white"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_settings"
+                        app:iconSize="32dp"
+                        app:iconTint="@android:color/white" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="32dp"
+                        app:dividerColor="@color/boton_tablet_card_white" />
+
+                    <!-- Logout -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLogout"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:paddingStart="32dp"
+                        android:text="Cerrar Sesión"
+                        android:textColor="@color/white"
+                        android:textSize="26sp"
+                        app:backgroundTint="@color/boton_tablet_card"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_logout"
+                        app:iconSize="32dp"
+                        app:iconTint="@color/white" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
