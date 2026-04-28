@@ -7,6 +7,14 @@ import com.example.tourney.entities.User
 class UsersDao(context: Context){
     private val helper = UserDatabaseHelper(context.applicationContext)
 
+    fun dropAll(){
+        //DEBUG
+        val db = helper.writableDatabase
+        db.execSQL("DROP TABLE IF EXISTS ${UserDatabaseHelper.TABLE_USERS}")
+        helper.onCreate(db)
+        db.close()
+    }
+
     fun insertNewUser(nickname: String, email: String, password: String): Long {
         return insertNewUser(nickname, email, password, 1)
     }

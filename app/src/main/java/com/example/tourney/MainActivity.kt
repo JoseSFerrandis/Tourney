@@ -84,6 +84,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> true
+            R.id.action_deleteTable -> {
+                UsersDao(this).dropAll()
+                true
+            }
+            R.id.action_deleteTournaments -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
