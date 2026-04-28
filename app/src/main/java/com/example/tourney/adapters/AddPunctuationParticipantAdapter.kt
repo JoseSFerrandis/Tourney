@@ -45,22 +45,11 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
         if (tournament.tournamentStatus == TournamentStatus.FINISHED) {
             if (tournament.type == TournamentType.LIGUILLA || tournament.type == TournamentType.SUIZO) {
                 holder.binding.participantPoints.setText(calculateTotalScore(participant.nickname).toString())
-            } else {
-                // En Eliminación, si está en notDead al finalizar, es el Ganador
-                val isWinner = tournament.getNotDead().any { it.name == participant.nickname }
-                /*if (isWinner) {
-                    //holder.binding.participantPoints.setText("WIN")
-                } else {
-                    holder.binding.participantPoints.setText(getLastMatchScore(participant.nickname))
-                }*/
-                //holder.binding.participantPoints.setText(getLastMatchScore(participant.nickname))
-                //holder.binding.participantPoints.visibility = View.GONE
             }
-            setUIBasedOnStatus(holder, true, position, participant)
         } else {
             holder.binding.participantPoints.setText(competitor?.score ?: "")
-            setUIBasedOnStatus(holder, isAlive, position, participant)
         }
+        setUIBasedOnStatus(holder, isAlive, position, participant)
 
         // 3. Añadir el divisor basado en los emparejamientos reales
         if(tournament.tournamentStatus == TournamentStatus.FINISHED){
@@ -142,16 +131,6 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
                 holder.binding.participantCard.context.resources.getColor(R.color.text_secondary)
             )
         }
-        /*
-        if(!isAlive){
-            holder.binding.participantCard.setCardBackgroundColor(
-                holder.binding.participantCard.context.resources.getColor(R.color.text_secondary)
-            )
-        } else {
-            holder.binding.participantCard.setCardBackgroundColor(
-                holder.binding.participantCard.context.resources.getColor(R.color.white)
-            )
-        }*/
 
         when(tournament.tournamentStatus){
             TournamentStatus.EDITABLE -> {
