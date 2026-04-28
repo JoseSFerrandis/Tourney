@@ -107,7 +107,8 @@ class ClasificationListFragment : Fragment() {
                 }.thenByDescending { p ->
                     getLastRoundReached(p.nickname)
                 })
-            } else if (tournament?.type == TournamentType.LIGUILLA) {
+            } else {
+                // Para LIGUILLA y SUIZO, ordenamos por puntos totales
                 originalParticipants.sortByDescending { p -> calculateTotalScore(p.nickname) }
             }
         }

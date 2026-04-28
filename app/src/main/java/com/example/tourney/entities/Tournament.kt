@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.widget.Toast
 import com.example.tourney.models.EliminationTournamentFormat
 import com.example.tourney.models.LiguillaTournamentFormat
+import com.example.tourney.models.SuizoTournamentFormat
 import com.example.tourney.models.TournamentFormat
 import com.ventura.bracketslib.model.ColomnData
 import com.ventura.bracketslib.model.CompetitorData
@@ -59,8 +60,8 @@ data class Tournament(
         return when (type) {
             TournamentType.ELIMINATION -> EliminationTournamentFormat()
             TournamentType.LIGUILLA -> LiguillaTournamentFormat()
-            TournamentType.SUIZO -> TODO("SuizoTournamentFormat()")
-            else -> TODO("OtroTournamentFormat()")
+            TournamentType.SUIZO -> SuizoTournamentFormat()
+            else -> throw IllegalArgumentException("Tipo de torneo no soportado: $type")
         }
     }
 

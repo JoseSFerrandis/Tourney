@@ -43,24 +43,30 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
 
         // 2. Mostrar texto según tipo y estado
         if (tournament.tournamentStatus == TournamentStatus.FINISHED) {
-            if (tournament.type == TournamentType.LIGUILLA) {
+            if (tournament.type == TournamentType.LIGUILLA || tournament.type == TournamentType.SUIZO) {
                 holder.binding.participantPoints.setText(calculateTotalScore(participant.nickname).toString())
             } else {
                 // En Eliminación, si está en notDead al finalizar, es el Ganador
                 val isWinner = tournament.getNotDead().any { it.name == participant.nickname }
-                if (isWinner) {
-                    holder.binding.participantPoints.setText("WIN")
+                /*if (isWinner) {
+                    //holder.binding.participantPoints.setText("WIN")
                 } else {
                     holder.binding.participantPoints.setText(getLastMatchScore(participant.nickname))
-                }
+                }*/
+                //holder.binding.participantPoints.setText(getLastMatchScore(participant.nickname))
+                //holder.binding.participantPoints.visibility = View.GONE
             }
+            setUIBasedOnStatus(holder, true, position, participant)
         } else {
             holder.binding.participantPoints.setText(competitor?.score ?: "")
+            setUIBasedOnStatus(holder, isAlive, position, participant)
         }
 
-        setUIBasedOnStatus(holder, isAlive, position, participant)
-
         // 3. Añadir el divisor basado en los emparejamientos reales
+        if(tournament.tournamentStatus == TournamentStatus.FINISHED){
+            holder.binding.divider.visibility = View.GONE
+        }
+        else
         if (tournament.tournamentStatus == TournamentStatus.IN_PROGRESS) {
             val match = lastMatches.find { it.competitorOne.name == participant.nickname || it.competitorTwo.name == participant.nickname }
             val isSecondInMatch = match?.competitorTwo?.name == participant.nickname
@@ -124,6 +130,19 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
         holder.binding.participantNumber.text = (position + 1).toString() + "."
 
         holder.binding.participantPoints.isEnabled = isAlive
+
+
+        if(isAlive || tournament.tournamentStatus == TournamentStatus.FINISHED){
+            holder.binding.participantCard.setCardBackgroundColor(
+                holder.binding.participantCard.context.resources.getColor(R.color.white)
+            )
+        }
+        else{
+            holder.binding.participantCard.setCardBackgroundColor(
+                holder.binding.participantCard.context.resources.getColor(R.color.text_secondary)
+            )
+        }
+        /*
         if(!isAlive){
             holder.binding.participantCard.setCardBackgroundColor(
                 holder.binding.participantCard.context.resources.getColor(R.color.text_secondary)
@@ -132,7 +151,7 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
             holder.binding.participantCard.setCardBackgroundColor(
                 holder.binding.participantCard.context.resources.getColor(R.color.white)
             )
-        }
+        }*/
 
         when(tournament.tournamentStatus){
             TournamentStatus.EDITABLE -> {
@@ -145,9 +164,15 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
                 holder.binding.participantNumber.visibility = View.GONE
             }
             TournamentStatus.FINISHED -> {
-                holder.binding.participantPoints.visibility = View.VISIBLE
-                holder.binding.participantPoints.isEnabled = false
-                holder.binding.participantNumber.visibility = View.VISIBLE
+                if(tournament.type == TournamentType.ELIMINATION){
+                    holder.binding.participantPoints.visibility = View.GONE
+                    holder.binding.participantNumber.visibility = View.VISIBLE
+                }
+                else{
+                    holder.binding.participantPoints.visibility = View.VISIBLE
+                    holder.binding.participantPoints.isEnabled = false
+                    holder.binding.participantNumber.visibility = View.VISIBLE
+                }
             }
         }
     }
