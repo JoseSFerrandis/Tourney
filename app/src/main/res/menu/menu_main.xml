@@ -10,11 +10,11 @@
     <item
         android:id="@+id/action_deleteTable"
         android:orderInCategory="100"
-        android:title="Eliminar users"
+        android:title="ʘ Eliminar users"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_deleteTournaments"
         android:orderInCategory="100"
-        android:title="Eliminar tournaments"
+        android:title="ʘ Eliminar tournaments"
         app:showAsAction="never"/>
 </menu>
