@@ -104,16 +104,6 @@ data class Tournament(
      */
     fun nextRound(context: Context?) : Boolean = getFormat().nextRound(this, context)
 
-
-    private fun createMatches(competitors : MutableList<CompetitorData>) : MutableList<MatchData> = getFormat().createMatches(competitors)
-
-
-    private fun createColumn(matches : MutableList<MatchData>) : ColomnData = getFormat().createColumn(matches)
-
-
-    private fun getCompetitorList(participants : MutableList<User>) : MutableList<CompetitorData> = getFormat().getCompetitorList(participants)
-
-
     fun getLastMatchList() : MutableList<MatchData> = getFormat().getLastMatchList(this)
 
     fun getNotDead() : MutableList<CompetitorData>{ return notDead }

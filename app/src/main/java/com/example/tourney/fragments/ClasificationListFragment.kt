@@ -161,6 +161,11 @@ class ClasificationListFragment : Fragment() {
     }
 
     private fun updateNextRoundBtn(){
+        if(tournament?.creator != User.actualUser?.nickname)
+            binding.nextRound.visibility = View.GONE
+        else
+            binding.nextRound.visibility = View.VISIBLE
+
         binding.nextRound.text = when (tournament?.tournamentStatus) {
             TournamentStatus.EDITABLE -> "Empezar torneo"
             TournamentStatus.IN_PROGRESS -> "Siguiente ronda"

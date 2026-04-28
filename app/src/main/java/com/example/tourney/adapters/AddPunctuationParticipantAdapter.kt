@@ -154,6 +154,9 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
                 }
             }
         }
+        
+        if(!isAlive) holder.binding.participantPoints.visibility = View.GONE
+        holder.binding.participantPoints.isEnabled = tournament.creator == User.actualUser?.nickname
     }
 
     override fun getItemCount(): Int = tournament.participantList.size

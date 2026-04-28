@@ -134,24 +134,17 @@ class MatchesFragment : Fragment() {
         return participants.map { CompetitorData(it.nickname, "0") }.toMutableList()
     }
 
-    private fun createMatches(competitors : MutableList<CompetitorData>) : MutableList<MatchData>{
-        val matches = mutableListOf<MatchData>()
-        for(i in 0 until competitors.size - 1 step 2){
-            matches.add(MatchData(competitors[i], competitors[i + 1]))
-        }
-        return matches
-    }
-
-    private fun createColumn(matches : MutableList<MatchData>) : ColomnData{
-        return ColomnData(matches)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     fun updateNextRoundBtn(){
+        if(tournament?.creator != User.actualUser?.nickname)
+            binding.btnNextRound.visibility = View.GONE
+        else
+            binding.btnNextRound.visibility = View.VISIBLE
+
         binding.btnNextRound.isEnabled = tournament?.tournamentStatus != TournamentStatus.FINISHED
         binding.btnNextRound.text = if(tournament?.tournamentStatus == TournamentStatus.FINISHED)
             "Torneo finalizado" else "Siguiente ronda"

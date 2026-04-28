@@ -23,6 +23,11 @@ class ParticipantAdapter(private val tournament : Tournament, private val refres
         holder.binding.tvUserNickname.text = user.nickname
         holder.binding.participantNumber.text = (position + 1).toString() + "."
 
+        if(tournament.creator == User.actualUser?.nickname)
+        holder.binding.btnRemove.visibility = ViewGroup.VISIBLE
+        else
+            holder.binding.btnRemove.visibility = ViewGroup.GONE
+
         holder.binding.btnRemove.isEnabled = tournament.tournamentStatus == TournamentStatus.EDITABLE
 
         holder.binding.btnRemove.setOnClickListener {

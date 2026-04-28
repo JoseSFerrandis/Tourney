@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.adapters.ParticipantAdapter
 import com.example.tourney.databinding.FragmentParticipantsListBinding
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
+import com.example.tourney.tools.UsersDao
 
 class ParticipantsListFragment : Fragment() {
 
@@ -88,6 +90,11 @@ class ParticipantsListFragment : Fragment() {
     }
 
     val refresh = fun() {
+        if(tournament?.creator != User.actualUser?.nickname)
+            binding.addParticipant.visibility = View.GONE
+        else
+            binding.addParticipant.visibility = View.VISIBLE
+
         val participants = tournament?.participantList
 
         // 1. Gestionar visibilidad y Adapter
