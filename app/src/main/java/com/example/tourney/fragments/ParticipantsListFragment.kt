@@ -113,10 +113,10 @@ class ParticipantsListFragment : Fragment() {
 
     val updateInfo = fun() {
         val canAdd = tournament?.hasSpace() ?: false && tournament?.tournamentStatus == TournamentStatus.EDITABLE
-        binding.addParticipant.setBackgroundColor(
-            if(canAdd) resources.getColor(R.color.accent_purple)
-            else resources.getColor(R.color.text_hint)
-        )
+        
+        // Cambiamos el estado habilitado y la opacidad en lugar de forzar el color de fondo
+        binding.addParticipant.isEnabled = canAdd
+        binding.addParticipant.alpha = if (canAdd) 1.0f else 0.5f
 
         binding.tvNumParticipants.text = "Participantes: ${tournament?.numParticipants}/${tournament?.maxParticipants}"
     }

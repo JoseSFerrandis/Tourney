@@ -16,6 +16,8 @@
             android:layout_marginTop="20dp"
             android:orientation="vertical">
 
+
+
             <LinearLayout
                 android:id="@+id/info"
                 android:layout_width="match_parent"
@@ -27,23 +29,23 @@
                     android:id="@+id/tvNumParticipants"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
                     android:text="Participantes: 1/1"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:paddingBottom="10dp"
-
-                    />
-
+                    android:textStyle="bold" />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addParticipant"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:fontFamily="sans-serif-medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/boton_tablet_card_white"
+                    android:layout_marginHorizontal="15dp"
                     android:text="Añadir participante"
-                    android:textSize="19dp"
-                    app:cornerRadius="12dp">
-                </com.google.android.material.button.MaterialButton>
+                    android:textColor="@color/white"
+                    android:textSize="19sp"
+                    app:backgroundTint="@color/boton_tablet_card_white"
+                    app:cornerRadius="12dp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -58,10 +60,10 @@
                 android:id="@+id/tvEmptyList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No hay participantes inscritos"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
-                android:visibility="gone"/>
+                android:text="No hay participantes inscritos"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
