@@ -40,7 +40,7 @@ class AccountManagement : Fragment() {
         }
 
         binding.btnEditProfile.setOnClickListener {
-            // Acción para editar perfil
+            findNavController().navigate(R.id.action_to_EditAccount)
         }
 
         binding.btnLogout.setOnClickListener {

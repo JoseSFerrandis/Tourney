@@ -144,4 +144,23 @@ class UsersDao(context: Context){
             ""
         }
     }
+
+    fun updateUser(id: Long, nickname: String, email: String, password: String): Int {
+        val db = helper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(UserDatabaseHelper.COL_NICKNAME, nickname)
+            put(UserDatabaseHelper.COL_EMAIL, email)
+            put(UserDatabaseHelper.COL_PASSWORD, password)
+        }
+
+        val rowsUpdated = db.update(
+            UserDatabaseHelper.TABLE_USERS,
+            values,
+            "${UserDatabaseHelper.COL_ID}=?",
+            arrayOf(id.toString())
+        )
+        db.close()
+        return rowsUpdated
+    }
 }

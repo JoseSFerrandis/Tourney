@@ -92,7 +92,17 @@
         <action
             android:id="@+id/action_ProfileFragment_to_ProfileChooseFragment"
             app:destination="@id/ProfileChooseFragment" />
+        <action
+            android:id="@+id/action_to_EditAccount"
+            app:destination="@id/EditAccountFragment" />
     </fragment>
+
+    <!-- Fragmento Editar Cuenta -->
+    <fragment
+        android:id="@+id/EditAccountFragment"
+        android:name="com.example.tourney.fragments.EditAccountFragment"
+        android:label="Editar Cuenta"
+        tools:layout="@layout/fragment_edit_account" />
 
     <!-- Fragmento Elegir Avatar -->
     <fragment

@@ -56,14 +56,17 @@ class ParticipantsListFragment : Fragment() {
             builder.setView(dialogView)
                 .setTitle("Añadir participante")
                 .setPositiveButton("Añadir") { dialog, _ ->
-                    val newParticipantName = etParticipantName.text.toString()
+                    val newParticipantName = etParticipantName.text.toString().trim()
                     if(newParticipantName.isBlank()) {
                         Toast.makeText(requireContext(), "Nombre no válido", Toast.LENGTH_SHORT).show()
                         return@setPositiveButton
                     }
+                    // Comprobar si ya existe un participante con el mismo nombre (ignorar mayúsculas/minúsculas)
+                    if (tournament?.participantList?.any { it.nickname.equals(newParticipantName, ignoreCase = true) } == true) {
+                        Toast.makeText(requireContext(), "Participante ya existente", Toast.LENGTH_SHORT).show()
+                        return@setPositiveButton
+                    }
 
-                    //val nextId = (tournament?.participantList?.minOfOrNull { it.id } ?: 0).coerceAtMost(0) - 1
-                    //val newParticipant = User(nextId, newParticipantName, "", "", 0)
                     val newParticipant = Participant(nickname = newParticipantName)
 
                     // Añadimos el participante y refrescamos

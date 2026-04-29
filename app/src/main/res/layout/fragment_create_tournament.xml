@@ -78,6 +78,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_white"
                             android:hint="Copa Mundial 2026"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_hint"
                             android:minHeight="48dp"
                             android:paddingHorizontal="16dp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -104,6 +106,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_white"
                             android:hint="League of Legends"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_hint"
                             android:minHeight="48dp"
                             android:paddingHorizontal="16dp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -129,6 +133,8 @@
                             android:background="@drawable/bg_input_white"
                             android:hint="32"
                             android:inputType="number"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_hint"
                             android:minHeight="48dp"
                             android:paddingHorizontal="16dp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -148,6 +154,7 @@
                         android:minHeight="48dp"
                         android:layout_marginBottom="16dp"
                         android:background="@drawable/bg_input_white"
+                        android:theme="@style/ThemeOverlay.AppCompat.Light"
                         android:paddingHorizontal="16dp"/>
 
                     <!-- Fecha -->
@@ -173,6 +180,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_white"
                             android:hint="Seleccionar fecha"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_hint"
                             android:minHeight="48dp"
                             android:paddingHorizontal="16dp"
                             android:focusable="false"
@@ -199,6 +208,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_white"
                             android:hint="Estadio Virtual"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_hint"
                             android:minHeight="48dp"
                             android:paddingHorizontal="16dp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -223,6 +234,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_white"
                             android:hint="$5,000"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_hint"
                             android:minHeight="48dp"
                             android:paddingHorizontal="16dp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -248,6 +261,8 @@
                             android:background="@drawable/bg_input_white"
                             android:hint="777"
                             android:inputType="number"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_hint"
                             android:minHeight="48dp"
                             android:paddingHorizontal="16dp" />
                     </com.google.android.material.textfield.TextInputLayout>

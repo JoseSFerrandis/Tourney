@@ -89,6 +89,8 @@
                         android:background="@drawable/bg_input_white"
                         android:hint="tucorreo@email.com"
                         android:inputType="textEmailAddress"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/text_hint"
                         android:paddingHorizontal="16dp"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -119,6 +121,8 @@
                         android:background="@drawable/bg_input_white"
                         android:hint="••••••••"
                         android:inputType="textPassword"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/text_hint"
                         android:paddingHorizontal="16dp"
                         android:textSize="14sp" />
 

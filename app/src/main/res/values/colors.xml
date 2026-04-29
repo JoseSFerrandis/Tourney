@@ -48,4 +48,7 @@
     <color name="strength_good">#EAB308</color>
     <color name="strength_strong">#22C55E</color>
 
+    <!-- Color dinámico para tarjetas (negro en día, blanco en noche) -->
+    <color name="dynamic_text_card">#FF000000</color>
+
 </resources>

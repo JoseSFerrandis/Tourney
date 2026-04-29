@@ -73,10 +73,10 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="1dp"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="#A9000000"
+        android:background="?attr/colorOutline"
         android:visibility="visible" />
 </LinearLayout>
