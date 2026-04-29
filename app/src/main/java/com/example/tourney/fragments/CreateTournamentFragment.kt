@@ -16,9 +16,9 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.widget.ArrayAdapter
-import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import java.util.Calendar
 
@@ -26,6 +26,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
 
     private var _binding: FragmentCreateTournamentBinding? = null
     private val binding get() = _binding!!
+    private var tournamentDate: Long? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,13 +43,10 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         }
         binding.spTournamentType.setSelection(0)
 
-
-
         // Configurar el diálogo del calendario
         binding.etDate.setOnClickListener {
             showDatePickerDialog()
         }
-
 
         //parseo que he realizado con la IA, estaría bien mirar de cambiar los tipos de datos
         // completamente ya que por ejemplo que el dinero sea una string, no es muy buena idea
@@ -57,22 +55,20 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         binding.btnCreateTournament.setOnClickListener {
             val name = binding.etName.text.toString()
             val game = binding.etGame.text.toString()
-
-
             val maxParticipants = binding.etMaxParticipants.text.toString().toIntOrNull() ?: 32
-            val date = binding.etDate.text.toString()
+            val date = tournamentDate
             val location = binding.etLocation.text.toString()
             val prize = binding.etPrize.text.toString()
             val code = binding.etCode.text.toString().toIntOrNull() ?: 0
             val type = Tournament.getTournamentTypeFromString(binding.spTournamentType.selectedItem.toString())
 
-
             if (name.isNotBlank() && game.isNotBlank()) {
                 val newTournament = Tournament(
-                    id = (100L..10000L).random(),
+                    id = 0, // Se asignará en el insert del DAO
                     name = name,
                     game = game,
-                    creator = establishedValue(context, User.actualUser?.nickname),
+                    creatorId = User.actualUser!!.id,
+                    creatorNickname = establishedValue(context, User.actualUser?.nickname),
                     maxParticipants = maxParticipants,
                     date = date,
                     location = location,
@@ -87,34 +83,46 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 // A futuro: tras las comprobaciones, se añadirá el torneo a la base de datos con insert
 
 
-                TournamentRepository.getInstance().addTournament(newTournament)
-                User.actualUser?.addShowableTournament(newTournament.id)
-                UsersDao(context).updateShowableTournamentList(User.actualUser?.email ?: "", User.actualUser?.showableTournamentList.toString().replace("[", "").replace("]", ""))
+                // 1. GUARDAR EN LA BASE DE DATOS
+                val tournamentsDao = TournamentsDao(context)
+                val newId = tournamentsDao.insertTournament(newTournament)
+                
+                if (newId != -1L) {
+                    newTournament.id = newId
+                    
+                    // 2. ACTUALIZAR EN REPOSITORIO Y USUARIO
+                    TournamentRepository.getInstance().addTournament(newTournament)
+                    User.actualUser?.addShowableTournament(newTournament.id)
+                    
+                    UsersDao(context).updateShowableTournamentList(
+                        User.actualUser?.email ?: "", 
+                        User.actualUser?.showableTournamentList.toString().replace("[", "").replace("]", "")
+                    )
 
-                Toast.makeText(requireContext(), "Torneo '$name' creado con éxito", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Torneo '$name' creado con éxito", Toast.LENGTH_LONG).show()
 
-                // Ir a la pantalla del torneo recién creado
-                val bundle = Bundle().apply {
-                    putParcelable("tournament_data", newTournament)
+                    // Ir a la pantalla del torneo recién creado
+                    val bundle = Bundle().apply {
+                        putParcelable("tournament_data", newTournament)
+                    }
+
+                    try {
+                        findNavController().navigate(R.id.action_CreateTournamentFragment_to_TournamentFragment, bundle)
+                    } catch (e: Exception) {
+                        Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Error al guardar el torneo en la base de datos", Toast.LENGTH_SHORT).show()
                 }
-
-                try {
-                    findNavController().navigate(R.id.action_CreateTournamentFragment_to_TournamentFragment, bundle)
-                } catch (e: Exception) {
-                    Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
-                }
-
 
             } else {
                 Toast.makeText(requireContext(), "Por favor completa los campos obligatorios", Toast.LENGTH_SHORT).show()
             }
         }
 
-        //Poner el asterisco en rojo
         colorearAsteriscoNombre()
         colorearAsteriscoCompeti()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -138,9 +146,12 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, selectedYear, selectedMonth, selectedDay ->
-                // Formatear la fecha seleccionada
-                val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                binding.etDate.setText(selectedDate)
+                val selectedCalendar = Calendar.getInstance()
+                selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
+                tournamentDate = selectedCalendar.timeInMillis
+                
+                val selectedDateStr = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                binding.etDate.setText(selectedDateStr)
             },
             year,
             month,
@@ -148,44 +159,24 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         )
         datePickerDialog.show()
     }
+
     private fun colorearAsteriscoNombre() {
         val originalText = getString(R.string.nombre_Torneo)
         val spannable = SpannableString(originalText)
-
-        // Buscamos la posición del asterisco
         val asteriskIndex = originalText.indexOf('*')
-
         if (asteriskIndex != -1) {
-            // Aplicamos el color rojo solo al carácter del asterisco
-            spannable.setSpan(
-                ForegroundColorSpan(Color.RED),
-                asteriskIndex,
-                asteriskIndex + 1,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
+            spannable.setSpan(ForegroundColorSpan(Color.RED), asteriskIndex, asteriskIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
-
-        // Asignamos el texto procesado al TextView mediante el binding
         binding.tvName.text = spannable
     }
+
     private fun colorearAsteriscoCompeti() {
         val originalText = getString(R.string.competicion)
         val spannable = SpannableString(originalText)
-
-        // Buscamos la posición del asterisco
         val asteriskIndex = originalText.indexOf('*')
-
         if (asteriskIndex != -1) {
-            // Aplicamos el color rojo solo al carácter del asterisco
-            spannable.setSpan(
-                ForegroundColorSpan(Color.RED),
-                asteriskIndex,
-                asteriskIndex + 1,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
+            spannable.setSpan(ForegroundColorSpan(Color.RED), asteriskIndex, asteriskIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
-
-        // Asignamos el texto procesado al TextView mediante el binding
         binding.tvGame.text = spannable
     }
 }

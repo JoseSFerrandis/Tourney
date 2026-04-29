@@ -6,7 +6,7 @@ import kotlinx.parcelize.TypeParceler
 
 @Parcelize
 data class User (
-    var id: Int,
+    var id: Long,
     var nickname: String,
     var email: String,
     var password: String,

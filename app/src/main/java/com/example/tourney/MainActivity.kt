@@ -11,10 +11,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.ActivityMainBinding
-import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 
 class MainActivity : AppCompatActivity() {
@@ -53,6 +52,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        TournamentRepository.getInstance().loadFromDatabase(this)
+
+
+
         // --- LOGS DE DEPURACIÓN PARA BASE DE DATOS Y TORNEOS ---
 //        logDatabaseInfo()
     }
@@ -71,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 //        val tournaments = TournamentRepository.getInstance().getTournaments()
 //        Log.d(TAG, "===== TORNEOS DISPONIBLES (${tournaments.size}) =====")
 //        tournaments.forEach { tournament ->
-//            Log.d(TAG, "ID: ${tournament.id} | Nombre: ${tournament.name} | Juego: ${tournament.game} | Creador: ${tournament.creator}")
+//            Log.d(TAG, "ID: ${tournament.id} | Nombre: ${tournament.name} | Juego: ${tournament.game} | Creador: ${tournament.creatorId}")
 //        }
 //        Log.d(TAG, "==============================================")
 //    }
@@ -88,7 +91,10 @@ class MainActivity : AppCompatActivity() {
                 UsersDao(this).dropAll()
                 true
             }
-            R.id.action_deleteTournaments -> true
+            R.id.action_deleteTournaments -> {
+                TournamentsDao(this).dropAll()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

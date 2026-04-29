@@ -1,7 +1,6 @@
 package com.example.tourney.adapters
 
 import com.example.tourney.entities.Tournament
-import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -25,7 +24,7 @@ class ParticipantAdapterTest {
             id = 1L,
             name = "Test",
             game = "Test",
-            creator = "Test",
+            creatorId = "Test",
             maxParticipants = 10,
             date = "2023",
             location = "Test",

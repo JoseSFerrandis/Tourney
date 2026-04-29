@@ -9,6 +9,8 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.R
 import android.content.Context
 import com.example.tourney.entities.TournamentStatus
+import java.sql.Date
+import kotlin.time.Duration.Companion.days
 
 class TournamentAdapter(
     private var allTournaments: MutableList<Tournament>,
@@ -35,13 +37,12 @@ class TournamentAdapter(
             val context = itemView.context
             tvTournamentName.text = establishedValue(context, tournament.name)
             tvGameName.text = establishedValue(context, tournament.game)
-            tvCreator.text = establishedValue(context, tournament.creator)
+            tvCreator.text = establishedValue(context, tournament.creatorNickname)
             tvParticipants.text = establishedValue(context, "${tournament.numParticipants}/${tournament.maxParticipants}")
-            tvDate.text = establishedValue(context, tournament.date)
+            tvDate.text = establishedValue(context, tournament.date?.let { Date(it).toString() })
             tvLocation.text = establishedValue(context, tournament.location)
             tvPrize.text = establishedValue(context, tournament.prize)
             tvTournamentType.text = establishedValue(context, Tournament.getTournamentTypeString(tournament.type))
-
 
             // Inscripciones abiertas
             // En progreso
@@ -107,7 +108,7 @@ class TournamentAdapter(
 
     override fun getItemCount(): Int = tournaments.size
 
-    fun establishedValue(context: Context, value: String): String{
+    fun establishedValue(context: Context, value: String?): String{
         return if (value.isNullOrBlank() || value == "null") {
             context.getString(R.string.no_established)
         } else {

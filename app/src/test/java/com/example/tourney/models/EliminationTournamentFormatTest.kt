@@ -5,7 +5,6 @@ import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
 import com.ventura.bracketslib.model.CompetitorData
-import com.ventura.bracketslib.model.MatchData
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +21,7 @@ class EliminationTournamentFormatTest {
             id = 1L,
             name = "Test Tournament",
             game = "Test Game",
-            creator = "Creator",
+            creatorId = "Creator",
             maxParticipants = 8,
             date = "01/01/2026",
             location = "Online",

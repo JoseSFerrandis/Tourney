@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tourney.R
 import com.example.tourney.databinding.ItemUserAddPuntuationBinding
+import com.example.tourney.entities.Participant
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
+import com.example.tourney.tools.TournamentsDao
 
 class AddPunctuationParticipantAdapter(private val tournament : Tournament, private val context: Context) :
     RecyclerView.Adapter<AddPunctuationParticipantAdapter.UserViewHolder>() {
@@ -20,7 +22,6 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
     class UserViewHolder(val binding: ItemUserAddPuntuationBinding) : RecyclerView.ViewHolder(binding.root){
         var textWatcher: TextWatcher? = null
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemUserAddPuntuationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -35,28 +36,30 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
 
         val isAlive = competitor != null
 
-        // 1. Eliminar listener anterior
+        // 1. Limpiar listener anterior para evitar colisiones al reciclar
         holder.textWatcher?.let {
             holder.binding.participantPoints.removeTextChangedListener(it)
             holder.textWatcher = null
         }
 
-        // 2. Mostrar texto según tipo y estado
+        // 2. Definir qué texto mostrar
         if (tournament.tournamentStatus == TournamentStatus.FINISHED) {
-            if (tournament.type == TournamentType.LIGUILLA || tournament.type == TournamentType.SUIZO) {
-                holder.binding.participantPoints.setText(calculateTotalScore(participant.nickname).toString())
-            }
+            // Al finalizar, calculamos el total real sumando todas las jornadas
+            val total = calculateTotalScore(participant.nickname)
+            holder.binding.participantPoints.setText(total.toString())
+            participant.puntuation = total
         } else {
-            holder.binding.participantPoints.setText(competitor?.score ?: "")
+            // Durante el torneo, mostramos el score del partido de la jornada actual
+            val currentScore = competitor?.score ?: "0"
+            holder.binding.participantPoints.setText(if (currentScore == "null") "0" else currentScore)
         }
+
         setUIBasedOnStatus(holder, isAlive, position, participant)
 
-        // 3. Añadir el divisor basado en los emparejamientos reales
-        if(tournament.tournamentStatus == TournamentStatus.FINISHED){
+        // 3. Divisores visuales para agrupar parejas
+        if (tournament.tournamentStatus == TournamentStatus.FINISHED) {
             holder.binding.divider.visibility = View.GONE
-        }
-        else
-        if (tournament.tournamentStatus == TournamentStatus.IN_PROGRESS) {
+        } else if (tournament.tournamentStatus == TournamentStatus.IN_PROGRESS) {
             val match = lastMatches.find { it.competitorOne.name == participant.nickname || it.competitorTwo.name == participant.nickname }
             val isSecondInMatch = match?.competitorTwo?.name == participant.nickname
             val opponentIsDescanso = (match?.competitorOne?.name == "DESCANSO" || match?.competitorTwo?.name == "DESCANSO")
@@ -66,24 +69,27 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
             } else {
                 holder.binding.divider.visibility = View.GONE
             }
-        } else if ((position + 1) % 2 == 0 && position != tournament.participantList.size - 1) {
-             // Lógica por defecto para otros estados
-            holder.binding.divider.visibility = View.VISIBLE
         } else {
-            holder.binding.divider.visibility = View.GONE
+            holder.binding.divider.visibility = if ((position + 1) % 2 == 0) View.VISIBLE else View.GONE
         }
 
-        // 4. SOLO añadir el Watcher si el torneo está en progreso
+        // 4. Sincronización en tiempo real (solo si el torneo está en curso y el jugador está activo)
         if (tournament.tournamentStatus == TournamentStatus.IN_PROGRESS && isAlive) {
             val newWatcher = object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    // Solo actualizamos si el usuario está escribiendo realmente
+                    // El check de hasFocus() evita que el setText() inicial dispare cambios accidentales
                     if (holder.binding.participantPoints.hasFocus()) {
                         competitor?.score = s.toString()
                     }
                 }
-                override fun afterTextChanged(s: Editable?) {}
+                override fun afterTextChanged(s: Editable?) {
+                    if (holder.binding.participantPoints.hasFocus()) {
+                        // Sincronizamos con el modelo plano (matches) y guardamos en DB
+                        tournament.updateMatchesFromView()
+                        TournamentsDao(context).updateTournament(tournament)
+                    }
+                }
             }
             holder.textWatcher = newWatcher
             holder.binding.participantPoints.addTextChangedListener(newWatcher)
@@ -114,19 +120,15 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
         return total
     }
 
-    private fun setUIBasedOnStatus(holder: UserViewHolder, isAlive: Boolean, position: Int, participant: User){
+    private fun setUIBasedOnStatus(holder: UserViewHolder, isAlive: Boolean, position: Int, participant: Participant){
         holder.binding.tvUserNickname.text = participant.nickname
         holder.binding.participantNumber.text = (position + 1).toString() + "."
-
-        holder.binding.participantPoints.isEnabled = isAlive
-
 
         if(isAlive || tournament.tournamentStatus == TournamentStatus.FINISHED){
             holder.binding.participantCard.setCardBackgroundColor(
                 holder.binding.participantCard.context.resources.getColor(R.color.white)
             )
-        }
-        else{
+        } else {
             holder.binding.participantCard.setCardBackgroundColor(
                 holder.binding.participantCard.context.resources.getColor(R.color.text_secondary)
             )
@@ -145,18 +147,24 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
             TournamentStatus.FINISHED -> {
                 if(tournament.type == TournamentType.ELIMINATION){
                     holder.binding.participantPoints.visibility = View.GONE
-                    holder.binding.participantNumber.visibility = View.VISIBLE
-                }
-                else{
+                } else {
                     holder.binding.participantPoints.visibility = View.VISIBLE
                     holder.binding.participantPoints.isEnabled = false
-                    holder.binding.participantNumber.visibility = View.VISIBLE
                 }
+                holder.binding.participantNumber.visibility = View.VISIBLE
             }
         }
-        
-        if(!isAlive) holder.binding.participantPoints.visibility = View.GONE
-        holder.binding.participantPoints.isEnabled = tournament.creator == User.actualUser?.nickname
+
+        if(!isAlive && tournament.tournamentStatus != TournamentStatus.FINISHED) {
+            holder.binding.participantPoints.visibility = View.GONE
+        }
+
+        // Solo el creador puede editar puntos y solo durante el torneo
+        holder.binding.participantPoints.isEnabled = (
+                tournament.creatorId == User.actualUser?.id 
+                && tournament.tournamentStatus == TournamentStatus.IN_PROGRESS 
+                && isAlive
+        )
     }
 
     override fun getItemCount(): Int = tournament.participantList.size

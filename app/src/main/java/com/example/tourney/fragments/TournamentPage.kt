@@ -14,6 +14,7 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.FragmentTournamentPageBinding
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
+import java.util.Date
 
 class TournamentPage : Fragment() {
 
@@ -55,7 +56,7 @@ class TournamentPage : Fragment() {
         // Rellenamos la UI con los datos recibidos
         binding.tvTournamentTitle.text = establishedValue( tournament.name )
         binding.tvGameName.text = establishedValue( tournament.game )
-        binding.tvCreator.text = establishedValue( tournament.creator )
+        binding.tvCreator.text = establishedValue( tournament.creatorNickname )
         binding.tvParticipants.text = establishedValue( "${tournament.numParticipants}/${tournament.maxParticipants}" )
         binding.tvDate.text = establishedValue( tournament.date )
         binding.tvLocation.text = establishedValue( tournament.location )
@@ -144,6 +145,13 @@ class TournamentPage : Fragment() {
             requireContext().getString(R.string.no_established)
         } else {
             value
+        }
+    }
+    fun establishedValue(value: Long?): String{
+        return if (value == null) {
+            requireContext().getString(R.string.no_established)
+        } else {
+            Date(value).toString()
         }
     }
 }

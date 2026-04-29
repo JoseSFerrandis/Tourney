@@ -8,18 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.Navigator
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentMatchesBinding
+import com.example.tourney.entities.Participant
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
+import com.example.tourney.tools.TournamentsDao
 import com.ventura.bracketslib.BracketsView
 import com.ventura.bracketslib.model.ColomnData
 import com.ventura.bracketslib.model.CompetitorData
-import com.ventura.bracketslib.model.MatchData
 import java.util.ArrayList
 
 class MatchesFragment : Fragment() {
@@ -92,6 +92,7 @@ class MatchesFragment : Fragment() {
                 refreshBracketView()
             }
         } else {
+            TournamentsDao(requireContext()).updateTournament(tournament!!)
             updateNextRoundBtn()
         }
     }
@@ -130,7 +131,7 @@ class MatchesFragment : Fragment() {
         }
     }
 
-    private fun participantsListToCompetitorList(participants : MutableList<User>) : MutableList<CompetitorData>{
+    private fun participantsListToCompetitorList(participants : MutableList<Participant>) : MutableList<CompetitorData>{
         return participants.map { CompetitorData(it.nickname, "0") }.toMutableList()
     }
 
@@ -140,7 +141,7 @@ class MatchesFragment : Fragment() {
     }
 
     fun updateNextRoundBtn(){
-        if(tournament?.creator != User.actualUser?.nickname)
+        if(tournament?.creatorId != User.actualUser?.id)
             binding.btnNextRound.visibility = View.GONE
         else
             binding.btnNextRound.visibility = View.VISIBLE

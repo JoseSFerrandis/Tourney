@@ -17,7 +17,7 @@ class TournamentTest {
             id = 1L,
             name = "Test Tournament",
             game = "Test Game",
-            creator = "Creator",
+            creatorId = "Creator",
             maxParticipants = 2,
             date = "01/01/2026",
             location = "Online",

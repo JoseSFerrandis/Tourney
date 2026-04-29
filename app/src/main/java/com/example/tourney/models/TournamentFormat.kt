@@ -1,6 +1,7 @@
 package com.example.tourney.models
 
 import android.content.Context
+import com.example.tourney.entities.Participant
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.User
 import com.ventura.bracketslib.model.ColomnData
@@ -25,7 +26,7 @@ interface TournamentFormat {
      */
     fun nextRound(t: Tournament, context: Context?): Boolean
 
-    fun getCompetitorList(participants : MutableList<User>) : MutableList<CompetitorData>{
+    fun getCompetitorList(participants : MutableList<Participant>) : MutableList<CompetitorData>{
         return participants.map { CompetitorData(it.nickname, "0") }.toMutableList()
     }
     fun createColumn(matches : MutableList<MatchData>) : ColomnData { return ColomnData(matches)

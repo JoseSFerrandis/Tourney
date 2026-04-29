@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.adapters.ParticipantAdapter
 import com.example.tourney.databinding.FragmentParticipantsListBinding
+import com.example.tourney.entities.Participant
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
-import com.example.tourney.tools.UsersDao
+import com.example.tourney.tools.TournamentsDao
 
 class ParticipantsListFragment : Fragment() {
 
@@ -62,17 +62,9 @@ class ParticipantsListFragment : Fragment() {
                         return@setPositiveButton
                     }
 
-                    val nextId = (tournament?.participantList?.minOfOrNull { it.id } ?: 0).coerceAtMost(0) - 1
-                    val newParticipant = User(nextId, newParticipantName, "", "", 0)
-
-                    // Comprobamos que no esté ya inscrito
-                    tournament?.participantList?.forEach { participant ->
-                        if(participant.nickname == newParticipantName ||
-                            participant.id == newParticipant.id){
-                            Toast.makeText(requireContext(), "Participante ya inscrito", Toast.LENGTH_SHORT).show()
-                            return@setPositiveButton
-                        }
-                    }
+                    //val nextId = (tournament?.participantList?.minOfOrNull { it.id } ?: 0).coerceAtMost(0) - 1
+                    //val newParticipant = User(nextId, newParticipantName, "", "", 0)
+                    val newParticipant = Participant(nickname = newParticipantName)
 
                     // Añadimos el participante y refrescamos
                     tournament?.addParticipant(newParticipant)
@@ -90,7 +82,7 @@ class ParticipantsListFragment : Fragment() {
     }
 
     val refresh = fun() {
-        if(tournament?.creator != User.actualUser?.nickname)
+        if(tournament?.creatorId != User.actualUser?.id)
             binding.addParticipant.visibility = View.GONE
         else
             binding.addParticipant.visibility = View.VISIBLE
@@ -115,6 +107,8 @@ class ParticipantsListFragment : Fragment() {
 
         // 2. Actualizar estado del botón de añadir
         updateInfo.invoke()
+
+        TournamentsDao(requireContext()).updateParticipants(tournament!!)
     }
 
     val updateInfo = fun() {

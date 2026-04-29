@@ -53,7 +53,7 @@ class UsersDao(context: Context){
         val users = mutableListOf<User>()
         with(cursor) {
             while (moveToNext()) {
-                val id = getInt(getColumnIndexOrThrow(UserDatabaseHelper.COL_ID))
+                val id = getLong(getColumnIndexOrThrow(UserDatabaseHelper.COL_ID))
                 val nickname = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_NICKNAME))
                 val email = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_EMAIL))
                 val password = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_PASSWORD))
@@ -121,5 +121,27 @@ class UsersDao(context: Context){
         )
         db.close()
         return rowsUpdated
+    }
+
+    fun getUsernameById(id: Long): String {
+        val db = helper.readableDatabase
+        val cursor = db.query(
+            UserDatabaseHelper.TABLE_USERS,
+            arrayOf(UserDatabaseHelper.COL_NICKNAME),
+            "${UserDatabaseHelper.COL_ID}=?",
+            arrayOf(id.toString()),
+            null,
+            null,
+            null
+        )
+
+        return if (cursor.moveToFirst()) {
+            val username = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COL_NICKNAME))
+            cursor.close()
+            username
+        } else {
+            cursor.close()
+            ""
+        }
     }
 }

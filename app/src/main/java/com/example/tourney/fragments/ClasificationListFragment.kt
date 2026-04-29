@@ -10,10 +10,12 @@ import androidx.navigation.navOptions
 import com.example.tourney.R
 import com.example.tourney.adapters.AddPunctuationParticipantAdapter
 import com.example.tourney.databinding.FragmentClasificationListBinding
+import com.example.tourney.entities.Participant
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
+import com.example.tourney.tools.TournamentsDao
 
 class ClasificationListFragment : Fragment() {
     private var _binding: FragmentClasificationListBinding? = null
@@ -52,6 +54,7 @@ class ClasificationListFragment : Fragment() {
             }
             //val matches = tournament?.columnMatches.
             tournament?.nextRound(requireContext())
+            TournamentsDao(requireContext()).updateTournament(tournament!!)
 
 
             refresh()
@@ -80,7 +83,7 @@ class ClasificationListFragment : Fragment() {
         if (tournament?.tournamentStatus == TournamentStatus.IN_PROGRESS) {
             // Si el torneo está en progreso, ordenamos por PAREJAS de la ronda actual
             val lastMatches = tournament?.getLastMatchList() ?: mutableListOf()
-            val sortedParticipants = mutableListOf<User>()
+            val sortedParticipants = mutableListOf<Participant>()
 
             // Recorremos los partidos para añadir a los participantes en orden de emparejamiento
             lastMatches.forEach { match ->
@@ -102,7 +105,7 @@ class ClasificationListFragment : Fragment() {
         } else if (tournament?.tournamentStatus == TournamentStatus.FINISHED) {
             // Si ha terminado, ordenamos por el ranking final
             if (tournament?.type == TournamentType.ELIMINATION) {
-                originalParticipants.sortWith(compareByDescending<User> { p ->
+                originalParticipants.sortWith(compareByDescending<Participant> { p ->
                     tournament?.getNotDead()?.any { it.name == p.nickname } ?: false
                 }.thenByDescending { p ->
                     getLastRoundReached(p.nickname)
@@ -161,7 +164,7 @@ class ClasificationListFragment : Fragment() {
     }
 
     private fun updateNextRoundBtn(){
-        if(tournament?.creator != User.actualUser?.nickname)
+        if(tournament?.creatorId != User.actualUser?.id)
             binding.nextRound.visibility = View.GONE
         else
             binding.nextRound.visibility = View.VISIBLE
