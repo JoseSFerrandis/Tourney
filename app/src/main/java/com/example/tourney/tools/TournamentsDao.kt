@@ -221,7 +221,7 @@ class TournamentsDao(context: Context) {
 
             db.setTransactionSuccessful()
             true
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         } finally {
             db.endTransaction()
