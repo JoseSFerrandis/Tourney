@@ -26,9 +26,7 @@ class TournamentRepository private constructor() {
         }
     }
 
-    fun getTournaments(): MutableList<Tournament> {
-        return tournaments
-    }
+    fun getTournaments(): MutableList<Tournament> { return tournaments }
 
     fun addTournament(tournament: Tournament) {
         if (!tournaments.any { it.id == tournament.id }) {
