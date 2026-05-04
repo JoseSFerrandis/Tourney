@@ -180,6 +180,9 @@ class TournamentsDao(context: Context) {
         return matches
     }
 
+    /**
+     * Borra un torneo completo de la base de datos
+     */
     fun deleteTournament(id: Long): Int {
         val db = helper.writableDatabase
         val result = db.delete(TournamentDatabaseHelper.TABLE_TOURNAMENTS, "${TournamentDatabaseHelper.COL_ID}=?", arrayOf(id.toString()))
