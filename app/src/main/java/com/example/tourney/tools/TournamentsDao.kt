@@ -250,7 +250,7 @@ class TournamentsDao(context: Context) {
 
             if (ownTransaction) innerDb.setTransactionSuccessful()
             true
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         } finally {
             if (ownTransaction) {
