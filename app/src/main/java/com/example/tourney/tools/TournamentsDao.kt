@@ -232,6 +232,9 @@ class TournamentsDao(context: Context) {
         }
     }
 
+    /**
+     * Actualiza los participantes de un torneo en la base de datos
+     */
     fun updateParticipants(t: Tournament, db: SQLiteDatabase? = null): Boolean {
         val innerDb = db ?: helper.writableDatabase
         val ownTransaction = db == null
