@@ -24,9 +24,10 @@ class ParticipantAdapterTest {
             id = 1L,
             name = "Test",
             game = "Test",
-            creatorId = "Test",
+            creatorId = 0,
+            creatorNickname = "Test",
             maxParticipants = 10,
-            date = "2023",
+            date = 0,
             location = "Test",
             prize = "0",
             code = 0

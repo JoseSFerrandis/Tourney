@@ -24,8 +24,8 @@ class TournamentAdapterTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         tournamentList = mutableListOf(
-            Tournament(1L, "Copa 1", "Game A", "Creator", mutableListOf(), 8, "Date", "Loc", "100", 123),
-            Tournament(2L, "Torneo 2", "Game B", "Creator", mutableListOf(), 8, "Date", "Loc", "200", 456)
+            Tournament(1L, "Copa 1", "Game A", 0, "Creator", mutableListOf(), 8, 0, "Loc", "100", 123),
+            Tournament(2L, "Torneo 2", "Game B", 0, "Creator", mutableListOf(), 8, 0, "Loc", "200", 456)
         )
         adapter = spy(TournamentAdapter(tournamentList) { })
         doNothing().`when`(adapter).notifyDataSetChanged()
@@ -48,7 +48,7 @@ class TournamentAdapterTest {
     @Test
     fun testUpdateTournaments() {
         val newList = listOf(
-            Tournament(3L, "T3", "G3", "C3", mutableListOf(), 4, "D3", "L3", "300", 789)
+            Tournament(3L, "T3", "G3", 0,"C3", mutableListOf(), 4, 0, "L3", "300", 789)
         )
         adapter.updateTournaments(newList)
         assertEquals(1, adapter.itemCount)

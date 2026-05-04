@@ -21,9 +21,10 @@ class EliminationTournamentFormatTest {
             id = 1L,
             name = "Test Tournament",
             game = "Test Game",
-            creatorId = "Creator",
+            creatorId = 0,
+            creatorNickname = "Creator",
             maxParticipants = 8,
-            date = "01/01/2026",
+            date = 0,
             location = "Online",
             prize = "100",
             code = 1234,
@@ -35,7 +36,7 @@ class EliminationTournamentFormatTest {
     fun testInitMatches_EvenParticipants() {
         // Add 4 participants
         for (i in 1..4) {
-            tournament.addParticipant(User(i, "User$i", "e@e.com", "pass", 0))
+            tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
         }
 
         format.initMatches(tournament)
@@ -52,7 +53,7 @@ class EliminationTournamentFormatTest {
     fun testInitMatches_OddParticipants() {
         // Add 3 participants
         for (i in 1..3) {
-            tournament.addParticipant(User(i, "User$i", "e@e.com", "pass", 0))
+            tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
         }
 
         format.initMatches(tournament)
@@ -81,7 +82,7 @@ class EliminationTournamentFormatTest {
 
     @Test
     fun testRestartMatches() {
-        for (i in 1..2) tournament.addParticipant(User(i, "User$i", "e@e.com", "pass", 0))
+        for (i in 1..2) tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
         format.initMatches(tournament)
         assertEquals(1, tournament.columnMatches.size)
 
@@ -96,7 +97,7 @@ class EliminationTournamentFormatTest {
 
     @Test
     fun testNextRound_HasParticipants_WinnerProgresses() {
-        for (i in 1..4) tournament.addParticipant(User(i, "User$i", "e@e.com", "pass", 0))
+        for (i in 1..4) tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
         format.initMatches(tournament)
 
         // Set scores
@@ -123,7 +124,7 @@ class EliminationTournamentFormatTest {
 
     @Test
     fun testNextRound_TieFails() {
-        for (i in 1..4) tournament.addParticipant(User(i, "User$i", "e@e.com", "pass", 0))
+        for (i in 1..4) tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
         format.initMatches(tournament)
 
         val matches = tournament.columnMatches[0].matches
@@ -136,7 +137,7 @@ class EliminationTournamentFormatTest {
 
     @Test
     fun testNextRound_FinishesTournament() {
-        for (i in 1..2) tournament.addParticipant(User(i, "User$i", "e@e.com", "pass", 0))
+        for (i in 1..2) tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
         format.initMatches(tournament)
 
         val matches = tournament.columnMatches[0].matches
