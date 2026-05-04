@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSurface"
+        android:background="@drawable/bg_gradient_blue"
         tools:context=".fragments.ClasificationListFragment">
 
         <LinearLayout
@@ -26,37 +26,45 @@
                     android:id="@+id/tvNumParticipants"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
                     android:text="Participantes vivos: 1/1"
-                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
                     android:textSize="20sp"
-                    />
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:orientation="horizontal">
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/nextRound"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Empezar torneo"
-                            app:cornerRadius="12dp"
-                            android:backgroundTint="@color/Blue3"
-                            android:layout_marginEnd="15dp">
-                        </com.google.android.material.button.MaterialButton>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/goToMatchs"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Ir a emparejamiento"
-                            android:backgroundTint="@color/Blue3"
-                            app:cornerRadius="12dp">
-                        </com.google.android.material.button.MaterialButton>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/nextRound"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/boton_movil_card"
+                        android:text="Empezar torneo"
+                        android:textColor="@android:color/white"
+                        android:textSize="17sp"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/goToMatchs"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/boton_movil_card"
+                        android:text="Emparejamiento"
+                        app:strokeColor="@color/boton_movil_card_white"
+                        app:strokeWidth="1.3dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="17sp"
+                        app:cornerRadius="12dp" />
                 </LinearLayout>
-
 
             </LinearLayout>
 
@@ -72,10 +80,11 @@
                 android:id="@+id/tvEmptyList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No hay participantes inscritos"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
-                android:visibility="gone"/>
+                android:text="No hay participantes inscritos"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

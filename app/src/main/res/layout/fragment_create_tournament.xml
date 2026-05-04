@@ -233,7 +233,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_white"
-                            android:hint="$5,000"
+                            android:hint="€5,000"
                             android:textColor="@color/black"
                             android:textColorHint="@color/text_hint"
                             android:minHeight="48dp"

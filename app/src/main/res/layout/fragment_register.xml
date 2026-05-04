@@ -20,10 +20,10 @@
 
             <!-- Logo / Ícono superior -->
             <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_gamepad"
+                android:src="@mipmap/tourney_logo"
                 app:tint="@color/white"/>
 
             <!-- Título -->
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="6dp"
                 android:text="Crear Cuenta"
                 android:textColor="@color/text_primary"
                 android:textSize="26sp"
@@ -246,6 +246,8 @@
             <!-- ══════════════ BOTÓN CREAR CUENTA ══════════════ -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRegister"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="28dp"
@@ -253,8 +255,10 @@
                 android:textSize="15sp"
                 android:letterSpacing="0.1"
                 android:textStyle="bold"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="1.5dp"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/Blue3"
+                app:backgroundTint="@color/boton_movil_card"
                 app:cornerRadius="10dp"
                 app:iconTint="@color/white"
                 app:iconPadding="8dp"
@@ -267,6 +271,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:orientation="horizontal"
+                app:strokeColor="@android:color/white"
                 android:gravity="center_vertical">
 
                 <View
