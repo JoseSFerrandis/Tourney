@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="Crear Torneo"
+                    android:text="crear torneo"
                     android:textColor="@android:color/white"
                     android:textSize="56sp"
                     android:textStyle="bold" />
@@ -219,7 +219,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
-                                android:hint="$5,000"
+                                android:hint="€5,000"
                                 android:paddingHorizontal="16dp"
                                 android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -233,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="Tipo de Torneo"
+                    android:text="Tipo de torneo"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 
@@ -252,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="Código de Acceso"
+                    android:text="Código de acceso"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 
