@@ -56,16 +56,30 @@
                         android:padding="20dp">
 
                         <!-- Título del Torneo dentro de la Card -->
-                        <TextView
-                            android:id="@+id/tvTournamentTitle"
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Torneo de D&amp;D"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                            android:textColor="?attr/colorOnSurface"
-                            android:layout_marginBottom="2dp"
-                            android:textStyle="bold" />
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tvTournamentTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Torneo de D&amp;D"
+                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                android:textStyle="bold" />
+
+                            <!-- EL BOTÓN DE CORAZÓN -->
+                            <CheckBox
+                                android:id="@+id/btnFollow"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="end|top"
+                                android:button="@null"
+                                android:background="@drawable/ic_heart_follow"
+                                android:backgroundTint="@color/follow_button_filled"
+                                android:checked="false" />
+                        </FrameLayout>
 
                         <TextView
                             android:id="@+id/tv_game_name"
