@@ -55,6 +55,7 @@
                         android:orientation="vertical"
                         android:padding="24dp">
 
+                        <!-- Título del Torneo dentro de la Card -->
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -121,6 +122,7 @@
                             android:orientation="horizontal"
                             android:layout_marginBottom="12dp">
 
+                            <!-- Creador -->
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -144,6 +146,7 @@
                                     android:layout_marginStart="8dp" />
                             </LinearLayout>
 
+                            <!-- Tipo de torneo -->
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -182,6 +185,7 @@
                                 android:orientation="horizontal"
                                 android:layout_marginBottom="8dp">
 
+                                <!-- Participants -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -205,6 +209,7 @@
                                         android:layout_marginStart="8dp" />
                                 </LinearLayout>
 
+                                <!-- Date -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -235,6 +240,7 @@
                                 android:layout_height="40dp"
                                 android:orientation="horizontal">
 
+                                <!-- Location -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -261,6 +267,7 @@
                                         android:textSize="14sp" />
                                 </LinearLayout>
 
+                                <!-- Prize -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -286,9 +293,14 @@
 
 
                             </LinearLayout>
+
+                            <!-- Badge -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:layout_marginBottom="16dp">
+
                                 android:gravity="center">
 
                                 <TextView
@@ -311,6 +323,23 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="20dp" />
 
+
+                        <!-- Botón para unirse al torneo -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnJoin"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="17dp"
+                            android:text="Unirse al torneo"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/blue_600"
+                            app:icon="@drawable/ic_join_tournament"
+                            app:iconTint="@color/white" />
+
+
+                        <!-- Clasificación y Emparejamiento con estilo de botón -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnClassification"
                             style="@style/Widget.Material3.Button.TonalButton"
@@ -339,6 +368,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Participantes y Reglas al mismo nivel -->
                 <LinearLayout
                     android:id="@+id/layoutSecondaryActions"
                     android:layout_width="match_parent"

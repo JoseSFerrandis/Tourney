@@ -38,7 +38,7 @@ class TournamentPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         // Listener para recibir la miniatura seleccionada desde el selector
         parentFragmentManager.setFragmentResultListener("thumbnail_request", viewLifecycleOwner) { _, bundle ->
             val selectedThumbnail = bundle.getInt("selected_thumbnail")
@@ -77,7 +77,7 @@ class TournamentPage : Fragment() {
         binding.tvLocation?.text = establishedValue( tournament.location )
         binding.tvPrize?.text = establishedValue( tournament.prize )
         binding.tvTournamentType?.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
-        
+
         val actualNickname = User.actualUser?.nickname?.trim()
         val creatorNickname = tournament.creatorNickname?.trim()
         val isOwner = actualNickname.equals(creatorNickname, ignoreCase = true)
@@ -92,6 +92,8 @@ class TournamentPage : Fragment() {
         // Cargar imagen de portada inicial
         updateHeaderImage(tournament.thumbnail)
 
+
+        // Actualiza el color del badge según el estado del torneo
         val badgeBackground = when (tournament.tournamentStatus) {
             TournamentStatus.EDITABLE -> R.drawable.bg_badge_open
             TournamentStatus.IN_PROGRESS -> R.drawable.bg_badge_progress
@@ -104,7 +106,6 @@ class TournamentPage : Fragment() {
             TournamentStatus.IN_PROGRESS -> "En progreso"
             TournamentStatus.FINISHED -> "Finalizado"
         }
-    }
 
     private fun updateHeaderImage(thumbnailId: Int) {
         // Usamos findViewById directamente para asegurar el tipo ImageView
@@ -159,9 +160,11 @@ class TournamentPage : Fragment() {
 
         binding.btnFollow?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
+                // Lógica para añadir a siguiendo
                 User.actualUser?.addFollowingTournament(tournament.id)
                 Toast.makeText(context, "Siguiendo torneo", Toast.LENGTH_SHORT).show()
             } else {
+                // Lógica para dejar de seguir
                 User.actualUser?.removeFollowingTournament(tournament.id)
             }
 
@@ -177,7 +180,7 @@ class TournamentPage : Fragment() {
             TournamentType.SUIZO -> R.string.rules_suizo
             TournamentType.OTRO -> R.string.rules_otro
         }
-        
+
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.rules_title)
             .setMessage(rulesTextId)
