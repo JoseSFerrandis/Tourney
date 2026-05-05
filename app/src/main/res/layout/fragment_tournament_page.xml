@@ -275,6 +275,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:layout_marginBottom="16dp">
+
                                 <TextView
                                     android:id="@+id/tv_status_badge"
                                     android:layout_width="wrap_content"
@@ -294,6 +295,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp" />
+
+
+                        <!-- Botón para unirse al torneo -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnJoin"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="17dp"
+                            android:text="Unirse al torneo"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/blue_600"
+                            app:icon="@drawable/ic_join_tournament"
+                            app:iconTint="@color/white" />
 
 
                         <!-- Clasificación y Emparejamiento con estilo de botón -->

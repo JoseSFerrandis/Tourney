@@ -66,8 +66,8 @@ class TournamentPage : Fragment() {
         binding.tvTournamentType.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
         binding.btnFollow?.isChecked = User.actualUser?.followingTournamentList?.contains(tournament.id) == true
 
-
         binding.btnFollow?.isVisible = User.actualUser?.nickname != tournament.creatorNickname
+        binding.btnJoin?.isVisible = User.actualUser?.nickname != tournament.creatorNickname
 
 
         // Actualiza el color del badge según el estado del torneo
