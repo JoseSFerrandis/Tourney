@@ -143,11 +143,11 @@ class TournamentPage : Fragment() {
         binding.btnFollow?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 // Lógica para añadir a siguiendo
-                User.actualUser?.followingTournamentList?.add(tournament.id)
+                User.actualUser?.addFollowingTournament(tournament.id)
                 Toast.makeText(context, "Siguiendo torneo", Toast.LENGTH_SHORT).show()
             } else {
                 // Lógica para dejar de seguir
-                User.actualUser?.followingTournamentList?.remove(tournament.id)
+                User.actualUser?.removeFollowingTournament(tournament.id)
             }
 
             // Aquí es donde usarías el Context para guardar en la DB (como vimos antes)
