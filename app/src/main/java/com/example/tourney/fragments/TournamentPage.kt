@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tourney.R
@@ -65,6 +66,8 @@ class TournamentPage : Fragment() {
         binding.tvTournamentType.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
         binding.btnFollow?.isChecked = User.actualUser?.followingTournamentList?.contains(tournament.id) == true
 
+
+        binding.btnFollow?.isVisible = User.actualUser?.nickname != tournament.creatorNickname
 
 
         // Actualiza el color del badge según el estado del torneo
