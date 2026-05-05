@@ -28,6 +28,8 @@ class UsersDao(context: Context){
             put(UserDatabaseHelper.COL_PHOTO, photo)
             put(UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS, "")
             put(UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS, "")
+            put(UserDatabaseHelper.COL_LIST_JOINED_TOURNAMENTS, "")
+            //put(UserDatabaseHelper.COL_LIST_ADMIN_TOURNAMENTS, "")
         }
         return db.insert(UserDatabaseHelper.TABLE_USERS, null, values)
     }
@@ -43,7 +45,9 @@ class UsersDao(context: Context){
                 UserDatabaseHelper.COL_PASSWORD,
                 UserDatabaseHelper.COL_PHOTO,
                 UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS,
-                UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS
+                UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS,
+                UserDatabaseHelper.COL_LIST_JOINED_TOURNAMENTS,
+                //UserDatabaseHelper.COL_LIST_ADMIN_TOURNAMENTS
             ),
             null,
             null,
@@ -63,7 +67,19 @@ class UsersDao(context: Context){
                 val photo = getInt(getColumnIndexOrThrow(UserDatabaseHelper.COL_PHOTO))
                 val showableTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS))
                 val followingTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS))
-                users.add(User(id, nickname, email, password, photo, parseListToLong(showableTournamentList), parseListToLong(followingTournamentList)))
+                val joinedTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_JOINED_TOURNAMENTS))
+                // val adminTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_ADMIN_TOURNAMENTS))
+                users.add(User(
+                    id,
+                    nickname,
+                    email,
+                    password,
+                    photo,
+                    parseListToLong(showableTournamentList),
+                    parseListToLong(followingTournamentList),
+                    parseListToLong(joinedTournamentList)
+                    //parseListToLong(adminTournamentList)
+                ))
             }
         }
         cursor.close()
@@ -141,6 +157,25 @@ class UsersDao(context: Context){
         db.close()
         return rowsUpdated
     }
+
+    fun updateJoinedTournamentList(email: String, joinedTournamentList: String): Int {
+        val db = helper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(UserDatabaseHelper.COL_LIST_JOINED_TOURNAMENTS, joinedTournamentList)
+        }
+
+        // Devuelve cuántas filas se actualizaron
+        val rowsUpdated = db.update(
+            UserDatabaseHelper.TABLE_USERS,
+            values,
+            "${UserDatabaseHelper.COL_EMAIL}=?",
+            arrayOf(email)
+        )
+        db.close()
+        return rowsUpdated
+    }
+
 
     fun getUsernameById(id: Long): String {
         val db = helper.readableDatabase

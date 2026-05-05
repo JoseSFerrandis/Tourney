@@ -12,12 +12,16 @@ data class User (
     var password: String,
     var photo: Int,
     var showableTournamentList: MutableList<Long> = mutableListOf(),
-    var followingTournamentList: MutableList<Long> = mutableListOf()
+    var followingTournamentList: MutableList<Long> = mutableListOf(),
+    var joinedTournamentList: MutableList<Long> = mutableListOf()
+    //var adminTournamentList: MutableList<Long> = mutableListOf()
 ): Parcelable{
     fun addShowableTournament(id: Long){ showableTournamentList.add(id) }
     fun addFollowingTournament(id: Long){ followingTournamentList.add(id) }
+    fun addJoinedTournament(id: Long){ joinedTournamentList.add(id) }
     fun removeShowableTournament(id: Long){ showableTournamentList.remove(id) }
     fun removeFollowingTournament(id: Long){ followingTournamentList.remove(id) }
+    fun removeJoinedTournament(id: Long){ joinedTournamentList.remove(id) }
     fun hasShowableTournament(id: Long): Boolean{ return showableTournamentList.contains(id) }
     fun setShowableTournamentList(stringList: String){
         showableTournamentList = stringList.split(",").map { it.trim().toLong() }.toMutableList()
