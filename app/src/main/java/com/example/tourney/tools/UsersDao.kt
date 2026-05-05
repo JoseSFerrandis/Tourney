@@ -27,6 +27,7 @@ class UsersDao(context: Context){
             put(UserDatabaseHelper.COL_PASSWORD, password)
             put(UserDatabaseHelper.COL_PHOTO, photo)
             put(UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS, "")
+            put(UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS, "")
         }
         return db.insert(UserDatabaseHelper.TABLE_USERS, null, values)
     }
@@ -41,7 +42,8 @@ class UsersDao(context: Context){
                 UserDatabaseHelper.COL_EMAIL,
                 UserDatabaseHelper.COL_PASSWORD,
                 UserDatabaseHelper.COL_PHOTO,
-                UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS
+                UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS,
+                UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS
             ),
             null,
             null,
@@ -51,6 +53,10 @@ class UsersDao(context: Context){
         )
 
         val users = mutableListOf<User>()
+
+        if(cursor.isNull(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COL_ID)))
+            return users
+
         with(cursor) {
             while (moveToNext()) {
                 val id = getLong(getColumnIndexOrThrow(UserDatabaseHelper.COL_ID))
@@ -59,10 +65,8 @@ class UsersDao(context: Context){
                 val password = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_PASSWORD))
                 val photo = getInt(getColumnIndexOrThrow(UserDatabaseHelper.COL_PHOTO))
                 val showableTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS))
-                if(showableTournamentList != "")
-                    users.add(User(id, nickname, email, password, photo, showableTournamentList.split(",").map { it.trim().toLong() }.toMutableList()))
-                else
-                    users.add(User(id, nickname, email, password, photo))
+                val followingTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS))
+                users.add(User(id, nickname, email, password, photo, parseListToLong(showableTournamentList), parseListToLong(followingTournamentList)))
             }
         }
         cursor.close()
@@ -105,7 +109,7 @@ class UsersDao(context: Context){
         return rowsUpdated
     }
 
-    public fun updateShowableTournamentList(email: String, showableTournamentList: String): Int {
+    fun updateShowableTournamentList(email: String, showableTournamentList: String): Int {
         val db = helper.writableDatabase
 
         val values = ContentValues().apply {
@@ -162,5 +166,15 @@ class UsersDao(context: Context){
         )
         db.close()
         return rowsUpdated
+    }
+
+    fun parseListToLong(list: String?): MutableList<Long> {
+        return if (!list.isNullOrBlank()) {
+            list.split(",")
+                .map { it.trim().toLong() }
+                .toMutableList()
+        } else {
+            mutableListOf()
+        }
     }
 }

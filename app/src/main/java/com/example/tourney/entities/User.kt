@@ -11,7 +11,8 @@ data class User (
     var email: String,
     var password: String,
     var photo: Int,
-    var showableTournamentList: MutableList<Long> = mutableListOf()
+    var showableTournamentList: MutableList<Long> = mutableListOf(),
+    var followingTournamentList: MutableList<Long> = mutableListOf()
 ): Parcelable{
     fun addShowableTournament(id: Long){ showableTournamentList.add(id) }
     fun removeShowableTournament(id: Long){ showableTournamentList.remove(id) }
