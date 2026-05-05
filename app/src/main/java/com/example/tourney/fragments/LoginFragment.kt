@@ -42,9 +42,7 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.bind(view)
 
         binding.btnLoginLogin.setOnClickListener {
-            //if(loginByButton()) {
             if(login()) {
-                Snackbar.make(view, "Hola, ${User.actualUser?.nickname}", Snackbar.LENGTH_LONG).show()
                 findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
             }
         }
