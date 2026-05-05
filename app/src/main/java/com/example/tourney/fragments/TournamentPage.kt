@@ -91,6 +91,8 @@ class TournamentPage : Fragment() {
         binding.btnFollow?.isVisible = !isOwner
         binding.btnJoin?.isVisible = !isOwner
         binding.btnSettings?.isVisible = isOwner
+        binding.btnJoin.isEnabled = tournament.tournamentStatus == TournamentStatus.EDITABLE
+        binding.btnJoin.text = if(tournament.participantList.find { it.userId == User.actualUser?.id } != null) "Desinscribirse" else "Inscribirse"
 
         // Cargar imagen de portada inicial
         updateHeaderImage(tournament.thumbnail)
@@ -174,6 +176,37 @@ class TournamentPage : Fragment() {
 
             UsersDao(requireContext()).updateFollowingTournamentList(User.actualUser?.email!!,
                 User.actualUser?.followingTournamentList.toString().replace("[", "").replace("]", ""))
+        }
+
+        binding.btnJoin.setOnClickListener {
+            val alreadyJoined = tournament.participantList.find { it.userId == User.actualUser?.id } != null
+
+            if(alreadyJoined){
+                tournament.removeParticipant(User.actualUser!!)
+                User.actualUser?.removeJoinedTournament(tournament.id)
+
+                UsersDao(requireContext()).updateJoinedTournamentList(
+                    User.actualUser?.email!!,
+                    User.actualUser?.joinedTournamentList.toString().replace("[", "")
+                        .replace("]", "")
+                )
+                TournamentsDao(requireContext()).updateTournament(tournament)
+                Toast.makeText(requireContext(), "Desinscrito", Toast.LENGTH_SHORT).show()
+                setupUI(tournament)
+                return@setOnClickListener
+            }
+
+            if(tournament.addParticipant(User.actualUser!!)){
+                User.actualUser?.addJoinedTournament(tournament.id)
+                UsersDao(requireContext()).updateJoinedTournamentList(
+                    User.actualUser?.email!!,
+                    User.actualUser?.joinedTournamentList.toString().replace("[", "")
+                        .replace("]", "")
+                )
+                TournamentsDao(requireContext()).updateTournament(tournament)
+                Toast.makeText(requireContext(), "Inscripción exitosa", Toast.LENGTH_SHORT).show()
+                setupUI(tournament)
+            }
         }
     }
 
