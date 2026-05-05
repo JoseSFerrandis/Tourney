@@ -102,23 +102,24 @@
             </FrameLayout>
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <!-- Content Section adapted for TabLayout + ViewPager2 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="-24dp"
             android:background="@drawable/bg_content_rounded_top"
-            android:fillViewport="true"
-            app:layout_constraintTop_toBottomOf="@id/header_layout"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_layout">
 
             <LinearLayout
                 android:layout_width="800dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="40dp">
 
-                <!-- Action Buttons (Side by Side on Tablet) -->
+                <!-- Title -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -128,11 +129,12 @@
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
+                <!-- Action Buttons (Side by Side on Tablet) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="40dp">
+                    android:layout_marginBottom="24dp">
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_create_tournament"
@@ -169,16 +171,44 @@
                         android:gravity="center_vertical|start" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_tournaments"
+                <!-- TabLayout matching mobile logic -->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2"
-                    tools:listitem="@layout/item_tournament_card" />
+                    android:layout_marginBottom="16dp"
+                    app:tabTextColor="@color/text_secondary"
+                    app:tabSelectedTextColor="@color/boton_tablet_card">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/page_my_tournaments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mis torneos"/>
+
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/page_joined_tournaments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Inscrito"/>
+
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/page_following_tournaments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Siguiendo"/>
+
+                </com.google.android.material.tabs.TabLayout>
+
+                <!-- ViewPager2 replacing static RecyclerView -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

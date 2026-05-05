@@ -16,6 +16,7 @@ import com.example.tourney.databinding.FragmentTournamentPageBinding
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
+import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import java.util.Date
 import kotlin.toString
@@ -64,10 +65,13 @@ class TournamentPage : Fragment() {
         binding.tvLocation.text = establishedValue( tournament.location )
         binding.tvPrize.text = establishedValue( tournament.prize )
         binding.tvTournamentType.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
-        binding.btnFollow?.isChecked = User.actualUser?.followingTournamentList?.contains(tournament.id) == true
+        binding.btnFollow.isChecked = User.actualUser?.followingTournamentList?.contains(tournament.id) == true
 
-        binding.btnFollow?.isVisible = User.actualUser?.nickname != tournament.creatorNickname
-        binding.btnJoin?.isVisible = User.actualUser?.nickname != tournament.creatorNickname
+        binding.btnFollow.isVisible = User.actualUser?.nickname != tournament.creatorNickname
+        binding.btnJoin.isVisible = User.actualUser?.nickname != tournament.creatorNickname
+        binding.btnJoin.isEnabled = tournament.tournamentStatus == TournamentStatus.EDITABLE
+        //binding.btnJoin.text = if(User.actualUser?.joinedTournamentList?.contains(tournament.id)!!) "Desinscribirse" else "Inscribirse"
+        binding.btnJoin.text = if(tournament.participantList.find { it.userId == User.actualUser?.id } != null) "Desinscribirse" else "Inscribirse"
 
 
         // Actualiza el color del badge según el estado del torneo
@@ -153,7 +157,39 @@ class TournamentPage : Fragment() {
             // Aquí es donde usarías el Context para guardar en la DB (como vimos antes)
             //UsersDao(requireContext()).updateUser(User.actualUser.id!!)
             UsersDao(requireContext()).updateFollowingTournamentList(User.actualUser?.email!!,
-                User.actualUser?.followingTournamentList.toString()?.replace("[", "")?.replace("]", "")!!)
+                User.actualUser?.followingTournamentList.toString().replace("[", "").replace("]", ""))
+        }
+
+        binding.btnJoin.setOnClickListener {
+            // TODO: Arreglar bug donde al inscribirse -> mirar clasificación -> mirar emparejamientos -> desinscribirse -> mirar clasificación -> mirar emparejamientos -> inscribirse -> el usuario aparece ya eliminado (todo esto se ve desde la pantalla del usuario inscrito, no del creador)
+            val alreadyJoined = tournament.participantList.find { it.userId == User.actualUser?.id } != null
+
+            if(alreadyJoined){
+                tournament.removeParticipant(User.actualUser!!)
+                User.actualUser?.removeJoinedTournament(tournament.id)
+
+                UsersDao(requireContext()).updateJoinedTournamentList(
+                    User.actualUser?.email!!,
+                    User.actualUser?.joinedTournamentList.toString().replace("[", "")
+                        .replace("]", "")
+                )
+                TournamentsDao(requireContext()).updateTournament(tournament)
+                Toast.makeText(requireContext(), "Desinscrito", Toast.LENGTH_SHORT).show()
+                setupUI(tournament)
+                return@setOnClickListener
+            }
+
+            if(tournament.addParticipant(User.actualUser!!)){
+                User.actualUser?.addJoinedTournament(tournament.id)
+                UsersDao(requireContext()).updateJoinedTournamentList(
+                    User.actualUser?.email!!,
+                    User.actualUser?.joinedTournamentList.toString().replace("[", "")
+                        .replace("]", "")
+                )
+                TournamentsDao(requireContext()).updateTournament(tournament)
+                Toast.makeText(requireContext(), "Inscripción exitosa", Toast.LENGTH_SHORT).show()
+                setupUI(tournament)
+            }
         }
     }
 

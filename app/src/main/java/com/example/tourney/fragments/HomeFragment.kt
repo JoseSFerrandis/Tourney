@@ -46,8 +46,8 @@ class HomeFragment : Fragment() {
         TabLayoutMediator(tabLayout!!, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Mis torneos"
-                //1 -> tab.text = "Participando"
-                1 -> tab.text = "Siguiendo"
+                1 -> tab.text = "Participando"
+                2 -> tab.text = "Siguiendo"
             }
         }.attach()
 
@@ -55,9 +55,9 @@ class HomeFragment : Fragment() {
             viewModel.updateSearch(text.toString())
         }
 
-        //setupRecyclerView()
         setupListeners()
         updateProfileImage()
+        binding.tvGreeting.text = "Hola, ${User.actualUser?.nickname}"
     }
 
     private fun updateProfileImage() {
@@ -74,13 +74,6 @@ class HomeFragment : Fragment() {
         } else {
             // Imagen por defecto si es 0 o nulo
             binding.ivProfile?.setImageResource(R.drawable.ic_user_pfp1)
-        }
-    }
-
-    private fun setupRecyclerView() {
-        val tournamentAdapter = TournamentAdapter(TournamentRepository.getInstance().getTournaments()){}
-        binding.etSearch.addTextChangedListener { text ->
-            tournamentAdapter.filterTournaments(text.toString())
         }
     }
 
@@ -124,12 +117,13 @@ class HomeFragment : Fragment() {
 
 class TournamentCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = 2 // "Mis torneos" y "Siguiendo"
+    override fun getItemCount(): Int = 3 // "Mis torneos","Inscrito" y "Siguiendo"
 
     override fun createFragment(position: Int): Fragment {
         val user = User.actualUser
         return when (position) {
             0 -> TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
+            1 -> TournamentListFragment.newInstance(user?.joinedTournamentList ?: emptyList())
             else -> TournamentListFragment.newInstance(user?.followingTournamentList ?: emptyList())
         }
     }

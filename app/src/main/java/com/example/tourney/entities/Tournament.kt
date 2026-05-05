@@ -102,6 +102,8 @@ data class Tournament(
     fun removeParticipant(participant: Participant): Boolean {
         if (participantList.contains(participant)) {
             participantList.remove(participant)
+            restartMatches()
+            //recalculateNotDead()
             return true
         }
         return false

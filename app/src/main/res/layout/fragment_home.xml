@@ -177,6 +177,12 @@
                     android:text="Mis torneos"/>
 
                 <com.google.android.material.tabs.TabItem
+                    android:id="@+id/page_joined_tournaments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inscrito"/>
+
+                <com.google.android.material.tabs.TabItem
                     android:id="@+id/page_following_tournaments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
