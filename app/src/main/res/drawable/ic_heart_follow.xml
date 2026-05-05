@@ -1,0 +1,13 @@
+<!-- res/drawable/ic_heart_follow.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Cuando está seleccionado (Siguiendo) -->
+    <item
+        android:drawable="@drawable/ic_heart_filled"
+        android:state_checked="true" />
+    <!-- Cuando no está seleccionado (No siguiendo) -->
+    <item
+        android:drawable="@drawable/ic_heart_outline"
+        android:state_checked="false" />
+    <!-- Por defecto -->
+    <item android:drawable="@drawable/ic_heart_outline" />
+</selector>

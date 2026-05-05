@@ -55,7 +55,7 @@
         android:id="@+id/HomeFragment"
         android:name="com.example.tourney.fragments.HomeFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_dashboard">
+        tools:layout="@layout/fragment_home">
 
         <action
             android:id="@+id/action_HomeFragment_to_LoginFragment"

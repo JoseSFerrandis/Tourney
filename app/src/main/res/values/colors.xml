@@ -51,4 +51,7 @@
     <!-- Color dinámico para tarjetas (negro en día, blanco en noche) -->
     <color name="dynamic_text_card">#FF000000</color>
 
+    <!-- Color del boton follow tournament -->
+    <color name="follow_button_filled">@color/boton_movil_card</color>
+
 </resources>
