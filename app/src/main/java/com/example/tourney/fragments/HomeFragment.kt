@@ -7,22 +7,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.tourney.adapters.TournamentAdapter
-import com.example.tourney.entities.Tournament
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentHomeBinding
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
-import com.google.android.material.snackbar.Snackbar
+import com.example.tourney.viewModel.HomeViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var tournamentAdapter: TournamentAdapter
+    private lateinit var viewPager: ViewPager2
+    private val viewModel: HomeViewModel by viewModels({ this })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +38,24 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewPager = binding.pager!!
+        val tabLayout = binding.tabLayout
 
-        setupRecyclerView()
+        updateTournamentAdapter()
+
+        TabLayoutMediator(tabLayout!!, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Mis torneos"
+                //1 -> tab.text = "Participando"
+                1 -> tab.text = "Siguiendo"
+            }
+        }.attach()
+
+        binding.etSearch.addTextChangedListener { text ->
+            viewModel.updateSearch(text.toString())
+        }
+
+        //setupRecyclerView()
         setupListeners()
         updateProfileImage()
     }
@@ -59,11 +78,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.rvTournaments.layoutManager = LinearLayoutManager(context)
-        val tournaments = TournamentRepository.getInstance().searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf())
-        tournamentAdapter = TournamentAdapter(tournaments) { tournament -> onTournamentClick(tournament) }
-        binding.rvTournaments.adapter = tournamentAdapter
-
+        val tournamentAdapter = TournamentAdapter(TournamentRepository.getInstance().getTournaments()){}
         binding.etSearch.addTextChangedListener { text ->
             tournamentAdapter.filterTournaments(text.toString())
         }
@@ -91,27 +106,31 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun onTournamentClick(tournament: Tournament) {
-        val bundle = Bundle().apply {
-            putParcelable("tournament_data", tournament)
-        }
-        
-        try {
-            findNavController().navigate(R.id.action_HomeFragment_to_TournamentFragment, bundle)
-        } catch (e: Exception) {
-            Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
-        binding.tvGreeting.text = "Hola, ${User.actualUser?.nickname}"
         updateProfileImage() // Actualizamos la imagen también al volver
-        tournamentAdapter.updateTournaments(TournamentRepository.getInstance().searchTournamentListByIds(User.actualUser?.showableTournamentList ?: mutableListOf()))
+        updateTournamentAdapter()
+    }
+
+    fun updateTournamentAdapter(){
+        viewPager.adapter = TournamentCollectionAdapter(this)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+}
+
+class TournamentCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+
+    override fun getItemCount(): Int = 2 // "Mis torneos" y "Siguiendo"
+
+    override fun createFragment(position: Int): Fragment {
+        val user = User.actualUser
+        return when (position) {
+            0 -> TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
+            else -> TournamentListFragment.newInstance(user?.followingTournamentList ?: emptyList())
+        }
     }
 }
