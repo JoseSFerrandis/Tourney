@@ -14,7 +14,10 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.databinding.FragmentTournamentPageBinding
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
+import com.example.tourney.entities.User
+import com.example.tourney.tools.UsersDao
 import java.util.Date
+import kotlin.toString
 
 class TournamentPage : Fragment() {
 
@@ -33,13 +36,13 @@ class TournamentPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         try {
             // Recibimos el objeto Tournament de forma segura
             val tournament = arguments?.getParcelable<Tournament>("tournament_data")
 
             if (tournament != null) {
                 setupUI(tournament)
+                setupClickListeners(tournament)
             } else {
                 Log.e("TournamentPage", "No se recibieron datos del torneo")
                 Toast.makeText(requireContext(), "Error al cargar datos del torneo", Toast.LENGTH_SHORT).show()
@@ -48,8 +51,6 @@ class TournamentPage : Fragment() {
             Log.e("TournamentPage", "Error procesando argumentos: ${e.message}")
             Toast.makeText(requireContext(), "Error crítico al cargar la página", Toast.LENGTH_SHORT).show()
         }
-
-        setupClickListeners()
     }
 
     private fun setupUI(tournament: Tournament) {
@@ -62,6 +63,8 @@ class TournamentPage : Fragment() {
         binding.tvLocation.text = establishedValue( tournament.location )
         binding.tvPrize.text = establishedValue( tournament.prize )
         binding.tvTournamentType.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
+        binding.btnFollow?.isChecked = User.actualUser?.followingTournamentList?.contains(tournament.id) == true
+
 
 
         // Actualiza el color del badge según el estado del torneo
@@ -81,7 +84,7 @@ class TournamentPage : Fragment() {
         // Por ahora el XML solo tiene el título y botones
     }
 
-    private fun setupClickListeners() {
+    private fun setupClickListeners(tournament: Tournament) {
         binding.btnClassification.setOnClickListener {
             val tournament = arguments?.getParcelable<Tournament>("tournament_data")
             if (tournament != null) {
@@ -132,6 +135,22 @@ class TournamentPage : Fragment() {
                 }
                 findNavController().navigate(R.id.action_TournamentFragment_to_ParticipantsListFragment, bundle)
             }
+        }
+
+        binding.btnFollow?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Lógica para añadir a siguiendo
+                User.actualUser?.followingTournamentList?.add(tournament.id)
+                Toast.makeText(context, "Siguiendo torneo", Toast.LENGTH_SHORT).show()
+            } else {
+                // Lógica para dejar de seguir
+                User.actualUser?.followingTournamentList?.remove(tournament.id)
+            }
+
+            // Aquí es donde usarías el Context para guardar en la DB (como vimos antes)
+            //UsersDao(requireContext()).updateUser(User.actualUser.id!!)
+            UsersDao(requireContext()).updateFollowingTournamentList(User.actualUser?.email!!,
+                User.actualUser?.followingTournamentList.toString()?.replace("[", "")?.replace("]", "")!!)
         }
     }
 

@@ -15,7 +15,9 @@ data class User (
     var followingTournamentList: MutableList<Long> = mutableListOf()
 ): Parcelable{
     fun addShowableTournament(id: Long){ showableTournamentList.add(id) }
+    fun addFollowingTournament(id: Long){ followingTournamentList.add(id) }
     fun removeShowableTournament(id: Long){ showableTournamentList.remove(id) }
+    fun removeFollowingTournament(id: Long){ followingTournamentList.remove(id) }
     fun hasShowableTournament(id: Long): Boolean{ return showableTournamentList.contains(id) }
     fun setShowableTournamentList(stringList: String){
         showableTournamentList = stringList.split(",").map { it.trim().toLong() }.toMutableList()

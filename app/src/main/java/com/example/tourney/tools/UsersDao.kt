@@ -54,9 +54,6 @@ class UsersDao(context: Context){
 
         val users = mutableListOf<User>()
 
-        if(cursor.isNull(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COL_ID)))
-            return users
-
         with(cursor) {
             while (moveToNext()) {
                 val id = getLong(getColumnIndexOrThrow(UserDatabaseHelper.COL_ID))
@@ -114,6 +111,24 @@ class UsersDao(context: Context){
 
         val values = ContentValues().apply {
             put(UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS, showableTournamentList)
+        }
+
+        // Devuelve cuántas filas se actualizaron
+        val rowsUpdated = db.update(
+            UserDatabaseHelper.TABLE_USERS,
+            values,
+            "${UserDatabaseHelper.COL_EMAIL}=?",
+            arrayOf(email)
+        )
+        db.close()
+        return rowsUpdated
+    }
+
+    fun updateFollowingTournamentList(email: String, followingTournamentList: String): Int {
+        val db = helper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS, followingTournamentList)
         }
 
         // Devuelve cuántas filas se actualizaron
