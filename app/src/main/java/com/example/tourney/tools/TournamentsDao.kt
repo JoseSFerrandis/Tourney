@@ -36,6 +36,7 @@ class TournamentsDao(context: Context) {
                 put(TournamentDatabaseHelper.COL_CODE, t.code)
                 put(TournamentDatabaseHelper.COL_TYPE, t.type.name)
                 put(TournamentDatabaseHelper.COL_STATUS, t.tournamentStatus.name)
+                put(TournamentDatabaseHelper.COL_THUMBNAIL, t.thumbnail)
             }
             val tournamentId = db.insert(TournamentDatabaseHelper.TABLE_TOURNAMENTS, null, values)
 
@@ -106,7 +107,8 @@ class TournamentsDao(context: Context) {
                     prize = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PRIZE)),
                     code = getInt(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_CODE)),
                     type = TournamentType.valueOf(getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_TYPE))),
-                    tournamentStatus = TournamentStatus.valueOf(getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_STATUS)))
+                    tournamentStatus = TournamentStatus.valueOf(getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_STATUS))),
+                    thumbnail = getInt(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_THUMBNAIL))
                 )
 
                 // Cargar Participantes
@@ -197,6 +199,7 @@ class TournamentsDao(context: Context) {
             // 1. Actualizar datos básicos del torneo
             val values = ContentValues().apply {
                 put(TournamentDatabaseHelper.COL_STATUS, t.tournamentStatus.name)
+                put(TournamentDatabaseHelper.COL_THUMBNAIL, t.thumbnail)
             }
             db.update(TournamentDatabaseHelper.TABLE_TOURNAMENTS, values, "${TournamentDatabaseHelper.COL_ID}=?", arrayOf(t.id.toString()))
 
@@ -230,6 +233,16 @@ class TournamentsDao(context: Context) {
             db.endTransaction()
             db.close()
         }
+    }
+
+    fun updateTournamentThumbnail(id: Long, thumbnail: Int): Int {
+        val db = helper.writableDatabase
+        val values = ContentValues().apply {
+            put(TournamentDatabaseHelper.COL_THUMBNAIL, thumbnail)
+        }
+        val rows = db.update(TournamentDatabaseHelper.TABLE_TOURNAMENTS, values, "${TournamentDatabaseHelper.COL_ID}=?", arrayOf(id.toString()))
+        db.close()
+        return rows
     }
 
     /**

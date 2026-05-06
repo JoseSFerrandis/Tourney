@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
@@ -19,32 +20,44 @@ import com.example.tourney.entities.User
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import java.util.Date
-import kotlin.toString
 
 class TournamentPage : Fragment() {
 
     private var _binding: FragmentTournamentPageBinding? = null
     private val binding get() = _binding!!
+    private var tournament: Tournament? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflamos la vista correctamente usando ViewBinding
         _binding = FragmentTournamentPageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        // Listener para recibir la miniatura seleccionada desde el selector
+        parentFragmentManager.setFragmentResultListener("thumbnail_request", viewLifecycleOwner) { _, bundle ->
+            val selectedThumbnail = bundle.getInt("selected_thumbnail")
+            tournament?.let { t ->
+                t.thumbnail = selectedThumbnail
+                // Actualizar en base de datos
+                TournamentsDao(requireContext()).updateTournamentThumbnail(t.id, selectedThumbnail)
+                // Refrescar imagen en la cabecera
+                updateHeaderImage(selectedThumbnail)
+                Toast.makeText(requireContext(), "Portada actualizada", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         try {
-            // Recibimos el objeto Tournament de forma segura
-            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
+            tournament = arguments?.getParcelable<Tournament>("tournament_data")
 
             if (tournament != null) {
-                setupUI(tournament)
-                setupClickListeners(tournament)
+                setupUI(tournament!!)
+                setupClickListeners(tournament!!)
             } else {
                 Log.e("TournamentPage", "No se recibieron datos del torneo")
                 Toast.makeText(requireContext(), "Error al cargar datos del torneo", Toast.LENGTH_SHORT).show()
@@ -56,141 +69,120 @@ class TournamentPage : Fragment() {
     }
 
     private fun setupUI(tournament: Tournament) {
-        // Rellenamos la UI con los datos recibidos
-        binding.tvTournamentTitle.text = establishedValue( tournament.name )
-        binding.tvGameName.text = establishedValue( tournament.game )
-        binding.tvCreator.text = establishedValue( tournament.creatorNickname )
-        binding.tvParticipants.text = establishedValue( "${tournament.numParticipants}/${tournament.maxParticipants}" )
-        binding.tvDate.text = establishedValue( tournament.date )
-        binding.tvLocation.text = establishedValue( tournament.location )
-        binding.tvPrize.text = establishedValue( tournament.prize )
-        binding.tvTournamentType.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
-        binding.btnFollow.isChecked = User.actualUser?.followingTournamentList?.contains(tournament.id) == true
+        binding.tvTournamentTitle?.text = establishedValue( tournament.name )
+        binding.tvGameName?.text = establishedValue( tournament.game )
+        binding.tvCreator?.text = establishedValue( tournament.creatorNickname )
+        binding.tvParticipants?.text = establishedValue( "${tournament.numParticipants}/${tournament.maxParticipants}" )
+        binding.tvDate?.text = establishedValue( tournament.date )
+        binding.tvLocation?.text = establishedValue( tournament.location )
+        binding.tvPrize?.text = establishedValue( tournament.prize )
+        binding.tvTournamentType?.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
+        
+        val actualNickname = User.actualUser?.nickname?.trim()
+        val creatorNickname = tournament.creatorNickname?.trim()
+        val isOwner = actualNickname.equals(creatorNickname, ignoreCase = true)
 
-        binding.btnFollow.isVisible = User.actualUser?.nickname != tournament.creatorNickname
-        binding.btnJoin.isVisible = User.actualUser?.nickname != tournament.creatorNickname
-        binding.btnJoin.isEnabled = tournament.tournamentStatus == TournamentStatus.EDITABLE
-        //binding.btnJoin.text = if(User.actualUser?.joinedTournamentList?.contains(tournament.id)!!) "Desinscribirse" else "Inscribirse"
-        binding.btnJoin.text = if(tournament.participantList.find { it.userId == User.actualUser?.id } != null) "Desinscribirse" else "Inscribirse"
+        binding.btnFollow?.isChecked = User.actualUser?.followingTournamentList?.contains(tournament.id) == true
 
+        // Aplicamos visibilidad
+        binding.btnFollow?.isVisible = !isOwner
+        binding.btnJoin?.isVisible = !isOwner
+        binding.btnSettings?.isVisible = isOwner
 
-        // Actualiza el color del badge según el estado del torneo
+        // Cargar imagen de portada inicial
+        updateHeaderImage(tournament.thumbnail)
+
         val badgeBackground = when (tournament.tournamentStatus) {
             TournamentStatus.EDITABLE -> R.drawable.bg_badge_open
             TournamentStatus.IN_PROGRESS -> R.drawable.bg_badge_progress
             TournamentStatus.FINISHED -> R.drawable.bg_badge_finished
         }
-        binding.tvStatusBadge.setBackgroundResource(badgeBackground)
+        binding.tvStatusBadge?.setBackgroundResource(badgeBackground)
 
-        binding.tvStatusBadge.text = when (tournament.tournamentStatus) {
+        binding.tvStatusBadge?.text = when (tournament.tournamentStatus) {
             TournamentStatus.EDITABLE -> "Abierto"
             TournamentStatus.IN_PROGRESS -> "En progreso"
             TournamentStatus.FINISHED -> "Finalizado"
         }
+    }
 
-        // Por ahora el XML solo tiene el título y botones
+    private fun updateHeaderImage(thumbnailId: Int) {
+        // Usamos findViewById directamente para asegurar el tipo ImageView
+        // Esto evita errores de DataBinding cuando los tipos en los layouts (móvil/tablet) no coinciden exactamente
+        val header = binding.root.findViewById<ImageView>(R.id.headerImage)
+        if (thumbnailId > 0) {
+            // Android requiere nombres de recursos en minúsculas
+            val resName = "tournament_thumbnail_$thumbnailId"
+            val resId = resources.getIdentifier(resName, "drawable", requireContext().packageName)
+            if (resId != 0) {
+                header?.setImageResource(resId)
+            } else {
+                header?.setImageResource(R.drawable.dnd_thumbnail)
+            }
+        } else {
+            header?.setImageResource(R.drawable.dnd_thumbnail)
+        }
     }
 
     private fun setupClickListeners(tournament: Tournament) {
         binding.btnClassification.setOnClickListener {
-            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
-            if (tournament != null) {
-                val bundle = Bundle().apply {
-                    putParcelable("tournament_data", tournament)
-                }
-                findNavController().navigate(R.id.action_TournamentFragment_to_ClasificationListFragment, bundle)
+            val bundle = Bundle().apply {
+                putParcelable("tournament_data", tournament)
             }
+            findNavController().navigate(R.id.action_TournamentFragment_to_ClasificationListFragment, bundle)
         }
 
         binding.btnMatches.setOnClickListener {
-            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
-            if (tournament != null) {
-                val bundle = Bundle().apply {
-                    putParcelable("tournament_data", tournament)
-                }
-                findNavController().navigate(R.id.action_TournamentFragment_to_MatchesFragment, bundle)
+            val bundle = Bundle().apply {
+                putParcelable("tournament_data", tournament)
             }
+            findNavController().navigate(R.id.action_TournamentFragment_to_MatchesFragment, bundle)
         }
 
-        binding.btnRules.setOnClickListener {
-            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
-            if (tournament != null) {
-                val rulesTextId = when (tournament.type) {
-                    TournamentType.ELIMINATION -> R.string.rules_elimination
-                    TournamentType.LIGUILLA -> R.string.rules_liguilla
-                    TournamentType.SUIZO -> R.string.rules_suizo
-                    TournamentType.OTRO -> R.string.rules_otro
-                }
-                
-                AlertDialog.Builder(requireContext())
-                    .setTitle(R.string.rules_title)
-                    .setMessage(rulesTextId)
-                    .setPositiveButton("OK", null)
-                    .show()
-            } else {
-                Toast.makeText(requireContext(), "Error al cargar las reglas", Toast.LENGTH_SHORT).show()
-            }
-        }
+        binding.btnRules?.setOnClickListener { showRulesDialog(tournament) }
+        //binding.btnRulesSecond?.setOnClickListener { showRulesDialog(tournament) }
 
         binding.btnViewParticipants.setOnClickListener {
-            val tournament = arguments?.getParcelable<Tournament>("tournament_data")
-            if (tournament != null) {
-                val bundle = Bundle().apply {
-                    putParcelable("tournament_data", tournament)
-                    // Convertimos la lista a ArrayList para que sea Parcelable
-                    //putParcelableArrayList("participants_list", ArrayList(tournament.participantList))
-                }
-                findNavController().navigate(R.id.action_TournamentFragment_to_ParticipantsListFragment, bundle)
+            val bundle = Bundle().apply {
+                putParcelable("tournament_data", tournament)
             }
+            findNavController().navigate(R.id.action_TournamentFragment_to_ParticipantsListFragment, bundle)
+        }
+
+        // BOTÓN AJUSTES -> IR AL SELECTOR PASANDO EL TORNEO
+        binding.btnSettings?.setOnClickListener {
+            val bundle = Bundle().apply {
+                putParcelable("tournament_data", tournament)
+            }
+            findNavController().navigate(R.id.action_TournamentFragment_to_TournamentThumbnailChooseFragment, bundle)
         }
 
         binding.btnFollow?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                // Lógica para añadir a siguiendo
                 User.actualUser?.addFollowingTournament(tournament.id)
                 Toast.makeText(context, "Siguiendo torneo", Toast.LENGTH_SHORT).show()
             } else {
-                // Lógica para dejar de seguir
                 User.actualUser?.removeFollowingTournament(tournament.id)
             }
 
-            // Aquí es donde usarías el Context para guardar en la DB (como vimos antes)
-            //UsersDao(requireContext()).updateUser(User.actualUser.id!!)
             UsersDao(requireContext()).updateFollowingTournamentList(User.actualUser?.email!!,
                 User.actualUser?.followingTournamentList.toString().replace("[", "").replace("]", ""))
         }
+    }
 
-        binding.btnJoin.setOnClickListener {
-            // TODO: Arreglar bug donde al inscribirse -> mirar clasificación -> mirar emparejamientos -> desinscribirse -> mirar clasificación -> mirar emparejamientos -> inscribirse -> el usuario aparece ya eliminado (todo esto se ve desde la pantalla del usuario inscrito, no del creador)
-            val alreadyJoined = tournament.participantList.find { it.userId == User.actualUser?.id } != null
-
-            if(alreadyJoined){
-                tournament.removeParticipant(User.actualUser!!)
-                User.actualUser?.removeJoinedTournament(tournament.id)
-
-                UsersDao(requireContext()).updateJoinedTournamentList(
-                    User.actualUser?.email!!,
-                    User.actualUser?.joinedTournamentList.toString().replace("[", "")
-                        .replace("]", "")
-                )
-                TournamentsDao(requireContext()).updateTournament(tournament)
-                Toast.makeText(requireContext(), "Desinscrito", Toast.LENGTH_SHORT).show()
-                setupUI(tournament)
-                return@setOnClickListener
-            }
-
-            if(tournament.addParticipant(User.actualUser!!)){
-                User.actualUser?.addJoinedTournament(tournament.id)
-                UsersDao(requireContext()).updateJoinedTournamentList(
-                    User.actualUser?.email!!,
-                    User.actualUser?.joinedTournamentList.toString().replace("[", "")
-                        .replace("]", "")
-                )
-                TournamentsDao(requireContext()).updateTournament(tournament)
-                Toast.makeText(requireContext(), "Inscripción exitosa", Toast.LENGTH_SHORT).show()
-                setupUI(tournament)
-            }
+    private fun showRulesDialog(tournament: Tournament) {
+        val rulesTextId = when (tournament.type) {
+            TournamentType.ELIMINATION -> R.string.rules_elimination
+            TournamentType.LIGUILLA -> R.string.rules_liguilla
+            TournamentType.SUIZO -> R.string.rules_suizo
+            TournamentType.OTRO -> R.string.rules_otro
         }
+        
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.rules_title)
+            .setMessage(rulesTextId)
+            .setPositiveButton("OK", null)
+            .show()
     }
 
     override fun onDestroyView() {
@@ -198,7 +190,7 @@ class TournamentPage : Fragment() {
         _binding = null
     }
 
-    fun establishedValue(value: String): String{
+    fun establishedValue(value: String?): String {
         return if (value.isNullOrBlank() || value == "null") {
             requireContext().getString(R.string.no_established)
         } else {

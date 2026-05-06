@@ -24,7 +24,8 @@ class TournamentDatabaseHelper(context: Context) : SQLiteOpenHelper (
                 + "$COL_PRIZE TEXT,"
                 + "$COL_CODE INTEGER,"
                 + "$COL_TYPE TEXT,"
-                + "$COL_STATUS TEXT" + ")")
+                + "$COL_STATUS TEXT,"
+                + "$COL_THUMBNAIL INTEGER DEFAULT 0" + ")")
         db?.execSQL(createTournamentsTable)
 
         // 2. Tabla de Participantes (Relacionada con el torneo)
@@ -62,7 +63,7 @@ class TournamentDatabaseHelper(context: Context) : SQLiteOpenHelper (
 
     companion object{
         const val DATABASE_NAME = "tournaments.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
 
         // Constantes Tabla Torneos
         const val TABLE_TOURNAMENTS = "tournaments"
@@ -78,6 +79,7 @@ class TournamentDatabaseHelper(context: Context) : SQLiteOpenHelper (
         const val COL_CODE = "code"
         const val COL_TYPE = "type"
         const val COL_STATUS = "status"
+        const val COL_THUMBNAIL = "thumbnail"
 
         // Constantes Tabla Participantes
         const val TABLE_PARTICIPANTS = "participants"

@@ -63,20 +63,42 @@
                                     android:layout_height="wrap_content"
                                     android:text="Torneo de D&amp;D"
                                     android:layout_gravity="center"
+                                    android:paddingHorizontal="60dp"
                                     android:textColor="@android:color/white"
                                     android:textSize="42sp"
                                     android:textStyle="bold" />
 
-                                <!-- EL BOTÓN DE CORAZÓN -->
-                                <CheckBox
-                                    android:id="@+id/btnFollow"
-                                    android:layout_width="56dp"
-                                    android:layout_height="56dp"
+                                <!-- CONTENEDOR DE ACCIONES (EDICIÓN Y SEGUIR) -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="end|top"
-                                    android:button="@null"
-                                    android:background="@drawable/ic_heart_follow"
-                                    android:backgroundTint="@color/follow_button_filled"
-                                    android:checked="false" />
+                                    android:orientation="vertical"
+                                    android:gravity="center_horizontal">
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/btnSettings"
+                                        style="@style/Widget.Material3.Button.IconButton"
+                                        android:layout_width="48dp"
+                                        android:layout_height="48dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:padding="0dp"
+                                        android:visibility="gone"
+                                        app:iconPadding="0dp"
+                                        android:backgroundTint="@color/boton_tablet_card_white"
+                                        app:icon="@drawable/ic_edit"
+                                        app:iconSize="28dp"
+                                        app:iconTint="@color/boton_movil_card" />
+
+                                    <CheckBox
+                                        android:id="@+id/btnFollow"
+                                        android:layout_width="48dp"
+                                        android:layout_height="48dp"
+                                        android:button="@null"
+                                        android:background="@drawable/ic_heart_follow"
+                                        android:backgroundTint="@color/follow_button_filled"
+                                        android:checked="false" />
+                                </LinearLayout>
                             </FrameLayout>
 
                             <TextView

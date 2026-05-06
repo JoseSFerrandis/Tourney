@@ -41,6 +41,7 @@ data class Tournament(
     var code: Int,
     var type: TournamentType = TournamentType.ELIMINATION,
     var tournamentStatus: TournamentStatus = TournamentStatus.EDITABLE,
+    var thumbnail: Int = 0,
 
     var matches: MutableList<TournamentMatch> = mutableListOf()
 ) : Parcelable {
