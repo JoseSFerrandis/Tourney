@@ -86,8 +86,8 @@
                                     android:padding="0dp"
                                     android:visibility="gone"
                                     app:iconPadding="0dp"
-                                    app:insetTop="0dp"
-                                    app:insetBottom="0dp"
+                                    android:insetTop="0dp"
+                                    android:insetBottom="0dp"
                                     android:backgroundTint="@color/boton_tablet_card_white"
                                     app:icon="@drawable/ic_edit"
                                     app:iconSize="22dp"
@@ -301,7 +301,6 @@
                                 android:gravity="center"
                                 android:layout_marginBottom="16dp">
 
-                                android:gravity="center">
 
                                 <TextView
                                     android:id="@+id/tv_status_badge"
