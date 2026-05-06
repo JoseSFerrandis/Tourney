@@ -72,7 +72,12 @@ data class Tournament(
     fun hasSpace(): Boolean { return numParticipants < maxParticipants }
 
     fun addParticipant(participant: Participant): Boolean {
-        return tryAddParticipant(participant)
+        val success = tryAddParticipant(participant)
+        if(success && tournamentStatus == TournamentStatus.EDITABLE){
+            restartMatches()
+            recalculateNotDead()
+        }
+        return success
     }
     fun addParticipant(user: User): Boolean {
         return addParticipant(Participant(userId = user.id, nickname = user.nickname))
@@ -102,8 +107,10 @@ data class Tournament(
     fun removeParticipant(participant: Participant): Boolean {
         if (participantList.contains(participant)) {
             participantList.remove(participant)
-            restartMatches()
-            //recalculateNotDead()
+            if(tournamentStatus == TournamentStatus.EDITABLE){
+                restartMatches()
+                recalculateNotDead()
+            }
             return true
         }
         return false
