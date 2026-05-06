@@ -69,20 +69,23 @@ class TournamentPage : Fragment() {
     }
 
     private fun setupUI(tournament: Tournament) {
-        binding.tvTournamentTitle?.text = establishedValue( tournament.name )
-        binding.tvGameName?.text = establishedValue( tournament.game )
-        binding.tvCreator?.text = establishedValue( tournament.creatorNickname )
-        binding.tvParticipants?.text = establishedValue( "${tournament.numParticipants}/${tournament.maxParticipants}" )
-        binding.tvDate?.text = establishedValue( tournament.date )
-        binding.tvLocation?.text = establishedValue( tournament.location )
-        binding.tvPrize?.text = establishedValue( tournament.prize )
-        binding.tvTournamentType?.text = establishedValue( Tournament.getTournamentTypeString(tournament.type) )
+        binding.tvTournamentTitle?.text = establishedValue(tournament.name)
+        binding.tvGameName?.text = establishedValue(tournament.game)
+        binding.tvCreator?.text = establishedValue(tournament.creatorNickname)
+        binding.tvParticipants?.text =
+            establishedValue("${tournament.numParticipants}/${tournament.maxParticipants}")
+        binding.tvDate?.text = establishedValue(tournament.date)
+        binding.tvLocation?.text = establishedValue(tournament.location)
+        binding.tvPrize?.text = establishedValue(tournament.prize)
+        binding.tvTournamentType?.text =
+            establishedValue(Tournament.getTournamentTypeString(tournament.type))
 
         val actualNickname = User.actualUser?.nickname?.trim()
         val creatorNickname = tournament.creatorNickname?.trim()
         val isOwner = actualNickname.equals(creatorNickname, ignoreCase = true)
 
-        binding.btnFollow?.isChecked = User.actualUser?.followingTournamentList?.contains(tournament.id) == true
+        binding.btnFollow?.isChecked =
+            User.actualUser?.followingTournamentList?.contains(tournament.id) == true
 
         // Aplicamos visibilidad
         binding.btnFollow?.isVisible = !isOwner
@@ -106,6 +109,7 @@ class TournamentPage : Fragment() {
             TournamentStatus.IN_PROGRESS -> "En progreso"
             TournamentStatus.FINISHED -> "Finalizado"
         }
+    }
 
     private fun updateHeaderImage(thumbnailId: Int) {
         // Usamos findViewById directamente para asegurar el tipo ImageView
@@ -173,7 +177,7 @@ class TournamentPage : Fragment() {
         }
     }
 
-    private fun showRulesDialog(tournament: Tournament) {
+    fun showRulesDialog(tournament: Tournament) {
         val rulesTextId = when (tournament.type) {
             TournamentType.ELIMINATION -> R.string.rules_elimination
             TournamentType.LIGUILLA -> R.string.rules_liguilla
