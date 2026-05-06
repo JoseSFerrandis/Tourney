@@ -17,6 +17,7 @@ import com.example.tourney.databinding.FragmentTournamentPageBinding
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
+import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import java.util.Date
@@ -158,10 +159,7 @@ class TournamentPage : Fragment() {
 
         // BOTÓN AJUSTES -> IR AL SELECTOR PASANDO EL TORNEO
         binding.btnSettings?.setOnClickListener {
-            val bundle = Bundle().apply {
-                putParcelable("tournament_data", tournament)
-            }
-            findNavController().navigate(R.id.action_TournamentFragment_to_TournamentThumbnailChooseFragment, bundle)
+            showOptionsDialog(tournament)
         }
 
         binding.btnFollow?.setOnCheckedChangeListener { _, isChecked ->
@@ -208,6 +206,39 @@ class TournamentPage : Fragment() {
                 setupUI(tournament)
             }
         }
+    }
+
+    fun showOptionsDialog(tournament: Tournament) {
+        val options = arrayOf("Editar imagen", "Eliminar")
+        AlertDialog.Builder(requireContext())
+            .setTitle("Opciones")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> { modifyThumbnail(tournament) }
+                    1 -> { confirmDeleteTournament(tournament) }
+                }
+            }
+            .show()
+    }
+
+    fun modifyThumbnail(tournament: Tournament) {
+        val bundle = Bundle().apply {
+            putParcelable("tournament_data", tournament)
+        }
+        findNavController().navigate(R.id.action_TournamentFragment_to_TournamentThumbnailChooseFragment, bundle)
+    }
+
+    fun confirmDeleteTournament(tournament: Tournament){
+        AlertDialog.Builder(requireContext())
+            .setTitle("Eliminar torneo")
+            .setMessage("¿Estás seguro de que deseas eliminar este torneo?")
+            .setPositiveButton("Sí") { _, _ ->
+                TournamentRepository.getInstance().deleteTournament(requireContext(), tournament.id)
+                Toast.makeText(requireContext(), "Torneo eliminado", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 
     fun showRulesDialog(tournament: Tournament) {
