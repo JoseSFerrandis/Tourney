@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class UserDatabaseHelper(context: Context) :
+class __UserDatabaseHelper(context: Context) :
     SQLiteOpenHelper(
         context,
         DATABASE_NAME,

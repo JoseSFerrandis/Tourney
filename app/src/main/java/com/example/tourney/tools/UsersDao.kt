@@ -2,229 +2,232 @@ package com.example.tourney.tools
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import com.example.tourney.entities.User
 
-class UsersDao(context: Context){
-    private val helper = UserDatabaseHelper(context.applicationContext)
+class UsersDao(context: Context) {
+    private val helper = AppDatabaseHelper(context.applicationContext)
 
-    fun dropAll(){
-        //DEBUG
+    /**
+     * Borra las tablas de usuarios y relaciones para empezar de cero (Uso en Debug)
+     */
+    fun dropAll() {
         val db = helper.writableDatabase
-        db.execSQL("DROP TABLE IF EXISTS ${UserDatabaseHelper.TABLE_USERS}")
+        db.execSQL("DROP TABLE IF EXISTS ${AppDatabaseHelper.TABLE_USER_TRN_RELATIONS}")
+        db.execSQL("DROP TABLE IF EXISTS ${AppDatabaseHelper.TABLE_USERS}")
         helper.onCreate(db)
         db.close()
     }
 
-    fun insertNewUser(nickname: String, email: String, password: String): Long {
-        return insertNewUser(nickname, email, password, 1)
-    }
-    fun insertNewUser(nickname: String, email: String, password: String, photo: Int): Long {
+    /**
+     * Inserta un nuevo usuario en la base de datos
+     * @return el ID del usuario insertado o -1 si hubo un error
+     */
+    fun insertNewUser(nickname: String, email: String, password: String, photo: Int = 1): Long {
         val db = helper.writableDatabase
-
         val values = ContentValues().apply {
-            put(UserDatabaseHelper.COL_NICKNAME, nickname)
-            put(UserDatabaseHelper.COL_EMAIL, email)
-            put(UserDatabaseHelper.COL_PASSWORD, password)
-            put(UserDatabaseHelper.COL_PHOTO, photo)
-            put(UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS, "")
-            put(UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS, "")
-            put(UserDatabaseHelper.COL_LIST_JOINED_TOURNAMENTS, "")
-            //put(UserDatabaseHelper.COL_LIST_ADMIN_TOURNAMENTS, "")
+            put(AppDatabaseHelper.COL_USER_NICKNAME, nickname)
+            put(AppDatabaseHelper.COL_USER_EMAIL, email)
+            put(AppDatabaseHelper.COL_USER_PASSWORD, password)
+            put(AppDatabaseHelper.COL_USER_PHOTO, photo)
         }
-        return db.insert(UserDatabaseHelper.TABLE_USERS, null, values)
+        val id = db.insert(AppDatabaseHelper.TABLE_USERS, null, values)
+        db.close()
+        return id
     }
 
+    /**
+     * Recupera todos los usuarios de la base de datos reconstruyendo sus listas de torneos
+     * a partir de la tabla de relaciones.
+     */
     fun getAllUsers(): List<User> {
         val db = helper.readableDatabase
-        val cursor = db.query(
-            UserDatabaseHelper.TABLE_USERS,
-            arrayOf(
-                UserDatabaseHelper.COL_ID,
-                UserDatabaseHelper.COL_NICKNAME,
-                UserDatabaseHelper.COL_EMAIL,
-                UserDatabaseHelper.COL_PASSWORD,
-                UserDatabaseHelper.COL_PHOTO,
-                UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS,
-                UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS,
-                UserDatabaseHelper.COL_LIST_JOINED_TOURNAMENTS,
-                //UserDatabaseHelper.COL_LIST_ADMIN_TOURNAMENTS
-            ),
-            null,
-            null,
-            null,
-            null,
-            null
-        )
-
+        val cursor = db.query(AppDatabaseHelper.TABLE_USERS, null, null, null, null, null, null)
         val users = mutableListOf<User>()
 
         with(cursor) {
             while (moveToNext()) {
-                val id = getLong(getColumnIndexOrThrow(UserDatabaseHelper.COL_ID))
-                val nickname = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_NICKNAME))
-                val email = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_EMAIL))
-                val password = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_PASSWORD))
-                val photo = getInt(getColumnIndexOrThrow(UserDatabaseHelper.COL_PHOTO))
-                val showableTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS))
-                val followingTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS))
-                val joinedTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_JOINED_TOURNAMENTS))
-                // val adminTournamentList = getString(getColumnIndexOrThrow(UserDatabaseHelper.COL_LIST_ADMIN_TOURNAMENTS))
-                users.add(User(
-                    id,
-                    nickname,
-                    email,
-                    password,
-                    photo,
-                    parseListToLong(showableTournamentList),
-                    parseListToLong(followingTournamentList),
-                    parseListToLong(joinedTournamentList)
-                    //parseListToLong(adminTournamentList)
-                ))
+                val userId = getLong(getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_ID))
+                val user = User(
+                    id = userId,
+                    nickname = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_NICKNAME)),
+                    email = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_EMAIL)),
+                    password = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PASSWORD)),
+                    photo = getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PHOTO)),
+                    showableTournamentList = getRelationsForUser(userId, AppDatabaseHelper.REL_TYPE_SHOWABLE, db),
+                    followingTournamentList = getRelationsForUser(userId, AppDatabaseHelper.REL_TYPE_FOLLOWING, db),
+                    joinedTournamentList = getRelationsForUser(userId, AppDatabaseHelper.REL_TYPE_JOINED, db)
+                )
+                users.add(user)
             }
         }
         cursor.close()
+        db.close()
         return users
     }
 
+    /**
+     * Obtiene los IDs de torneos relacionados con un usuario específico
+     */
+    private fun getRelationsForUser(userId: Long, type: String, db: SQLiteDatabase): MutableList<Long> {
+        val list = mutableListOf<Long>()
+        val cursor = db.query(
+            AppDatabaseHelper.TABLE_USER_TRN_RELATIONS,
+            arrayOf(AppDatabaseHelper.COL_REL_TRN_ID),
+            "${AppDatabaseHelper.COL_REL_USER_ID}=? AND ${AppDatabaseHelper.COL_REL_TYPE}=?",
+            arrayOf(userId.toString(), type),
+            null, null, null
+        )
+        while (cursor.moveToNext()) {
+            list.add(cursor.getLong(0))
+        }
+        cursor.close()
+        return list
+    }
 
+    /**
+     * Actualiza la contraseña de un usuario
+     */
     fun updatePassword(email: String, password: String): Int {
         val db = helper.writableDatabase
-
-        val values = ContentValues().apply {
-            put(UserDatabaseHelper.COL_PASSWORD, password)
-        }
-
-        // Devuelve cuántas filas se actualizaron
-        val rowsUpdated = db.update(
-            UserDatabaseHelper.TABLE_USERS,
-            values,
-            "${UserDatabaseHelper.COL_EMAIL}=?",
-            arrayOf(email)
-        )
+        val values = ContentValues().apply { put(AppDatabaseHelper.COL_USER_PASSWORD, password) }
+        val rows = db.update(AppDatabaseHelper.TABLE_USERS, values, "${AppDatabaseHelper.COL_USER_EMAIL}=?", arrayOf(email))
         db.close()
-        return rowsUpdated
+        return rows
     }
 
+    /**
+     * Actualiza el avatar del usuario
+     */
     fun updateAvatar(email: String, photo: Int): Int {
         val db = helper.writableDatabase
-
-        val values = ContentValues().apply {
-            put(UserDatabaseHelper.COL_PHOTO, photo)
-        }
-
-        val rowsUpdated = db.update(
-            UserDatabaseHelper.TABLE_USERS,
-            values,
-            "${UserDatabaseHelper.COL_EMAIL}=?",
-            arrayOf(email)
-        )
+        val values = ContentValues().apply { put(AppDatabaseHelper.COL_USER_PHOTO, photo) }
+        val rows = db.update(AppDatabaseHelper.TABLE_USERS, values, "${AppDatabaseHelper.COL_USER_EMAIL}=?", arrayOf(email))
         db.close()
-        return rowsUpdated
+        return rows
     }
 
-    fun updateShowableTournamentList(email: String, showableTournamentList: String): Int {
+    /**
+     * Crea una relación entre un usuario y un torneo (Seguir, Unirse, etc)
+     */
+    fun addTournamentRelation(userId: Long, tournamentId: Long, type: String) {
         val db = helper.writableDatabase
-
         val values = ContentValues().apply {
-            put(UserDatabaseHelper.COL_LIST_SHOWABLE_TOURNAMENTS, showableTournamentList)
+            put(AppDatabaseHelper.COL_REL_USER_ID, userId)
+            put(AppDatabaseHelper.COL_REL_TRN_ID, tournamentId)
+            put(AppDatabaseHelper.COL_REL_TYPE, type)
         }
-
-        // Devuelve cuántas filas se actualizaron
-        val rowsUpdated = db.update(
-            UserDatabaseHelper.TABLE_USERS,
-            values,
-            "${UserDatabaseHelper.COL_EMAIL}=?",
-            arrayOf(email)
-        )
+        db.insertWithOnConflict(AppDatabaseHelper.TABLE_USER_TRN_RELATIONS, null, values, SQLiteDatabase.CONFLICT_IGNORE)
         db.close()
-        return rowsUpdated
     }
 
-    fun updateFollowingTournamentList(email: String, followingTournamentList: String): Int {
+    /**
+     * Elimina una relación específica entre un usuario y un torneo
+     */
+    fun removeTournamentRelation(userId: Long, tournamentId: Long, type: String) {
         val db = helper.writableDatabase
-
-        val values = ContentValues().apply {
-            put(UserDatabaseHelper.COL_LIST_FOLLOWING_TOURNAMENTS, followingTournamentList)
-        }
-
-        // Devuelve cuántas filas se actualizaron
-        val rowsUpdated = db.update(
-            UserDatabaseHelper.TABLE_USERS,
-            values,
-            "${UserDatabaseHelper.COL_EMAIL}=?",
-            arrayOf(email)
+        db.delete(
+            AppDatabaseHelper.TABLE_USER_TRN_RELATIONS,
+            "${AppDatabaseHelper.COL_REL_USER_ID}=? AND ${AppDatabaseHelper.COL_REL_TRN_ID}=? AND ${AppDatabaseHelper.COL_REL_TYPE}=?",
+            arrayOf(userId.toString(), tournamentId.toString(), type)
         )
         db.close()
-        return rowsUpdated
     }
 
-    fun updateJoinedTournamentList(email: String, joinedTournamentList: String): Int {
+    /**
+     * Método interno para sincronizar relaciones desde un String separado por comas
+     */
+    private fun syncTournamentRelations(email: String, listString: String, type: String) {
+        val userId = getUserIdByEmail(email)
+        if (userId == -1L) return
+
         val db = helper.writableDatabase
+        db.beginTransaction()
+        try {
+            // 1. Borrar relaciones antiguas de este tipo para este usuario
+            db.delete(
+                AppDatabaseHelper.TABLE_USER_TRN_RELATIONS,
+                "${AppDatabaseHelper.COL_REL_USER_ID}=? AND ${AppDatabaseHelper.COL_REL_TYPE}=?",
+                arrayOf(userId.toString(), type)
+            )
 
-        val values = ContentValues().apply {
-            put(UserDatabaseHelper.COL_LIST_JOINED_TOURNAMENTS, joinedTournamentList)
+            // 2. Insertar las nuevas IDs
+            val ids = listString.split(",")
+                .filter { it.isNotBlank() }
+                .mapNotNull { it.trim().toLongOrNull() }
+
+            ids.forEach { trnId ->
+                val values = ContentValues().apply {
+                    put(AppDatabaseHelper.COL_REL_USER_ID, userId)
+                    put(AppDatabaseHelper.COL_REL_TRN_ID, trnId)
+                    put(AppDatabaseHelper.COL_REL_TYPE, type)
+                }
+                db.insert(AppDatabaseHelper.TABLE_USER_TRN_RELATIONS, null, values)
+            }
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+            db.close()
         }
-
-        // Devuelve cuántas filas se actualizaron
-        val rowsUpdated = db.update(
-            UserDatabaseHelper.TABLE_USERS,
-            values,
-            "${UserDatabaseHelper.COL_EMAIL}=?",
-            arrayOf(email)
-        )
-        db.close()
-        return rowsUpdated
     }
 
+    /**
+     * Método de compatibilidad para actualizar la lista de torneos creados vía String
+     */
+    fun updateShowableTournamentList(email: String, listString: String) {
+        syncTournamentRelations(email, listString, AppDatabaseHelper.REL_TYPE_SHOWABLE)
+    }
 
+    /**
+     * Método de compatibilidad para actualizar la lista de torneos seguidos vía String
+     */
+    fun updateFollowingTournamentList(email: String, listString: String) {
+        syncTournamentRelations(email, listString, AppDatabaseHelper.REL_TYPE_FOLLOWING)
+    }
+
+    /**
+     * Método de compatibilidad para actualizar la lista de torneos inscritos vía String
+     */
+    fun updateJoinedTournamentList(email: String, listString: String) {
+        syncTournamentRelations(email, listString, AppDatabaseHelper.REL_TYPE_JOINED)
+    }
+
+    /**
+     * Obtiene el ID de un usuario dado su email
+     */
+    fun getUserIdByEmail(email: String): Long {
+        val db = helper.readableDatabase
+        val cursor = db.query(AppDatabaseHelper.TABLE_USERS, arrayOf(AppDatabaseHelper.COL_USER_ID), "${AppDatabaseHelper.COL_USER_EMAIL}=?", arrayOf(email), null, null, null)
+        val id = if (cursor.moveToFirst()) cursor.getLong(0) else -1L
+        cursor.close()
+        db.close()
+        return id
+    }
+
+    /**
+     * Obtiene el nickname de un usuario dado su ID
+     */
     fun getUsernameById(id: Long): String {
         val db = helper.readableDatabase
-        val cursor = db.query(
-            UserDatabaseHelper.TABLE_USERS,
-            arrayOf(UserDatabaseHelper.COL_NICKNAME),
-            "${UserDatabaseHelper.COL_ID}=?",
-            arrayOf(id.toString()),
-            null,
-            null,
-            null
-        )
-
-        return if (cursor.moveToFirst()) {
-            val username = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COL_NICKNAME))
-            cursor.close()
-            username
-        } else {
-            cursor.close()
-            ""
-        }
+        val cursor = db.query(AppDatabaseHelper.TABLE_USERS, arrayOf(AppDatabaseHelper.COL_USER_NICKNAME), "${AppDatabaseHelper.COL_USER_ID}=?", arrayOf(id.toString()), null, null, null)
+        val name = if (cursor.moveToFirst()) cursor.getString(0) else ""
+        cursor.close()
+        db.close()
+        return name
     }
 
+    /**
+     * Actualiza los datos básicos de perfil del usuario
+     */
     fun updateUser(id: Long, nickname: String, email: String, password: String): Int {
         val db = helper.writableDatabase
-
         val values = ContentValues().apply {
-            put(UserDatabaseHelper.COL_NICKNAME, nickname)
-            put(UserDatabaseHelper.COL_EMAIL, email)
-            put(UserDatabaseHelper.COL_PASSWORD, password)
+            put(AppDatabaseHelper.COL_USER_NICKNAME, nickname)
+            put(AppDatabaseHelper.COL_USER_EMAIL, email)
+            put(AppDatabaseHelper.COL_USER_PASSWORD, password)
         }
-
-        val rowsUpdated = db.update(
-            UserDatabaseHelper.TABLE_USERS,
-            values,
-            "${UserDatabaseHelper.COL_ID}=?",
-            arrayOf(id.toString())
-        )
+        val rows = db.update(AppDatabaseHelper.TABLE_USERS, values, "${AppDatabaseHelper.COL_USER_ID}=?", arrayOf(id.toString()))
         db.close()
-        return rowsUpdated
-    }
-
-    fun parseListToLong(list: String?): MutableList<Long> {
-        return if (!list.isNullOrBlank()) {
-            list.split(",")
-                .map { it.trim().toLong() }
-                .toMutableList()
-        } else {
-            mutableListOf()
-        }
+        return rows
     }
 }

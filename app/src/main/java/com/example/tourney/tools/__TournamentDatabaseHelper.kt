@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class TournamentDatabaseHelper(context: Context) : SQLiteOpenHelper (
+class __TournamentDatabaseHelper(context: Context) : SQLiteOpenHelper (
     context,
     DATABASE_NAME,
     null,

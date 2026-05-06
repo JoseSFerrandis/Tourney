@@ -6,71 +6,58 @@ import android.database.sqlite.SQLiteDatabase
 import com.example.tourney.entities.*
 
 class TournamentsDao(context: Context) {
-    private val helper = TournamentDatabaseHelper(context.applicationContext)
+    private val helper = AppDatabaseHelper(context.applicationContext)
+    private val usersDao = UsersDao(context)
 
-    fun dropAll(){
+    fun dropAll() {
         val db = helper.writableDatabase
-        db.execSQL("DROP TABLE IF EXISTS ${TournamentDatabaseHelper.TABLE_TOURNAMENTS}")
-        db.execSQL("DROP TABLE IF EXISTS ${TournamentDatabaseHelper.TABLE_PARTICIPANTS}")
-        db.execSQL("DROP TABLE IF EXISTS ${TournamentDatabaseHelper.TABLE_MATCHES}")
+        db.execSQL("DROP TABLE IF EXISTS ${AppDatabaseHelper.TABLE_MATCHES}")
+        db.execSQL("DROP TABLE IF EXISTS ${AppDatabaseHelper.TABLE_PARTICIPANTS}")
+        db.execSQL("DROP TABLE IF EXISTS ${AppDatabaseHelper.TABLE_USER_TRN_RELATIONS}")
+        db.execSQL("DROP TABLE IF EXISTS ${AppDatabaseHelper.TABLE_TOURNAMENTS}")
         helper.onCreate(db)
         db.close()
     }
 
     /**
-     * Inserta un torneo completo con sus participantes y partidos
+     * Inserta un torneo completo con sus participantes y partidos.
+     * También crea la relación de propiedad (SHOWABLE) para el creador.
      */
     fun insertTournament(t: Tournament): Long {
         val db = helper.writableDatabase
         db.beginTransaction()
         return try {
             val values = ContentValues().apply {
-                put(TournamentDatabaseHelper.COL_NAME, t.name)
-                put(TournamentDatabaseHelper.COL_GAME, t.game)
-                put(TournamentDatabaseHelper.COL_CREATOR_ID, t.creatorId)
-                put(TournamentDatabaseHelper.COL_CREATOR_NICKNAME, t.creatorNickname)
-                put(TournamentDatabaseHelper.COL_MAX_PARTICIPANTS, t.maxParticipants)
-                put(TournamentDatabaseHelper.COL_DATE, t.date)
-                put(TournamentDatabaseHelper.COL_LOCATION, t.location)
-                put(TournamentDatabaseHelper.COL_PRIZE, t.prize)
-                put(TournamentDatabaseHelper.COL_CODE, t.code)
-                put(TournamentDatabaseHelper.COL_TYPE, t.type.name)
-                put(TournamentDatabaseHelper.COL_STATUS, t.tournamentStatus.name)
-                put(TournamentDatabaseHelper.COL_THUMBNAIL, t.thumbnail)
+                put(AppDatabaseHelper.COL_TRN_NAME, t.name)
+                put(AppDatabaseHelper.COL_TRN_GAME, t.game)
+                put(AppDatabaseHelper.COL_TRN_CREATOR_ID, t.creatorId)
+                put(AppDatabaseHelper.COL_TRN_CREATOR_NICKNAME, t.creatorNickname)
+                put(AppDatabaseHelper.COL_TRN_MAX_PARTICIPANTS, t.maxParticipants)
+                put(AppDatabaseHelper.COL_TRN_DATE, t.date)
+                put(AppDatabaseHelper.COL_TRN_LOCATION, t.location)
+                put(AppDatabaseHelper.COL_TRN_PRIZE, t.prize)
+                put(AppDatabaseHelper.COL_TRN_CODE, t.code)
+                put(AppDatabaseHelper.COL_TRN_TYPE, t.type.name)
+                put(AppDatabaseHelper.COL_TRN_STATUS, t.tournamentStatus.name)
+                put(AppDatabaseHelper.COL_TRN_THUMBNAIL, t.thumbnail)
             }
-            val tournamentId = db.insert(TournamentDatabaseHelper.TABLE_TOURNAMENTS, null, values)
+            val tournamentId = db.insert(AppDatabaseHelper.TABLE_TOURNAMENTS, null, values)
 
             if (tournamentId != -1L) {
                 t.id = tournamentId
-                // Insertar participantes
-                t.participantList.forEach { p ->
-                    val pValues = ContentValues().apply {
-                        put(TournamentDatabaseHelper.COL_PARTICIPANTS_TOURNAMENT_ID, tournamentId)
-                        put(TournamentDatabaseHelper.COL_PARTICIPANTS_USER_ID, p.userId)
-                        put(TournamentDatabaseHelper.COL_PARTICIPANTS_NICKNAME, p.nickname)
-                        put(TournamentDatabaseHelper.COL_PARTICIPANTS_PUNTUATION, p.puntuation)
-                    }
-                    val pId = db.insert(TournamentDatabaseHelper.TABLE_PARTICIPANTS, null, pValues)
-                    p.id = pId
+                
+                // 1. Crear relación automática: El creador "posee" el torneo
+                val relValues = ContentValues().apply {
+                    put(AppDatabaseHelper.COL_REL_USER_ID, t.creatorId)
+                    put(AppDatabaseHelper.COL_REL_TRN_ID, tournamentId)
+                    put(AppDatabaseHelper.COL_REL_TYPE, AppDatabaseHelper.REL_TYPE_SHOWABLE)
                 }
+                db.insert(AppDatabaseHelper.TABLE_USER_TRN_RELATIONS, null, relValues)
 
-                // Insertar partidos
+                // 2. Insertar participantes y partidos
+                insertParticipants(t, db)
                 t.updateMatchesFromView()
-                t.matches.forEach { m ->
-                    val mValues = ContentValues().apply {
-                        put(TournamentDatabaseHelper.COL_MATCHES_TOURNAMENT_ID, tournamentId)
-                        put(TournamentDatabaseHelper.COL_MATCHES_ROUND, m.roundNumber)
-                        put(TournamentDatabaseHelper.COL_MATCHES_P1_ID, m.participantOneId)
-                        put(TournamentDatabaseHelper.COL_MATCHES_P2_ID, m.participantTwoId)
-                        put(TournamentDatabaseHelper.COL_MATCHES_P1_NAME, m.participantOneName)
-                        put(TournamentDatabaseHelper.COL_MATCHES_P2_NAME, m.participantTwoName)
-                        put(TournamentDatabaseHelper.COL_MATCHES_SCORE1, m.scoreOne)
-                        put(TournamentDatabaseHelper.COL_MATCHES_SCORE2, m.scoreTwo)
-                        put(TournamentDatabaseHelper.COL_MATCHES_WINNER_ID, m.winnerId)
-                    }
-                    val mId = db.insert(TournamentDatabaseHelper.TABLE_MATCHES, null, mValues)
-                    m.id = mId
-                }
+                insertMatches(t, db)
             }
             db.setTransactionSuccessful()
             tournamentId
@@ -80,45 +67,64 @@ class TournamentsDao(context: Context) {
         }
     }
 
+    private fun insertParticipants(t: Tournament, db: SQLiteDatabase) {
+        t.participantList.forEach { p ->
+            val pValues = ContentValues().apply {
+                put(AppDatabaseHelper.COL_PART_TRN_ID, t.id)
+                put(AppDatabaseHelper.COL_PART_USER_ID, p.userId)
+                put(AppDatabaseHelper.COL_PART_NICKNAME, p.nickname)
+                put(AppDatabaseHelper.COL_PART_PUNTUATION, p.puntuation)
+            }
+            p.id = db.insert(AppDatabaseHelper.TABLE_PARTICIPANTS, null, pValues)
+        }
+    }
+
+    private fun insertMatches(t: Tournament, db: SQLiteDatabase) {
+        t.matches.forEach { m ->
+            val mValues = ContentValues().apply {
+                put(AppDatabaseHelper.COL_MATCH_TRN_ID, t.id)
+                put(AppDatabaseHelper.COL_MATCH_ROUND, m.roundNumber)
+                put(AppDatabaseHelper.COL_MATCH_P1_ID, m.participantOneId)
+                put(AppDatabaseHelper.COL_MATCH_P2_ID, m.participantTwoId)
+                put(AppDatabaseHelper.COL_MATCH_P1_NAME, m.participantOneName)
+                put(AppDatabaseHelper.COL_MATCH_P2_NAME, m.participantTwoName)
+                put(AppDatabaseHelper.COL_MATCH_SCORE1, m.scoreOne)
+                put(AppDatabaseHelper.COL_MATCH_SCORE2, m.scoreTwo)
+                put(AppDatabaseHelper.COL_MATCH_WINNER_ID, m.winnerId)
+            }
+            m.id = db.insert(AppDatabaseHelper.TABLE_MATCHES, null, mValues)
+        }
+    }
+
     /**
      * Recupera todos los torneos reconstruyendo sus listas internas
      */
     fun getAllTournaments(): MutableList<Tournament> {
         val db = helper.readableDatabase
         val tournaments = mutableListOf<Tournament>()
-        val cursor = db.query(
-            TournamentDatabaseHelper.TABLE_TOURNAMENTS,
-            null, null, null, null, null,
-            "${TournamentDatabaseHelper.COL_DATE} DESC"
-        )
+        val cursor = db.query(AppDatabaseHelper.TABLE_TOURNAMENTS, null, null, null, null, null, "${AppDatabaseHelper.COL_TRN_DATE} DESC")
 
         with(cursor) {
             while (moveToNext()) {
-                val id = getLong(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_ID))
+                val id = getLong(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_ID))
                 val tournament = Tournament(
                     id = id,
-                    name = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_NAME)),
-                    game = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_GAME)),
-                    creatorId = getLong(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_CREATOR_ID)),
-                    creatorNickname = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_CREATOR_NICKNAME)),
-                    maxParticipants = getInt(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MAX_PARTICIPANTS)),
-                    date = if (isNull(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_DATE))) { null }
-                           else { getLong(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_DATE)) },
-                    location = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_LOCATION)),
-                    prize = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PRIZE)),
-                    code = getInt(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_CODE)),
-                    type = TournamentType.valueOf(getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_TYPE))),
-                    tournamentStatus = TournamentStatus.valueOf(getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_STATUS))),
-                    thumbnail = getInt(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_THUMBNAIL))
+                    name = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_NAME)),
+                    game = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_GAME)),
+                    creatorId = getLong(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_CREATOR_ID)),
+                    creatorNickname = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_CREATOR_NICKNAME)),
+                    maxParticipants = getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_MAX_PARTICIPANTS)),
+                    date = if (isNull(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_DATE))) null else getLong(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_DATE)),
+                    location = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_LOCATION)),
+                    prize = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_PRIZE)),
+                    code = getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_CODE)),
+                    type = TournamentType.valueOf(getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_TYPE))),
+                    tournamentStatus = TournamentStatus.valueOf(getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_STATUS))),
+                    thumbnail = getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_THUMBNAIL))
                 )
-
-                // Cargar Participantes
                 tournament.participantList = getParticipantsForTournament(id, db)
-                // Cargar Partidos
                 tournament.matches = getMatchesForTournament(id, db)
-                // Reconstruir vista visual (columnMatches) y recalculateNotDead
                 tournament.syncViewFromMatches()
-
                 tournaments.add(tournament)
             }
         }
@@ -127,123 +133,75 @@ class TournamentsDao(context: Context) {
         return tournaments
     }
 
-    private fun getParticipantsForTournament(tournamentId: Long, db: SQLiteDatabase): MutableList<Participant> {
-        val participants = mutableListOf<Participant>()
-        val cursor = db.query(
-            TournamentDatabaseHelper.TABLE_PARTICIPANTS,
-            null,
-            "${TournamentDatabaseHelper.COL_PARTICIPANTS_TOURNAMENT_ID}=?",
-            arrayOf(tournamentId.toString()),
-            null, null, null
-        )
+    private fun getParticipantsForTournament(tId: Long, db: SQLiteDatabase): MutableList<Participant> {
+        val list = mutableListOf<Participant>()
+        val cursor = db.query(AppDatabaseHelper.TABLE_PARTICIPANTS, null, "${AppDatabaseHelper.COL_PART_TRN_ID}=?", arrayOf(tId.toString()), null, null, null)
         while (cursor.moveToNext()) {
-            participants.add(
-                Participant(
-                    id = cursor.getLong(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PARTICIPANTS_ID)),
-                    userId = if (cursor.isNull(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PARTICIPANTS_USER_ID))) null else cursor.getLong(
-                        cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PARTICIPANTS_USER_ID)
-                    ),
-                    nickname = cursor.getString(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PARTICIPANTS_NICKNAME)),
-                    puntuation = if (cursor.isNull(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PARTICIPANTS_PUNTUATION))) 0f else cursor.getFloat(
-                        cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PARTICIPANTS_PUNTUATION)
-                    )
-                )
-            )
+            list.add(Participant(
+                id = cursor.getLong(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_PART_ID)),
+                userId = if (cursor.isNull(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_PART_USER_ID))) null else cursor.getLong(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_PART_USER_ID)),
+                nickname = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_PART_NICKNAME)),
+                puntuation = cursor.getFloat(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_PART_PUNTUATION))
+            ))
         }
         cursor.close()
-        return participants
+        return list
     }
 
     private fun getMatchesForTournament(tId: Long, db: SQLiteDatabase): MutableList<TournamentMatch> {
-        val matches = mutableListOf<TournamentMatch>()
-        val cursor = db.query(
-            TournamentDatabaseHelper.TABLE_MATCHES,
-            null,
-            "${TournamentDatabaseHelper.COL_MATCHES_TOURNAMENT_ID}=?",
-            arrayOf(tId.toString()),
-            null, null, null
-        )
+        val list = mutableListOf<TournamentMatch>()
+        val cursor = db.query(AppDatabaseHelper.TABLE_MATCHES, null, "${AppDatabaseHelper.COL_MATCH_TRN_ID}=?", arrayOf(tId.toString()), null, null, null)
         while (cursor.moveToNext()) {
-            matches.add(
-                TournamentMatch(
-                    id = cursor.getLong(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_ID)),
-                    tournamentId = tId,
-                    roundNumber = cursor.getInt(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_ROUND)),
-                    participantOneId = if (cursor.isNull(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_P1_ID))) null else cursor.getLong(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_P1_ID)),
-                    participantTwoId = if (cursor.isNull(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_P2_ID))) null else cursor.getLong(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_P2_ID)),
-                    scoreOne = cursor.getString(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_SCORE1)),
-                    scoreTwo = cursor.getString(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_SCORE2)),
-                    winnerId = if (cursor.isNull(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_WINNER_ID))) null else cursor.getLong(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_WINNER_ID)),
-                    participantOneName = cursor.getString(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_P1_NAME)),
-                    participantTwoName = cursor.getString(cursor.getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MATCHES_P2_NAME))
-                )
-            )
+            list.add(TournamentMatch(
+                id = cursor.getLong(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_ID)),
+                tournamentId = tId,
+                roundNumber = cursor.getInt(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_ROUND)),
+                participantOneId = if (cursor.isNull(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_P1_ID))) null else cursor.getLong(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_P1_ID)),
+                participantTwoId = if (cursor.isNull(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_P2_ID))) null else cursor.getLong(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_P2_ID)),
+                scoreOne = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_SCORE1)),
+                scoreTwo = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_SCORE2)),
+                winnerId = if (cursor.isNull(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_WINNER_ID))) null else cursor.getLong(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_WINNER_ID)),
+                participantOneName = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_P1_NAME)),
+                participantTwoName = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_MATCH_P2_NAME))
+            ))
         }
         cursor.close()
-        return matches
+        return list
     }
 
     /**
-     * Borra un torneo completo de la base de datos
+     * Borra un torneo completo de la base de datos.
+     * Gracias a ON DELETE CASCADE, esto borrará participantes, partidos y relaciones automáticamente.
      */
     fun deleteTournament(id: Long): Int {
         val db = helper.writableDatabase
-        val result = db.delete(TournamentDatabaseHelper.TABLE_TOURNAMENTS, "${TournamentDatabaseHelper.COL_ID}=?", arrayOf(id.toString()))
+        val result = db.delete(AppDatabaseHelper.TABLE_TOURNAMENTS, "${AppDatabaseHelper.COL_TRN_ID}=?", arrayOf(id.toString()))
         db.close()
         return result
     }
 
+    /**
+     * Actualiza un torneo existente en la base de datos
+     */
     fun updateTournament(t: Tournament): Boolean {
         val db = helper.writableDatabase
         db.beginTransaction()
         return try {
-            // 1. Actualizar datos básicos del torneo
             val values = ContentValues().apply {
-                put(TournamentDatabaseHelper.COL_STATUS, t.tournamentStatus.name)
-                put(TournamentDatabaseHelper.COL_THUMBNAIL, t.thumbnail)
+                put(AppDatabaseHelper.COL_TRN_STATUS, t.tournamentStatus.name)
+                put(AppDatabaseHelper.COL_TRN_THUMBNAIL, t.thumbnail)
             }
-            db.update(TournamentDatabaseHelper.TABLE_TOURNAMENTS, values, "${TournamentDatabaseHelper.COL_ID}=?", arrayOf(t.id.toString()))
-
-            // 2. Actualizar partidos
-            db.delete(TournamentDatabaseHelper.TABLE_MATCHES, "${TournamentDatabaseHelper.COL_MATCHES_TOURNAMENT_ID}=?", arrayOf(t.id.toString()))
-
+            db.update(AppDatabaseHelper.TABLE_TOURNAMENTS, values, "${AppDatabaseHelper.COL_TRN_ID}=?", arrayOf(t.id.toString()))
+            db.delete(AppDatabaseHelper.TABLE_MATCHES, "${AppDatabaseHelper.COL_MATCH_TRN_ID}=?", arrayOf(t.id.toString()))
             t.updateMatchesFromView()
-            t.matches.forEach { m ->
-                val mValues = ContentValues().apply {
-                    put(TournamentDatabaseHelper.COL_MATCHES_TOURNAMENT_ID, t.id)
-                    put(TournamentDatabaseHelper.COL_MATCHES_ROUND, m.roundNumber)
-                    put(TournamentDatabaseHelper.COL_MATCHES_P1_ID, m.participantOneId)
-                    put(TournamentDatabaseHelper.COL_MATCHES_P2_ID, m.participantTwoId)
-                    put(TournamentDatabaseHelper.COL_MATCHES_P1_NAME, m.participantOneName)
-                    put(TournamentDatabaseHelper.COL_MATCHES_P2_NAME, m.participantTwoName)
-                    put(TournamentDatabaseHelper.COL_MATCHES_SCORE1, m.scoreOne)
-                    put(TournamentDatabaseHelper.COL_MATCHES_SCORE2, m.scoreTwo)
-                    put(TournamentDatabaseHelper.COL_MATCHES_WINNER_ID, m.winnerId)
-                }
-                db.insert(TournamentDatabaseHelper.TABLE_MATCHES, null, mValues)
-            }
-
-            // 3. Actualizar participantes
+            insertMatches(t, db)
             updateParticipants(t, db)
-
             db.setTransactionSuccessful()
             true
-        } catch (_: Exception) {
-            false
-        } finally {
+        } catch (_: Exception) { false } finally {
             db.endTransaction()
             db.close()
         }
-    }
-
-    fun updateTournamentThumbnail(id: Long, thumbnail: Int): Int {
-        val db = helper.writableDatabase
-        val values = ContentValues().apply {
-            put(TournamentDatabaseHelper.COL_THUMBNAIL, thumbnail)
-        }
-        val rows = db.update(TournamentDatabaseHelper.TABLE_TOURNAMENTS, values, "${TournamentDatabaseHelper.COL_ID}=?", arrayOf(id.toString()))
-        db.close()
-        return rows
     }
 
     /**
@@ -252,31 +210,33 @@ class TournamentsDao(context: Context) {
     fun updateParticipants(t: Tournament, db: SQLiteDatabase? = null): Boolean {
         val innerDb = db ?: helper.writableDatabase
         val ownTransaction = db == null
-
         if (ownTransaction) innerDb.beginTransaction()
         return try {
-            innerDb.delete(TournamentDatabaseHelper.TABLE_PARTICIPANTS, "${TournamentDatabaseHelper.COL_PARTICIPANTS_TOURNAMENT_ID}=?", arrayOf(t.id.toString()))
-
-            t.participantList.forEach { p ->
-                val pValues = ContentValues().apply {
-                    put(TournamentDatabaseHelper.COL_PARTICIPANTS_TOURNAMENT_ID, t.id)
-                    put(TournamentDatabaseHelper.COL_PARTICIPANTS_USER_ID, p.userId)
-                    put(TournamentDatabaseHelper.COL_PARTICIPANTS_NICKNAME, p.nickname)
-                    put(TournamentDatabaseHelper.COL_PARTICIPANTS_PUNTUATION, p.puntuation)
-                }
-                val pId = innerDb.insert(TournamentDatabaseHelper.TABLE_PARTICIPANTS, null, pValues)
-                p.id = pId
-            }
-
+            innerDb.delete(AppDatabaseHelper.TABLE_PARTICIPANTS, "${AppDatabaseHelper.COL_PART_TRN_ID}=?", arrayOf(t.id.toString()))
+            insertParticipants(t, innerDb)
             if (ownTransaction) innerDb.setTransactionSuccessful()
             true
-        } catch (_: Exception) {
-            false
-        } finally {
+        } catch (_: Exception) { false } finally {
             if (ownTransaction) {
                 innerDb.endTransaction()
                 innerDb.close()
             }
         }
+    }
+
+    /**
+     * Actualiza la miniatura (thumbnail) de un torneo específico.
+     * @param id El ID del torneo a actualizar
+     * @param thumbnail El nuevo recurso o identificador de la miniatura
+     * @return El número de filas actualizadas
+     */
+    fun updateTournamentThumbnail(id: Long, thumbnail: Int): Int {
+        val db = helper.writableDatabase
+        val values = ContentValues().apply {
+            put(AppDatabaseHelper.COL_TRN_THUMBNAIL, thumbnail)
+        }
+        val rows = db.update(AppDatabaseHelper.TABLE_TOURNAMENTS, values, "${AppDatabaseHelper.COL_TRN_ID}=?", arrayOf(id.toString()))
+        db.close()
+        return rows
     }
 }

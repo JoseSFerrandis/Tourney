@@ -32,7 +32,7 @@ class UsersDaoTest {
         // Mocking the context to return a dummy application context
         `when`(mockContext.applicationContext).thenReturn(mockContext)
         
-        // We can't easily mock the internal UserDatabaseHelper creation because it's instantiated inside UsersDao.
+        // We can't easily mock the internal __UserDatabaseHelper creation because it's instantiated inside UsersDao.
         // In a real scenario, we might use a Factory or Dependency Injection, but since we cannot modify the code,
         // we will mock the behavior that UsersDao expects from the database.
         
