@@ -13,15 +13,19 @@ class UserDatabaseHelper(context: Context) :
     )
 {
     override fun onCreate(db: SQLiteDatabase) {
-        // Se ejecuta SOLO la primera vez que se crea la BD
         createTableUsers(db)
         insertDefaultUsers(db)
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int ) { }
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        // Si subimos de versión, borramos todo y empezamos de cero
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
+        onCreate(db)
+    }
 
     companion object {
-        const val DATABASE_NAME = "users.db"
+        // Cambiamos el nombre radicalmente para forzar un archivo nuevo
+        const val DATABASE_NAME = "tourney_v3_clean.db"
         const val DATABASE_VERSION = 1
         const val TABLE_USERS = "users"
         const val COL_ID = "id"
@@ -50,6 +54,7 @@ class UserDatabaseHelper(context: Context) :
                """.trimIndent()
         db.execSQL(createTable)
     }
+
     fun insertDefaultUsers(db: SQLiteDatabase) {
         val insert = """
         INSERT INTO $TABLE_USERS ($COL_NICKNAME, $COL_EMAIL, $COL_PASSWORD, $COL_PHOTO, $COL_LIST_SHOWABLE_TOURNAMENTS, $COL_LIST_FOLLOWING_TOURNAMENTS, $COL_LIST_JOINED_TOURNAMENTS) VALUES

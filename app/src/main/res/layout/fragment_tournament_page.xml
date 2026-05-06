@@ -19,21 +19,21 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_gradient_blue">
 
-                <!-- HEADER SECTOR CON IMAGEN DE FONDO -->
-                <ImageView
+                <!-- HEADER SECTOR (Cambiado a ShapeableImageView para consistencia con Tablet) -->
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/headerImage"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="240dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/dnd_thumbnail"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="ContentDescription" />
 
-                <!-- Filtro degradado para la imagen -->
+                <!-- Filtro degradado -->
                 <View
                     android:id="@+id/imageOverlay"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="240dp"
                     android:background="#40000000"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,8 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="-40dp"
-                    app:cardCornerRadius="24dp"
-                    app:cardElevation="4dp"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="6dp"
                     app:layout_constraintTop_toBottomOf="@id/headerImage"
                     app:strokeWidth="0dp">
 
@@ -53,9 +53,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="20dp">
+                        android:padding="24dp">
 
-                        <!-- Título del Torneo dentro de la Card -->
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -65,20 +64,43 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
+                                android:paddingHorizontal="48dp"
                                 android:text="Torneo de D&amp;D"
-                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
                                 android:textStyle="bold" />
 
-                            <!-- EL BOTÓN DE CORAZÓN -->
-                            <CheckBox
-                                android:id="@+id/btnFollow"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="end|top"
-                                android:button="@null"
-                                android:background="@drawable/ic_heart_follow"
-                                android:backgroundTint="@color/follow_button_filled"
-                                android:checked="false" />
+                                android:orientation="vertical"
+                                android:gravity="center_horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnSettings"
+                                    style="@style/Widget.Material3.Button.IconButton"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:padding="0dp"
+                                    android:visibility="gone"
+                                    app:iconPadding="0dp"
+                                    app:insetTop="0dp"
+                                    app:insetBottom="0dp"
+                                    android:backgroundTint="@color/boton_tablet_card_white"
+                                    app:icon="@drawable/ic_edit"
+                                    app:iconSize="22dp"
+                                    app:iconTint="@color/boton_movil_card" />
+
+                                <CheckBox
+                                    android:id="@+id/btnFollow"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:button="@null"
+                                    android:background="@drawable/ic_heart_follow"
+                                    android:backgroundTint="@color/follow_button_filled"
+                                    android:checked="false" />
+                            </LinearLayout>
                         </FrameLayout>
 
                         <TextView
@@ -88,18 +110,17 @@
                             android:text="League of Legends"
                             android:textColor="@color/dynamic_text_card"
                             android:gravity="center"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
-                            android:layout_marginBottom="16dp"/>
+                            android:layout_marginBottom="20dp"/>
 
-
+                        <!-- Creador y Tipo -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginBottom="8dp">
+                            android:layout_marginBottom="12dp">
 
-                            <!-- Creador -->
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -123,7 +144,6 @@
                                     android:layout_marginStart="8dp" />
                             </LinearLayout>
 
-                            <!-- Tipo de torneo -->
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -152,16 +172,16 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:layout_marginBottom="16dp">
 
-                            <!-- Row 1: Participants and Date -->
+                            <!-- Participants and Date -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:layout_marginBottom="8dp">
 
-                                <!-- Participants -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -185,7 +205,6 @@
                                         android:layout_marginStart="8dp" />
                                 </LinearLayout>
 
-                                <!-- Date -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -210,20 +229,18 @@
                                 </LinearLayout>
                             </LinearLayout>
 
-                            <!-- Row 2: Location and Prize -->
+                            <!-- Location and Prize -->
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
+                                android:layout_height="40dp"
                                 android:orientation="horizontal">
 
-                                <!-- Location -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical">
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
 
                                     <ImageView
                                         android:layout_width="16dp"
@@ -235,22 +252,21 @@
                                         android:id="@+id/tv_location"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
                                         android:layout_weight="1"
+                                        android:ellipsize="end"
+                                        android:maxLines="1"
                                         android:text="Online"
                                         android:textColor="@color/dynamic_text_card"
-                                        android:textSize="14sp"
-                                        android:layout_marginStart="8dp"
-                                        android:ellipsize="end"
-                                        android:maxLines="1" />
+                                        android:textSize="14sp" />
                                 </LinearLayout>
 
-                                <!-- Prize -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical">
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
 
                                     <ImageView
                                         android:layout_width="16dp"
@@ -262,19 +278,18 @@
                                         android:id="@+id/tv_prize"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
                                         android:text="$5,000"
                                         android:textColor="@color/dynamic_text_card"
-                                        android:textSize="14sp"
-                                        android:layout_marginStart="8dp" />
+                                        android:textSize="14sp" />
                                 </LinearLayout>
-                            </LinearLayout>
 
-                            <!-- Badge -->
+
+                            </LinearLayout>
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_marginBottom="16dp">
+                                android:gravity="center">
 
                                 <TextView
                                     android:id="@+id/tv_status_badge"
@@ -282,8 +297,8 @@
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/bg_badge_open"
                                     android:paddingStart="12dp"
-                                    android:paddingEnd="12dp"
                                     android:paddingTop="4dp"
+                                    android:paddingEnd="12dp"
                                     android:paddingBottom="4dp"
                                     android:text="Inscripciones Abiertas"
                                     android:textColor="@color/white"
@@ -294,32 +309,15 @@
                         <com.google.android.material.divider.MaterialDivider
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp" />
+                            android:layout_marginBottom="20dp" />
 
-
-                        <!-- Botón para unirse al torneo -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnJoin"
-                            style="@style/Widget.Material3.Button.ElevatedButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:textSize="17dp"
-                            android:text="Unirse al torneo"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@color/blue_600"
-                            app:icon="@drawable/ic_join_tournament"
-                            app:iconTint="@color/white" />
-
-
-                        <!-- Clasificación y Emparejamiento con estilo de botón -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnClassification"
                             style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:textSize="17dp"
+                            android:layout_height="56dp"
+                            android:layout_marginBottom="12dp"
+                            android:textSize="18sp"
                             android:text="Clasificación"
                             android:textColor="@color/white"
                             app:backgroundTint="@color/boton_tablet_card"
@@ -330,8 +328,8 @@
                             android:id="@+id/btnMatches"
                             style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="17dp"
+                            android:layout_height="56dp"
+                            android:textSize="18sp"
                             android:text="Emparejamientos"
                             android:textColor="@color/white"
                             app:backgroundTint="@color/boton_tablet_card"
@@ -341,44 +339,40 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Participantes y Reglas al mismo nivel -->
                 <LinearLayout
                     android:id="@+id/layoutSecondaryActions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="40dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cardManagement"
-                    app:layout_constraintVertical_bias="0">
+                    app:layout_constraintTop_toBottomOf="@id/cardManagement">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnViewParticipants"
                         android:backgroundTint="@color/boton_tablet_card_white"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="54dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:text="Participantes"
                         android:textColor="@color/white"
                         app:icon="@drawable/ic_people"
-                        app:iconTint="@color/white"
-                        app:strokeColor="@color/white" />
+                        app:iconTint="@color/white" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRules"
                         android:backgroundTint="@color/boton_tablet_card_white"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="54dp"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:text="Reglas"
                         android:textColor="@color/white"
                         app:icon="@drawable/ic_gravel"
-                        app:iconTint="@color/white"
-                        app:strokeColor="@color/white" />
+                        app:iconTint="@color/white" />
 
                 </LinearLayout>
 

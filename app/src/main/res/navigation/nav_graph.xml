@@ -146,6 +146,9 @@
         <action
             android:id="@+id/action_TournamentFragment_to_ClasificationListFragment"
             app:destination="@id/ClasificationListFragment" />
+        <action
+            android:id="@+id/action_TournamentFragment_to_TournamentThumbnailChooseFragment"
+            app:destination="@id/TournamentThumbnailChooseFragment" />
     </fragment>
 
     <!-- Fragmento Crear Torneo -->
@@ -159,6 +162,9 @@
             app:destination="@id/TournamentFragment"
             app:popUpTo="@id/CreateTournamentFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_CreateTournamentFragment_to_TournamentThumbnailChooseFragment"
+            app:destination="@id/TournamentThumbnailChooseFragment" />
     </fragment>
 
     <!-- Fragmento Lista de Participantes -->
@@ -187,5 +193,11 @@
             android:id="@+id/action_ClasificationListFragment_to_MatchesFragment"
             app:destination="@id/MatchesFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/TournamentThumbnailChooseFragment"
+        android:name="com.example.tourney.fragments.TournamentThumbnailChooseFragment"
+        android:label="Elegir Miniatura"
+        tools:layout="@layout/fragment_tournament_thumbnail_choose" />
 
 </navigation>
