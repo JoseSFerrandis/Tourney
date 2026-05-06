@@ -102,7 +102,8 @@ class TournamentsDao(context: Context) {
                     creatorId = getLong(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_CREATOR_ID)),
                     creatorNickname = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_CREATOR_NICKNAME)),
                     maxParticipants = getInt(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_MAX_PARTICIPANTS)),
-                    date = getLong(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_DATE)),
+                    date = if (isNull(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_DATE))) { null }
+                           else { getLong(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_DATE)) },
                     location = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_LOCATION)),
                     prize = getString(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_PRIZE)),
                     code = getInt(getColumnIndexOrThrow(TournamentDatabaseHelper.COL_CODE)),

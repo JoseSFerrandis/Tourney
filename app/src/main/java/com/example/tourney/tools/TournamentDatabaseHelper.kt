@@ -61,9 +61,13 @@ class TournamentDatabaseHelper(context: Context) : SQLiteOpenHelper (
         onCreate(db)
     }
 
+    override fun onDowngrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        onUpgrade(db, oldVersion, newVersion)
+    }
+
     companion object{
         const val DATABASE_NAME = "tournaments.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 1
 
         // Constantes Tabla Torneos
         const val TABLE_TOURNAMENTS = "tournaments"
