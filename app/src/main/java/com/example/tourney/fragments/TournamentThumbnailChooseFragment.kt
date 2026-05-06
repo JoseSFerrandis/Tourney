@@ -37,7 +37,17 @@ class TournamentThumbnailChooseFragment : Fragment() {
         // Nota: Asegúrate de que los archivos en drawable se llamen exactamente así en minúsculas
         val thumbnailResources = listOf(
             R.drawable.tournament_thumbnail_1,
-            R.drawable.tournament_thumbnail_2
+            R.drawable.tournament_thumbnail_2,
+            R.drawable.tournament_thumbnail_3,
+            R.drawable.tournament_thumbnail_4,
+            R.drawable.tournament_thumbnail_5,
+            R.drawable.tournament_thumbnail_6,
+            R.drawable.tournament_thumbnail_13,
+            R.drawable.tournament_thumbnail_8,
+            R.drawable.tournament_thumbnail_9,
+            R.drawable.tournament_thumbnail_10,
+            R.drawable.tournament_thumbnail_11,
+            R.drawable.tournament_thumbnail_12
         )
 
         val adapter = TournamentThumbnailAdapter(thumbnailResources) { selectedIndex ->
