@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +20,7 @@ import com.example.tourney.databinding.FragmentHomeBinding
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.viewModel.HomeViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -81,6 +84,19 @@ class HomeFragment : Fragment() {
     private fun setupListeners() {
         binding.btnProfile.setOnClickListener {
              findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
+        }
+
+        binding.btnSearchTournament?.setOnClickListener {
+            Toast.makeText(requireContext(), "Buscando torneos...", Toast.LENGTH_SHORT).show()
+            TODO("Realizar la búsqueda de torneos con los filtros seleccionados y actualizar la lista de torneos en el adapter")
+
+            // Cierra el menú de filtros si estuviera abierto
+            binding.vwFiltersTournamentSearch?.isVisible = false
+        }
+
+        binding.vwFiltersTournamentSearch?.isVisible = false
+        binding.btnSearchFilters?.setOnClickListener {
+            binding.vwFiltersTournamentSearch?.isVisible?.let { binding.vwFiltersTournamentSearch?.isVisible = !it }
         }
     }
 

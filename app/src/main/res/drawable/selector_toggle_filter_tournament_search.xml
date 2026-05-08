@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- ESTADO: ACTIVADO (Checked) -->
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/DarkBlue2" /> <!-- Relleno azul -->
+            <stroke android:width="2dp" android:color="@color/DarkBlue1" /> <!-- Borde más oscuro -->
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+
+    <!-- ESTADO: DESACTIVADO (Unchecked) -->
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" /> <!-- Relleno blanco -->
+            <stroke android:width="2dp" android:color="@color/DarkBlue2" /> <!-- EL BORDE QUE TE FALTA -->
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+</selector>
