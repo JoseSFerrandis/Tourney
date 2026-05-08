@@ -16,6 +16,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
@@ -48,6 +49,15 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             showDatePickerDialog()
         }
 
+
+        binding.btnTipoTorneoHelp?.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.rules_title)
+                .setMessage("Bla bla bla bla bla bla bla bla bla")
+                .setPositiveButton("OK", null)
+                .show()
+
+        }
         //parseo que he realizado con la IA, estaría bien mirar de cambiar los tipos de datos
         // completamente ya que por ejemplo que el dinero sea una string, no es muy buena idea
         // tambíen quiero cambiar que no se establezca el numero de participatnes iniciales por ahora

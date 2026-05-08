@@ -140,24 +140,44 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Tipo de torneo -->
-                    <TextView
+             
+
+                    <!-- Fecha -->
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="6dp"
-                        android:textColor="@android:color/white"
-                        android:text="Tipo de Torneo"/>
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:text="Tipo de Torneo"/>
+                        
+                        <ImageButton
+                            android:id="@+id/btnTipoTorneoHelp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_help"
+                            app:tint="@android:color/white" />
+                        
+                    </LinearLayout>
 
                     <Spinner
                         android:id="@+id/spTournamentType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="48dp"
                         android:layout_marginBottom="16dp"
                         android:background="@drawable/bg_input_white"
-                        android:theme="@style/ThemeOverlay.AppCompat.Light"
-                        android:paddingHorizontal="16dp"/>
-
-                    <!-- Fecha -->
+                        android:minHeight="48dp"
+                        android:paddingHorizontal="16dp"
+                        android:theme="@style/ThemeOverlay.AppCompat.Light" />
+                    
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
