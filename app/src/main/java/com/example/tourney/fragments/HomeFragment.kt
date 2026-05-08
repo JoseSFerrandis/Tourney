@@ -82,26 +82,6 @@ class HomeFragment : Fragment() {
         binding.btnProfile.setOnClickListener {
              findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
         }
-
-        /*
-        binding.btnJoinTournament.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.action_HomeFragment_to_JoinTournamentFragment)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.btnCreateTournament.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.action_HomeFragment_to_CreateTournamentFragment)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
-            }
-        }
-         */
-
-
     }
 
     override fun onResume() {
