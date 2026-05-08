@@ -1,5 +1,7 @@
 package com.example.tourney
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.snackbar.Snackbar
@@ -11,6 +13,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.example.tourney.databinding.ActivityMainBinding
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
@@ -33,10 +38,21 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        binding.fab.setImageBitmap(resources.getDrawable(R.drawable.ic_trophy).toBitmap())
+        binding.fab.backgroundTintList = getColorStateList(R.color.white)
+
+
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+            val options = arrayOf("Crear torneo", "Unirse a un torneo")
+            AlertDialog.Builder(this)
+                .setTitle("Opciones")
+                .setItems(options) { _, which ->
+                    when (which) {
+                        0 -> { navController.navigate(R.id.action_HomeFragment_to_CreateTournamentFragment) }
+                        1 -> { navController.navigate(R.id.action_HomeFragment_to_JoinTournamentFragment) }
+                    }
+                }
+                .show()
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -44,6 +60,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.LoginFragment -> {
                     binding.fab.hide()
                     binding.toolbar.visibility = View.GONE
+                }
+                R.id.HomeFragment -> {
+                    binding.fab.show()
+                    binding.toolbar.visibility = View.VISIBLE
                 }
                 else -> {
                     binding.fab.hide()

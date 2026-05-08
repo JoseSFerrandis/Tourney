@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -82,6 +83,7 @@ class HomeFragment : Fragment() {
              findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
         }
 
+        /*
         binding.btnJoinTournament.setOnClickListener {
             try {
                 findNavController().navigate(R.id.action_HomeFragment_to_JoinTournamentFragment)
@@ -97,6 +99,9 @@ class HomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error en navegación", Toast.LENGTH_SHORT).show()
             }
         }
+         */
+
+
     }
 
     override fun onResume() {
