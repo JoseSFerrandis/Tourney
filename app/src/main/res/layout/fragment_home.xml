@@ -39,7 +39,7 @@
                         android:id="@+id/tv_greeting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hola, Usuario"
+                        android:text="Hola, usuario"
                         android:textColor="@color/tablet_title_black"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -197,7 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Torneos Disponibles"
+                android:text="Torneos disponibles"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="26sp"

@@ -108,7 +108,7 @@
                             android:id="@+id/tv_game_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="League of Legends"
+                            android:text="League of legends"
                             android:textColor="@color/dynamic_text_card"
                             android:gravity="center"
                             android:textSize="16sp"
@@ -286,7 +286,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="8dp"
-                                        android:text="$5,000"
+                                        android:text="5,000€"
                                         android:textColor="@color/dynamic_text_card"
                                         android:textSize="14sp" />
                                 </LinearLayout>
@@ -311,7 +311,7 @@
                                     android:paddingTop="4dp"
                                     android:paddingEnd="12dp"
                                     android:paddingBottom="4dp"
-                                    android:text="Inscripciones Abiertas"
+                                    android:text="Inscripciones abiertas"
                                     android:textColor="@color/white"
                                     android:textSize="12sp" />
                             </LinearLayout>

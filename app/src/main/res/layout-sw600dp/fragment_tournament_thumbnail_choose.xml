@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
-                        android:text="Imagen del Torneo"
+                        android:text="Imagen del torneo"
                         android:textColor="@android:color/white"
                         android:textSize="56sp"
                         android:textStyle="bold" />

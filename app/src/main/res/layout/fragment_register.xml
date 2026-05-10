@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="6dp"
-                android:text="Crear Cuenta"
+                android:text="Crear cuenta"
                 android:textColor="@color/text_primary"
                 android:textSize="26sp"
                 android:textStyle="bold"/>
@@ -317,7 +317,7 @@
                     android:id="@+id/tvLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Iniciar Sesión"
+                    android:text="Iniciar sesión"
                     android:textColor="@color/Blue3"
                     android:textSize="14sp"
                     android:textStyle="bold"/>

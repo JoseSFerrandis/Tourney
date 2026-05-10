@@ -59,7 +59,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Unirse al Torneo"
+                            android:text="Unirse al torneo"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                             android:textColor="?attr/colorOnSurface"
                             android:textStyle="bold" />
@@ -85,7 +85,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="20dp"
-                            android:hint="Código del Torneo"
+                            android:hint="Código del torneo"
                             app:boxStrokeColor="@color/Blue3"
                             app:startIconTint="@color/Blue3"
                             app:startIconScaleType="centerInside"

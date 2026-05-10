@@ -37,7 +37,7 @@
                         android:id="@+id/btnNextRound"
                         android:layout_width="350dp"
                         android:layout_height="72dp"
-                        android:text="Siguiente Ronda"
+                        android:text="Siguiente ronda"
                         android:textColor="@android:color/white"
                         android:textSize="22sp"
                         android:textStyle="bold"

@@ -136,7 +136,7 @@
                     android:layout_height="48dp"
                     android:layout_marginBottom="8dp"
                     android:backgroundTint="@android:color/white"
-                    android:text="Iniciar Sesión"
+                    android:text="Iniciar sesión"
                     android:textColor="@color/blue_600"
                     android:textSize="14sp" />
 
@@ -173,7 +173,7 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="350dp"
                 android:layout_height="54dp"
-                android:text="Crear Cuenta"
+                android:text="Crear cuenta"
                 android:textAllCaps="false"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@android:color/white"

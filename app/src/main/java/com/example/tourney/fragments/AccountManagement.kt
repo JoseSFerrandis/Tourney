@@ -34,7 +34,7 @@ class AccountManagement : Fragment() {
         }
 
         // Navegación al selector de avatar
-        binding.btnPreferences.text = "Cambiar Avatar"
+        binding.btnPreferences.text = "Cambiar avatar"
         binding.btnPreferences.setOnClickListener {
             findNavController().navigate(R.id.action_ProfileFragment_to_ProfileChooseFragment)
         }

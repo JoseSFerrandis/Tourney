@@ -128,7 +128,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 }
 
             } else {
-                Toast.makeText(requireContext(), "Por favor completa los campos obligatorios", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Por favor, completa los campos obligatorios", Toast.LENGTH_SHORT).show()
             }
         }
 

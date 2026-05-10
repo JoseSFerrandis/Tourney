@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="crear torneo"
+                    android:text="Crear torneo"
                     android:textColor="@android:color/white"
                     android:textSize="56sp"
                     android:textStyle="bold" />
@@ -81,7 +81,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
-                                android:hint="Copa Mundial 2026"
+                                android:hint="Copa mundial 2026"
                                 android:paddingHorizontal="16dp"
                                 android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +90,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:text="Máx. Participantes"
+                            android:text="Máx. participantes"
                             android:textColor="@android:color/white"
                             android:textSize="20sp" />
 
@@ -130,7 +130,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
-                                android:hint="Estadio Virtual"
+                                android:hint="Estadio virtual"
                                 android:paddingHorizontal="16dp"
                                 android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -166,7 +166,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
-                                android:hint="League of Legends"
+                                android:hint="League of legends"
                                 android:paddingHorizontal="16dp"
                                 android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -219,7 +219,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
-                                android:hint="€5,000"
+                                android:hint="5,000€"
                                 android:paddingHorizontal="16dp"
                                 android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -281,7 +281,7 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center_horizontal"
                     android:backgroundTint="@android:color/white"
-                    android:text="Crear Torneo"
+                    android:text="Crear torneo"
                     android:textColor="@color/blue_600"
                     android:textSize="22sp"
                     android:textStyle="bold" />
