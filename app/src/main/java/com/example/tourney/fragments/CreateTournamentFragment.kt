@@ -53,7 +53,9 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         binding.btnTipoTorneoHelp?.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setTitle(R.string.rules_title)
-                .setMessage("Bla bla bla bla bla bla bla bla bla")
+                .setMessage("Liguilla: Todos los participantes juegan entre sí, y el que acumula más puntos gana.\n" +
+                        "Suizo: Rondas según participantes, enfrentamientos entre jugadores con resultados similares.\n" +
+                        "Eliminación: El perdedor queda eliminado y el ganador avanza de ronda.")
                 .setPositiveButton("OK", null)
                 .show()
 
