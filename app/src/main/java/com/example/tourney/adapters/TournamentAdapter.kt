@@ -9,8 +9,9 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.R
 import android.content.Context
 import com.example.tourney.entities.TournamentStatus
+import com.example.tourney.entities.TournamentType
+import com.example.tourney.viewModel.HomeViewModel
 import java.sql.Date
-import kotlin.time.Duration.Companion.days
 
 class TournamentAdapter(
     private var allTournaments: MutableList<Tournament>,
@@ -82,18 +83,35 @@ class TournamentAdapter(
         notifyDataSetChanged()
     }
 
-    fun filterTournaments(query: String) {
-        val filteredList = if (query.isEmpty()) {
+    fun filterTournaments(filters: HomeViewModel) {
+        val query = filters.searchQuery.value ?: ""
+        var filteredList = if (query.isEmpty()) {
             allTournaments // Si no hay búsqueda, mostramos todo
         } else {
             allTournaments.filter { tournament ->
-                tournament.name.contains(query, ignoreCase = true) ||
-                        tournament.game.contains(query, ignoreCase = true)
+                if (filters.searchFilterByNames.value!! && filters.searchFilterByGames.value!!) {
+                    tournament.name.contains(query, ignoreCase = true)
+                            || tournament.game.contains(query, ignoreCase = true)
+                } else if (filters.searchFilterByNames.value!!) {
+                    tournament.name.contains(query, ignoreCase = true)
+                } else if (filters.searchFilterByGames.value!!) {
+                    tournament.game.contains(query, ignoreCase = true)
+                } else { true }
             }
         }
 
-        this.tournaments = filteredList.toMutableList()
-        notifyDataSetChanged()
+        val filteredByFormat = mutableListOf<Tournament>()
+        if((filters.searchFilterByElimination.value!! && filters.searchFilterByLiguilla.value!! && filters.searchFilterBySuizo.value!!)) {
+            this.tournaments = filteredList.toMutableList()
+            notifyDataSetChanged()
+        }else{
+            if(filters.searchFilterByElimination.value!!){ filteredByFormat.addAll(filteredList.filter { it.type == TournamentType.ELIMINATION }) }
+            if(filters.searchFilterByLiguilla.value!!){ filteredByFormat.addAll(filteredList.filter { it.type == TournamentType.LIGUILLA }) }
+            if(filters.searchFilterBySuizo.value!!){ filteredByFormat.addAll(filteredList.filter { it.type == TournamentType.SUIZO }) }
+
+            this.tournaments = filteredByFormat.toMutableList()
+            notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TournamentViewHolder {

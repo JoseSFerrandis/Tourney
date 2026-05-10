@@ -47,17 +47,13 @@ class HomeFragment : Fragment() {
 
         updateTournamentAdapter()
 
-        TabLayoutMediator(tabLayout!!, viewPager) { tab, position ->
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Mis torneos"
                 1 -> tab.text = "Participando"
                 2 -> tab.text = "Siguiendo"
             }
         }.attach()
-
-        binding.etSearch.addTextChangedListener { text ->
-            viewModel.updateSearch(text.toString())
-        }
 
         setupListeners()
         updateProfileImage()
@@ -71,13 +67,13 @@ class HomeFragment : Fragment() {
         if (pn > 0) {
             val resId = resources.getIdentifier("ic_user_pfp$pn", "drawable", requireContext().packageName)
             if (resId != 0) {
-                binding.ivProfile?.setImageResource(resId)
+                binding.ivProfile.setImageResource(resId)
             } else {
-                binding.ivProfile?.setImageResource(R.drawable.ic_user_pfp1)
+                binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
             }
         } else {
             // Imagen por defecto si es 0 o nulo
-            binding.ivProfile?.setImageResource(R.drawable.ic_user_pfp1)
+            binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
         }
     }
 
@@ -86,17 +82,35 @@ class HomeFragment : Fragment() {
              findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
         }
 
+        // Search
         binding.btnSearchTournament?.setOnClickListener {
-            Toast.makeText(requireContext(), "Buscando torneos...", Toast.LENGTH_SHORT).show()
-            TODO("Realizar la búsqueda de torneos con los filtros seleccionados y actualizar la lista de torneos en el adapter")
+            viewModel.updateSearch(binding.etSearch.text.toString().trim())
 
             // Cierra el menú de filtros si estuviera abierto
             binding.vwFiltersTournamentSearch?.isVisible = false
         }
-
-        binding.vwFiltersTournamentSearch?.isVisible = false
         binding.btnSearchFilters?.setOnClickListener {
             binding.vwFiltersTournamentSearch?.isVisible?.let { binding.vwFiltersTournamentSearch?.isVisible = !it }
+        }
+        binding.chkFilterTournamentSearchName?.setOnClickListener {
+            viewModel.updateFilterByNames(binding.chkFilterTournamentSearchName?.isChecked?: false)
+        }
+        binding.chkFilterTournamentSearchGame?.setOnClickListener {
+            viewModel.updateFilterByGames(binding.chkFilterTournamentSearchGame?.isChecked?: false)
+        }
+
+        // Formats
+        binding.btnFilterTournamentSearchEliminacion?.isChecked = true
+        binding.btnFilterTournamentSearchEliminacion?.setOnClickListener {
+            viewModel.updateFilterByElimination(binding.btnFilterTournamentSearchEliminacion?.isChecked?: false)
+        }
+        binding.btnFilterTournamentSearchLiguilla?.isChecked = true
+        binding.btnFilterTournamentSearchLiguilla?.setOnClickListener {
+            viewModel.updateFilterByLiguilla(binding.btnFilterTournamentSearchLiguilla?.isChecked?: false)
+        }
+        binding.btnFilterTournamentSearchSuizo?.isChecked = true
+        binding.btnFilterTournamentSearchSuizo?.setOnClickListener {
+            viewModel.updateFilterBySuizo(binding.btnFilterTournamentSearchSuizo?.isChecked?: false)
         }
     }
 

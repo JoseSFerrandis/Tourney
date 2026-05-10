@@ -51,8 +51,18 @@ class TournamentListFragment : Fragment() {
         }
 
         viewModel.searchQuery.observe(viewLifecycleOwner) { query ->
-            (binding.recyclerView.adapter as? TournamentAdapter)?.filterTournaments(query)
+            (binding.recyclerView.adapter as? TournamentAdapter)?.filterTournaments(viewModel)
         }
+        viewModel.searchFilterByElimination.observe(viewLifecycleOwner) {
+            (binding.recyclerView.adapter as? TournamentAdapter)?.filterTournaments(viewModel)
+        }
+        viewModel.searchFilterByLiguilla.observe(viewLifecycleOwner) {
+            (binding.recyclerView.adapter as? TournamentAdapter)?.filterTournaments(viewModel)
+        }
+        viewModel.searchFilterBySuizo.observe(viewLifecycleOwner) {
+            (binding.recyclerView.adapter as? TournamentAdapter)?.filterTournaments(viewModel)
+        }
+
     }
 
     override fun onDestroyView() {
