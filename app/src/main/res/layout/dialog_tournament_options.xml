@@ -70,7 +70,7 @@
             android:textStyle="bold"
             app:icon="@drawable/ic_delete"
             app:iconTint="@color/white"
-            app:backgroundTint="@color/boton_movil_card"
+            app:backgroundTint="@color/design_default_color_error"
             app:cornerRadius="16dp"
             app:iconGravity="textStart"
             app:iconPadding="12dp"/>
