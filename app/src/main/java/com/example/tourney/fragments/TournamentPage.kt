@@ -209,7 +209,7 @@ class TournamentPage : Fragment() {
     }
 
     fun showOptionsDialog(tournament: Tournament) {
-        val options = arrayOf("Editar imagen", "Eliminar")
+        val options = arrayOf("Editar imagen", "Eliminar torneo")
         AlertDialog.Builder(requireContext())
             .setTitle("Opciones")
             .setItems(options) { _, which ->
