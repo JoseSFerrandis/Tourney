@@ -86,7 +86,7 @@
                                         android:visibility="gone"
                                         app:iconPadding="0dp"
                                         android:backgroundTint="@color/boton_tablet_card_white"
-                                        app:icon="@drawable/ic_edit"
+                                        app:icon="@drawable/ic_settings"
                                         app:iconSize="28dp"
                                         app:iconTint="@color/boton_movil_card" />
 

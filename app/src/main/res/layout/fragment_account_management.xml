@@ -107,7 +107,7 @@
                             android:gravity="start|center_vertical"
                             android:text="Editar Cuenta"
                             android:textColor="?attr/colorOnSurface"
-                            app:icon="@drawable/ic_edit"
+                            app:icon="@drawable/ic_settings"
                             app:iconSize="23dp"
                             app:iconTint="@color/DarkBlue1" />
 
@@ -119,7 +119,7 @@
                             android:gravity="start|center_vertical"
                             android:text="Preferencias"
                             android:textColor="?attr/colorOnSurface"
-                            app:icon="@drawable/ic_settings"
+                            app:icon="@drawable/ic_edit"
                             app:iconTint="@color/DarkBlue1" />
 
                         <com.google.android.material.divider.MaterialDivider
