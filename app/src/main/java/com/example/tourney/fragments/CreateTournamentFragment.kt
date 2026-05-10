@@ -1,26 +1,29 @@
 package com.example.tourney.fragments
 
-import android.content.Context
-import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.tourney.entities.Tournament
-import com.example.tourney.R
-import com.example.tourney.databinding.FragmentCreateTournamentBinding
-import com.google.android.material.snackbar.Snackbar
 import android.app.DatePickerDialog
+import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.View
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.tourney.R
+import com.example.tourney.databinding.FragmentCreateTournamentBinding
+import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
 
 class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
@@ -49,17 +52,22 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             showDatePickerDialog()
         }
 
-
         binding.btnTipoTorneoHelp?.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle(R.string.rules_title)
-                .setMessage("Liguilla: Todos los participantes juegan entre sí, y el que acumula más puntos gana.\n" +
-                        "Suizo: Rondas según participantes, enfrentamientos entre jugadores con resultados similares.\n" +
-                        "Eliminación: El perdedor queda eliminado y el ganador avanza de ronda.")
-                .setPositiveButton("OK", null)
-                .show()
+            val dialogView = layoutInflater.inflate(R.layout.dialog_tournament_type_help, null)
+            val dialog = MaterialAlertDialogBuilder(requireContext())
+                .setView(dialogView)
+                .create()
 
+            // Fondo transparente para que se vean los bordes redondeados
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            dialogView.findViewById<Button>(R.id.btnOk).setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
         }
+
         //parseo que he realizado con la IA, estaría bien mirar de cambiar los tipos de datos
         // completamente ya que por ejemplo que el dinero sea una string, no es muy buena idea
         // tambíen quiero cambiar que no se establezca el numero de participatnes iniciales por ahora
@@ -88,12 +96,6 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                     code = code,
                     type = type
                 )
-
-                // IMPORTANTE - si tocamos esto fallará, por ahora no hay comprobaciónes
-                //faltaría meter unos cuantos trycatch con debugs
-
-                // A futuro: tras las comprobaciones, se añadirá el torneo a la base de datos con insert
-
 
                 // 1. GUARDAR EN LA BASE DE DATOS
                 val tournamentsDao = TournamentsDao(context)

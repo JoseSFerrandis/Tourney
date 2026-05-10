@@ -10,7 +10,6 @@
         android:name="com.example.tourney.fragments.LoginFragment"
         android:label="@string/login_fragment_label"
         tools:layout="@layout/fragment_login">
-
         <action
             android:id="@+id/action_LoginFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
@@ -26,15 +25,13 @@
         android:id="@+id/RegisterFragment"
         android:name="com.example.tourney.fragments.RegisterFragment"
         android:label="@string/register_fragment_label"
-        tools:layout="@layout/fragment_register">
-    </fragment>
+        tools:layout="@layout/fragment_register" />
 
     <fragment
         android:id="@+id/RememberPassword"
         android:name="com.example.tourney.fragments.RememberPassword"
         android:label="@string/remember_password_fragment_label"
         tools:layout="@layout/fragment_remember_password">
-
         <action
             android:id="@+id/action_RememberPassword_to_SetNewPassword"
             app:destination="@id/SetNewPassword" />
@@ -45,7 +42,6 @@
         android:name="com.example.tourney.fragments.SetNewPassword"
         android:label="@string/set_new_password_fragment_label"
         tools:layout="@layout/fragment_set_new_password">
-
         <action
             android:id="@+id/action_SetNewPassword_to_LoginFragment"
             app:destination="@id/LoginFragment"/>
@@ -56,7 +52,6 @@
         android:name="com.example.tourney.fragments.HomeFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_home">
-
         <action
             android:id="@+id/action_HomeFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
@@ -74,13 +69,11 @@
             app:destination="@id/CreateTournamentFragment" />
     </fragment>
 
-    <!-- Fragmento de Perfil -->
     <fragment
         android:id="@+id/ProfileFragment"
         android:name="com.example.tourney.fragments.AccountManagement"
         android:label="Perfil"
         tools:layout="@layout/fragment_account_management">
-
         <action
             android:id="@+id/action_ProfileFragment_to_LoginFragment"
             app:destination="@id/LoginFragment"
@@ -97,14 +90,12 @@
             app:destination="@id/EditAccountFragment" />
     </fragment>
 
-    <!-- Fragmento Editar Cuenta -->
     <fragment
         android:id="@+id/EditAccountFragment"
         android:name="com.example.tourney.fragments.EditAccountFragment"
         android:label="Editar Cuenta"
         tools:layout="@layout/fragment_edit_account" />
 
-    <!-- Fragmento Elegir Avatar -->
     <fragment
         android:id="@+id/ProfileChooseFragment"
         android:name="com.example.tourney.fragments.ProfileChooseFragment"
@@ -117,7 +108,6 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <!-- Fragmento Unirse a Torneo -->
     <fragment
         android:id="@+id/JoinTournamentFragment"
         android:name="com.example.tourney.fragments.JoinTournamentPage"
@@ -128,7 +118,6 @@
             app:destination="@id/TournamentFragment" />
     </fragment>
 
-    <!-- Fragmento Página de Torneo -->
     <fragment
         android:id="@+id/TournamentFragment"
         android:name="com.example.tourney.fragments.TournamentPage"
@@ -149,9 +138,11 @@
         <action
             android:id="@+id/action_TournamentFragment_to_TournamentThumbnailChooseFragment"
             app:destination="@id/TournamentThumbnailChooseFragment" />
+        <action
+            android:id="@+id/action_TournamentFragment_to_EditTournamentFragment"
+            app:destination="@id/EditTournamentFragment" />
     </fragment>
 
-    <!-- Fragmento Crear Torneo -->
     <fragment
         android:id="@+id/CreateTournamentFragment"
         android:name="com.example.tourney.fragments.CreateTournamentFragment"
@@ -167,7 +158,16 @@
             app:destination="@id/TournamentThumbnailChooseFragment" />
     </fragment>
 
-    <!-- Fragmento Lista de Participantes -->
+    <fragment
+        android:id="@+id/EditTournamentFragment"
+        android:name="com.example.tourney.fragments.EditTournamentFragment"
+        android:label="Editar Torneo"
+        tools:layout="@layout/fragment_edit_tournament">
+        <argument
+            android:name="tournament_data"
+            app:argType="com.example.tourney.entities.Tournament" />
+    </fragment>
+
     <fragment
         android:id="@+id/ParticipantsListFragment"
         android:name="com.example.tourney.fragments.ParticipantsListFragment"

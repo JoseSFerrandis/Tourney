@@ -3,6 +3,7 @@ package com.example.tourney
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -63,7 +64,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         TournamentRepository.getInstance().loadFromDatabase(this)
+
+        // DEBUG: Log de todos los usuarios registrados
+        logAllUsers()
     }
+
+      private fun logAllUsers() {
+          try {
+              val users = UsersDao(this).getAllUsers()
+              Log.e("DEBUG_USERS", "=== LISTA DE USUARIOS REGISTRADOS ===")
+              users.forEach { user ->
+                  Log.e("DEBUG_USERS", "Email: ${user.email} | Password: ${user.password} | Nick: ${user.nickname}")
+              }
+              Log.e("DEBUG_USERS", "=====================================")
+          } catch (e: Exception) {
+              Log.e("DEBUG_USERS", "Error al leer usuarios: ${e.message}")
+          }
+      }
+
     //La nueva función para el alert Custom
     private fun showCustomHomeDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_home_options, null)
@@ -72,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             .create()
 
         // Ajustar fondo transparente para que se vean los bordes redondeados del CardView
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val btnCreate = dialogView.findViewById<Button>(R.id.btnCreateOption)
         val btnJoin = dialogView.findViewById<Button>(R.id.btnJoinOption)

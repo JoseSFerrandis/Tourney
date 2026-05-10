@@ -24,6 +24,23 @@
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginBottom="32dp"/>
+        <!-- Opción Editar Detalles -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditDetails"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="Editar detalles"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_edit"
+            app:iconTint="@color/white"
+            app:backgroundTint="@color/boton_movil_card"
+            app:cornerRadius="16dp"
+            android:layout_marginBottom="12dp"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp" />
 
         <!-- Botón Crear: Azul con texto blanco -->
         <com.google.android.material.button.MaterialButton

@@ -188,14 +188,26 @@ class TournamentsDao(context: Context) {
         db.beginTransaction()
         return try {
             val values = ContentValues().apply {
+                put(AppDatabaseHelper.COL_TRN_NAME, t.name)
+                put(AppDatabaseHelper.COL_TRN_GAME, t.game)
+                put(AppDatabaseHelper.COL_TRN_DATE, t.date)
+                put(AppDatabaseHelper.COL_TRN_LOCATION, t.location)
+                put(AppDatabaseHelper.COL_TRN_PRIZE, t.prize)
+                put(AppDatabaseHelper.COL_TRN_CODE, t.code)
+                put(AppDatabaseHelper.COL_TRN_TYPE, t.type.name)
                 put(AppDatabaseHelper.COL_TRN_STATUS, t.tournamentStatus.name)
                 put(AppDatabaseHelper.COL_TRN_THUMBNAIL, t.thumbnail)
             }
             db.update(AppDatabaseHelper.TABLE_TOURNAMENTS, values, "${AppDatabaseHelper.COL_TRN_ID}=?", arrayOf(t.id.toString()))
+            
+            // Si el torneo ha cambiado de estructura (tipo o participantes), a veces es necesario resetear partidos.
+            // Aquí simplificamos actualizando lo que haya en t.matches
             db.delete(AppDatabaseHelper.TABLE_MATCHES, "${AppDatabaseHelper.COL_MATCH_TRN_ID}=?", arrayOf(t.id.toString()))
             t.updateMatchesFromView()
             insertMatches(t, db)
+            
             updateParticipants(t, db)
+            
             db.setTransactionSuccessful()
             true
         } catch (_: Exception) { false } finally {

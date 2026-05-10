@@ -220,8 +220,18 @@ class TournamentPage : Fragment() {
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        val btnEditDetails = dialogView.findViewById<MaterialButton>(R.id.btnEditDetails)
         val btnEditThumbnail = dialogView.findViewById<MaterialButton>(R.id.btnEditThumbnail)
         val btnDeleteTournament = dialogView.findViewById<MaterialButton>(R.id.btnDeleteTournament)
+
+
+        if (tournament.tournamentStatus != TournamentStatus.EDITABLE) {
+            btnEditDetails.visibility = View.GONE
+        }
+        btnEditDetails.setOnClickListener {
+            modifyDetails(tournament)
+            dialog.dismiss()
+        }
 
         btnEditThumbnail.setOnClickListener {
             modifyThumbnail(tournament)
@@ -234,6 +244,18 @@ class TournamentPage : Fragment() {
         }
 
         dialog.show()
+    }
+    fun modifyDetails(tournament: Tournament) {
+        if (tournament.tournamentStatus == TournamentStatus.EDITABLE) {
+            val bundle = Bundle().apply {
+                putParcelable("tournament_data", tournament)
+            }
+            // Pass the bundle here!
+            findNavController().navigate(
+                R.id.action_TournamentFragment_to_EditTournamentFragment,
+                bundle
+            )
+        }
     }
 
     fun modifyThumbnail(tournament: Tournament) {
