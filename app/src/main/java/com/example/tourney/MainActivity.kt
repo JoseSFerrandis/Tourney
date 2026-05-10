@@ -40,8 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setImageBitmap(resources.getDrawable(R.drawable.ic_trophy).toBitmap())
         binding.fab.backgroundTintList = getColorStateList(R.color.white)
-
-
+        binding.fab.imageTintList = getColorStateList(R.color.DarkBlue2)
         binding.fab.setOnClickListener { view ->
             val options = arrayOf("Crear torneo", "Unirse a un torneo")
             AlertDialog.Builder(this)
