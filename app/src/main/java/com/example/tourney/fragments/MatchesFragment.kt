@@ -63,7 +63,7 @@ class MatchesFragment : Fragment() {
                 Toast.makeText(requireContext(), "Torneo iniciado", Toast.LENGTH_SHORT).show()
             }
             else { nextRound() }
-            TournamentsDao(requireContext()).updateTournament(tournament!!)
+            tournament?.let{ TournamentsDao(requireContext()).updateTournament(it) }
             updateNextRoundBtn()
         }
         binding.goToClasification.setOnClickListener {
@@ -92,7 +92,7 @@ class MatchesFragment : Fragment() {
                 refreshBracketView()
             }
         } else {
-            TournamentsDao(requireContext()).updateTournament(tournament!!)
+            tournament?.let{ TournamentsDao(requireContext()).updateTournament(it) }
             updateNextRoundBtn()
         }
     }

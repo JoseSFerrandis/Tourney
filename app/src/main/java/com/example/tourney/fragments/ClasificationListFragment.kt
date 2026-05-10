@@ -51,7 +51,7 @@ class ClasificationListFragment : Fragment() {
                 tournament?.setStatusInProgress(requireContext())
             }
             else{ tournament?.nextRound(requireContext()) }
-            TournamentsDao(requireContext()).updateTournament(tournament!!)
+            tournament?.let{ TournamentsDao(requireContext()).updateTournament(it) }
             refresh()
         }
 
