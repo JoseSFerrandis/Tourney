@@ -7,4 +7,16 @@
     </style>
 
     <style name="Theme.Tourney" parent="Base.Theme.Tourney" />
+
+    <!-- Estilo para el texto de los Tabs (Usado en Tablet) -->
+    <style name="TabLayoutTextAppearanceTablet" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Estilo para imágenes circulares -->
+    <style name="CircleShapeAppearance" parent="">
+        <item name="cornerSize">55%</item>
+    </style>
 </resources>

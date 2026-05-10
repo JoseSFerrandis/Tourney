@@ -1,5 +1,7 @@
 package com.example.tourney.fragments
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +22,8 @@ import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Date
 
 class TournamentPage : Fragment() {
@@ -207,18 +211,29 @@ class TournamentPage : Fragment() {
             }
         }
     }
-
+    //La nueva opción para el dialogo custom
     fun showOptionsDialog(tournament: Tournament) {
-        val options = arrayOf("Editar imagen", "Eliminar torneo")
-        AlertDialog.Builder(requireContext())
-            .setTitle("Opciones")
-            .setItems(options) { _, which ->
-                when (which) {
-                    0 -> { modifyThumbnail(tournament) }
-                    1 -> { confirmDeleteTournament(tournament) }
-                }
-            }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_tournament_options, null)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnEditThumbnail = dialogView.findViewById<MaterialButton>(R.id.btnEditThumbnail)
+        val btnDeleteTournament = dialogView.findViewById<MaterialButton>(R.id.btnDeleteTournament)
+
+        btnEditThumbnail.setOnClickListener {
+            modifyThumbnail(tournament)
+            dialog.dismiss()
+        }
+
+        btnDeleteTournament.setOnClickListener {
+            confirmDeleteTournament(tournament)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     fun modifyThumbnail(tournament: Tournament) {
