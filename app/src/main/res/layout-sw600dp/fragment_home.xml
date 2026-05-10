@@ -15,8 +15,8 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorSurface"
             android:orientation="vertical"
-            android:padding="40dp"
-            android:paddingBottom="32dp"
+            android:paddingTop="24dp"
+            android:paddingHorizontal="24dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
@@ -137,6 +137,49 @@
                     android:textSize="18sp"
                     android:checked="true"/>
             </LinearLayout>
+
+            <!-- Format Filter Buttons -->
+            <LinearLayout
+                android:layout_width="800dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal">
+
+                <ToggleButton
+                    android:id="@+id/btn_filter_tournament_search_eliminacion"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_toggle_filter_tournament_search"
+                    android:textColor="@color/toggle_text_selector_filter_tournament_search"
+                    android:layout_marginEnd="16dp"
+                    android:textOff="Eliminación"
+                    android:textOn="Eliminación"
+                    android:textSize="16sp" />
+                <ToggleButton
+                    android:id="@+id/btn_filter_tournament_search_liguilla"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_toggle_filter_tournament_search"
+                    android:textColor="@color/toggle_text_selector_filter_tournament_search"
+                    android:textOff="Liguilla"
+                    android:textOn="Liguilla"
+                    android:textSize="16sp" />
+                <ToggleButton
+                    android:id="@+id/btn_filter_tournament_search_suizo"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_toggle_filter_tournament_search"
+                    android:textColor="@color/toggle_text_selector_filter_tournament_search"
+                    android:layout_marginStart="16dp"
+                    android:textOff="Suizo"
+                    android:textOn="Suizo"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Content Section -->
@@ -153,47 +196,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="40dp">
-
-                <!-- Format Filter Buttons -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="24dp">
-
-                    <ToggleButton
-                        android:id="@+id/btn_filter_tournament_search_eliminacion"
-                        android:layout_width="0dp"
-                        android:layout_height="56dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_toggle_filter_tournament_search"
-                        android:textColor="@color/toggle_text_selector_filter_tournament_search"
-                        android:layout_marginEnd="16dp"
-                        android:textOff="Eliminación"
-                        android:textOn="Eliminación"
-                        android:textSize="16sp" />
-                    <ToggleButton
-                        android:id="@+id/btn_filter_tournament_search_liguilla"
-                        android:layout_width="0dp"
-                        android:layout_height="56dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_toggle_filter_tournament_search"
-                        android:textColor="@color/toggle_text_selector_filter_tournament_search"
-                        android:textOff="Liguilla"
-                        android:textOn="Liguilla"
-                        android:textSize="16sp" />
-                    <ToggleButton
-                        android:id="@+id/btn_filter_tournament_search_suizo"
-                        android:layout_width="0dp"
-                        android:layout_height="56dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_toggle_filter_tournament_search"
-                        android:textColor="@color/toggle_text_selector_filter_tournament_search"
-                        android:layout_marginStart="16dp"
-                        android:textOff="Suizo"
-                        android:textOn="Suizo"
-                        android:textSize="16sp" />
-                </LinearLayout>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
