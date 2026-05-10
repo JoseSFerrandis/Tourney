@@ -49,14 +49,9 @@ class ClasificationListFragment : Fragment() {
             if(tournament?.tournamentStatus == TournamentStatus.EDITABLE){
                 tournament?.initMatches()
                 tournament?.setStatusInProgress(requireContext())
-                refresh()
-                return@setOnClickListener
             }
-            //val matches = tournament?.columnMatches.
-            tournament?.nextRound(requireContext())
+            else{ tournament?.nextRound(requireContext()) }
             TournamentsDao(requireContext()).updateTournament(tournament!!)
-
-
             refresh()
         }
 

@@ -58,18 +58,18 @@ class MatchesFragment : Fragment() {
 
         binding.btnNextRound.setOnClickListener {
             // Si el torneo es editable (aún no ha empezado), deja de ser editable (acaba de empezar)
-            if(tournament?.tournamentStatus == TournamentStatus.EDITABLE)
+            if(tournament?.tournamentStatus == TournamentStatus.EDITABLE){
                 tournament?.tournamentStatus = TournamentStatus.IN_PROGRESS
-
-            nextRound()
+                Toast.makeText(requireContext(), "Torneo iniciado", Toast.LENGTH_SHORT).show()
+            }
+            else { nextRound() }
+            TournamentsDao(requireContext()).updateTournament(tournament!!)
             updateNextRoundBtn()
         }
         binding.goToClasification.setOnClickListener {
             val bundle = Bundle().apply {
                 putParcelable("tournament_data", tournament)
             }
-            //findNavController().navigate(R.id.action_MatchesFragment_to_ClasificationListFragment, bundle)
-
 
             val navigationOptions = navOptions {
                 popUpTo(R.id.MatchesFragment) {
@@ -140,7 +140,7 @@ class MatchesFragment : Fragment() {
         _binding = null
     }
 
-    fun updateNextRoundBtn(){
+    /*fun UpdateNextRoundBtn(){
         if(tournament?.creatorId != User.actualUser?.id)
             binding.btnNextRound.visibility = View.GONE
         else
@@ -149,5 +149,21 @@ class MatchesFragment : Fragment() {
         binding.btnNextRound.isEnabled = tournament?.tournamentStatus != TournamentStatus.FINISHED
         binding.btnNextRound.text = if(tournament?.tournamentStatus == TournamentStatus.FINISHED)
             "Torneo finalizado" else "Siguiente ronda"
+    }*/
+
+    private fun updateNextRoundBtn(){
+        if(tournament?.creatorId != User.actualUser?.id)
+            binding.btnNextRound.visibility = View.GONE
+        else
+            binding.btnNextRound.visibility = View.VISIBLE
+
+        binding.btnNextRound.text = when (tournament?.tournamentStatus) {
+            TournamentStatus.EDITABLE -> "Empezar torneo"
+            TournamentStatus.IN_PROGRESS -> "Siguiente ronda"
+            TournamentStatus.FINISHED -> "Torneo finalizado"
+            else -> "Empezar torneo"
+        }
+
+        binding.btnNextRound.isEnabled = tournament?.tournamentStatus != TournamentStatus.FINISHED
     }
 }
