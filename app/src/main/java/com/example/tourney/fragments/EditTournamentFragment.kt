@@ -55,8 +55,8 @@ class EditTournamentFragment : Fragment(R.layout.fragment_edit_tournament) {
             binding.etGame.setText(t.game)
             binding.etLocation.setText(t.location)
             binding.etPrize.setText(t.prize)
-            binding.etCode.setText(t.code.toString())
-            
+            binding.etCode.setText(t.code?.toString() ?: "")
+
             tournamentDate = t.date
             t.date?.let {
                 val calendar = Calendar.getInstance()
@@ -107,7 +107,7 @@ class EditTournamentFragment : Fragment(R.layout.fragment_edit_tournament) {
             val game = binding.etGame.text.toString().trim()
             val location = binding.etLocation.text.toString().trim()
             val prize = binding.etPrize.text.toString().trim()
-            val code = binding.etCode.text.toString().toIntOrNull() ?: 0
+            val code = binding.etCode.text.toString().toIntOrNull()
             val typeString = binding.spTournamentType.selectedItem.toString()
             val type = Tournament.getTournamentTypeFromString(typeString)
 

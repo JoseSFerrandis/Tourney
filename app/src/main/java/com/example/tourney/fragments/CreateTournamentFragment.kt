@@ -79,7 +79,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             val date = tournamentDate
             val location = binding.etLocation.text.toString()
             val prize = binding.etPrize.text.toString()
-            val code = binding.etCode.text.toString().toIntOrNull() ?: 0
+            val code = binding.etCode.text.toString().toIntOrNull()
             val type = Tournament.getTournamentTypeFromString(binding.spTournamentType.selectedItem.toString())
 
             if (name.isNotBlank() && game.isNotBlank()) {

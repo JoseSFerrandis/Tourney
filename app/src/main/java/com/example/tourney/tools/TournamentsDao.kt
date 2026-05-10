@@ -115,9 +115,9 @@ class TournamentsDao(context: Context) {
                     creatorNickname = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_CREATOR_NICKNAME)),
                     maxParticipants = getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_MAX_PARTICIPANTS)),
                     date = if (isNull(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_DATE))) null else getLong(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_DATE)),
-                    location = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_LOCATION)),
-                    prize = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_PRIZE)),
-                    code = getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_CODE)),
+                    location = if (isNull(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_LOCATION))) "" else getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_LOCATION)),
+                    prize = if(isNull(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_PRIZE))) "" else getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_PRIZE)),
+                    code = if (isNull(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_CODE))) null else getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_CODE)),
                     type = TournamentType.valueOf(getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_TYPE))),
                     tournamentStatus = TournamentStatus.valueOf(getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_STATUS))),
                     thumbnail = getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_TRN_THUMBNAIL))
