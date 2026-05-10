@@ -11,7 +11,8 @@ import kotlin.math.log2
 
 /**
  * Implementación del Formato de Torneo Suizo.
- * Los jugadores se emparejan según su puntuación (victorias) en cada ronda.
+ * Los jugadores se emparejan según su puntuación acumulada en cada ronda.
+ * Sistema de puntos: Victoria = 3, Empate = 1, Derrota = 0.
  */
 class SuizoTournamentFormat : TournamentFormat {
 
@@ -40,7 +41,7 @@ class SuizoTournamentFormat : TournamentFormat {
 
     /**
      * Crea los emparejamientos emparejando a los jugadores en orden de la lista.
-     * En el sistema suizo, la lista vendrá ordenada por victorias previas.
+     * En el sistema suizo, la lista vendrá ordenada por puntos acumulados.
      */
     override fun createMatches(competitors: MutableList<CompetitorData>): MutableList<MatchData> {
         val matches = mutableListOf<MatchData>()
@@ -61,18 +62,13 @@ class SuizoTournamentFormat : TournamentFormat {
         // 1. Validar resultados de la ronda actual
         val lastMatches = getLastMatchList(t)
         for (match in lastMatches) {
-            // Ignoramos validación si uno es DESCANSO (se considera victoria automática para el otro)
+            // Ignoramos validación si uno es DESCANSO
             if (match.competitorOne.name != "DESCANSO" && match.competitorTwo.name != "DESCANSO") {
                 val s1 = match.competitorOne.score.toFloatOrNull()
                 val s2 = match.competitorTwo.score.toFloatOrNull()
                 
                 if (s1 == null || s2 == null) {
                     Toast.makeText(context, "Faltan puntuaciones en la ronda actual", Toast.LENGTH_SHORT).show()
-                    return false
-                }
-                
-                if (s1 == s2) {
-                    Toast.makeText(context, "No puede haber empate en sistema Suizo (necesario para emparejar)", Toast.LENGTH_SHORT).show()
                     return false
                 }
             }
@@ -87,12 +83,12 @@ class SuizoTournamentFormat : TournamentFormat {
             return false
         }
 
-        // 3. Calcular el total de victorias acumuladas para cada jugador
-        // Esto servirá para el emparejamiento de la siguiente ronda
-        val winsMap = calculateWins(t)
+        // 3. Calcular el total de puntos acumulados para cada jugador
+        val pointsMap = calculatePoints(t)
 
-        // 4. Ordenar a los jugadores por número de victorias (Criterio principal del Suizo)
-        val sortedCompetitors = competitors.sortedByDescending { winsMap[it.name] ?: 0 }.toMutableList()
+        // 4. Ordenar a los jugadores por puntos (Criterio principal del Suizo)
+        // En caso de empate a puntos, el orden actual se mantiene (podría mejorarse con Buchholz)
+        val sortedCompetitors = competitors.sortedByDescending { pointsMap[it.name] ?: 0 }.toMutableList()
 
         // 5. Crear la siguiente columna
         t.columnMatches.add(createColumn(createMatches(sortedCompetitors)))
@@ -102,25 +98,40 @@ class SuizoTournamentFormat : TournamentFormat {
     }
 
     /**
-     * Calcula cuántas victorias tiene cada participante basándose en todas las columnas (rondas)
+     * Calcula los puntos de cada participante basándose en todas las rondas jugadas.
+     * Victoria: 3 puntos, Empate: 1 punto, Derrota: 0 puntos.
+     * DESCANSO: Otorga 3 puntos al oponente real.
      */
-    private fun calculateWins(t: Tournament): Map<String, Int> {
-        val wins = mutableMapOf<String, Int>()
+    private fun calculatePoints(t: Tournament): Map<String, Int> {
+        val points = mutableMapOf<String, Int>()
         
         t.columnMatches.forEach { column ->
             column.matches.forEach { match ->
                 val s1 = match.competitorOne.score.toFloatOrNull() ?: 0f
                 val s2 = match.competitorTwo.score.toFloatOrNull() ?: 0f
                 
+                val p1 = match.competitorOne.name
+                val p2 = match.competitorTwo.name
+
                 when {
-                    s1 > s2 -> wins[match.competitorOne.name] = (wins[match.competitorOne.name] ?: 0) + 1
-                    s2 > s1 -> wins[match.competitorTwo.name] = (wins[match.competitorTwo.name] ?: 0) + 1
-                    // Caso de DESCANSO: El jugador real gana automáticamente
-                    match.competitorOne.name == "DESCANSO" -> wins[match.competitorTwo.name] = (wins[match.competitorTwo.name] ?: 0) + 1
-                    match.competitorTwo.name == "DESCANSO" -> wins[match.competitorOne.name] = (wins[match.competitorOne.name] ?: 0) + 1
+                    // Gestión de DESCANSO (Bye)
+                    p1 == "DESCANSO" -> points[p2] = (points[p2] ?: 0) + 3
+                    p2 == "DESCANSO" -> points[p1] = (points[p1] ?: 0) + 3
+                    
+                    // Empate
+                    s1 == s2 -> {
+                        points[p1] = (points[p1] ?: 0) + 1
+                        points[p2] = (points[p2] ?: 0) + 1
+                    }
+                    
+                    // Victoria P1
+                    s1 > s2 -> points[p1] = (points[p1] ?: 0) + 3
+                    
+                    // Victoria P2
+                    s2 > s1 -> points[p2] = (points[p2] ?: 0) + 3
                 }
             }
         }
-        return wins
+        return points
     }
 }
