@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentRegisterBinding
 import com.example.tourney.entities.User
+import com.example.tourney.models.NewUserModel
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
 import com.google.android.material.textfield.TextInputLayout
@@ -156,8 +157,7 @@ class RegisterFragment : Fragment() {
         binding.btnRegister.text = "Creando cuenta..."
 
         UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).insertNewUser(
-            User(
-                id = 0,
+            NewUserModel(
                 nickname = nickname,
                 email = email,
                 password = password,

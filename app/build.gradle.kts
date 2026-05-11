@@ -54,7 +54,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.converter.gson)
     implementation(libs.retrofit)
-    
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+
     // Unit Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

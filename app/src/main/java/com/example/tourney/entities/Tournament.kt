@@ -3,10 +3,6 @@ package com.example.tourney.entities
 import android.content.Context
 import android.os.Parcelable
 import android.widget.Toast
-import com.example.tourney.models.EliminationTournamentFormat
-import com.example.tourney.models.LiguillaTournamentFormat
-import com.example.tourney.models.SuizoTournamentFormat
-import com.example.tourney.models.TournamentFormat
 import com.ventura.bracketslib.model.ColomnData
 import com.ventura.bracketslib.model.CompetitorData
 import com.ventura.bracketslib.model.MatchData

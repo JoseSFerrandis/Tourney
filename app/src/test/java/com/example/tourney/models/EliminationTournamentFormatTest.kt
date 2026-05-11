@@ -1,5 +1,6 @@
 package com.example.tourney.models
 
+import com.example.tourney.entities.EliminationTournamentFormat
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
