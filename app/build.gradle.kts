@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.converter.gson)
+    implementation(libs.retrofit)
     
     // Unit Testing
     testImplementation(libs.junit)
