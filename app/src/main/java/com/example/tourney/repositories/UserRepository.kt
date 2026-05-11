@@ -2,6 +2,7 @@ package com.example.tourney.repositories
 
 import android.content.Context
 import android.widget.Toast
+import androidx.navigation.navOptions
 import com.example.tourney.entities.User
 import com.example.tourney.models.NewUserModel
 import com.example.tourney.tools.APIService
@@ -14,7 +15,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.Dispatcher
 
 class UserRepository(private val dao: UsersDao, private val api: APIService) {
-    fun insertNewUser(user: NewUserModel, context: Context){
+    fun insertNewUser(user: NewUserModel, context: Context, onSuccess: () -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try{
                 val newUser = api.insertNewUser(user)
@@ -22,9 +23,11 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
                     id = newUser.id,
                     nickname = newUser.nickname,
                     email = newUser.email,
-                    password = newUser.password,
+                    password = user.passwordHash,
                     photo = newUser.photo
                 ))
+                withContext(Dispatchers.Main) { onSuccess() } // Toast de éxito y navegación a login
+                println("Usuario insertado correctamente")
             }catch (e: Exception){
                 println("Error al insertar usuario")
                 withContext(Dispatchers.Main) {

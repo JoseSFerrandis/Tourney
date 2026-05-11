@@ -1,8 +1,8 @@
 package com.example.tourney.models
 
-data class NewUserModel(
+data class UserModel (
+    val id: Long,
     val nickname: String,
     val email: String,
-    val passwordHash: String,
     val photo: Int
 )

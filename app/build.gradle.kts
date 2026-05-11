@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.retrofit)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("org.mindrot:jbcrypt:0.4")
 
 
     // Unit Testing

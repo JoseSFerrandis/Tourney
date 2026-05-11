@@ -1,7 +1,7 @@
 package com.example.tourney.tools
 
-import com.example.tourney.entities.User
 import com.example.tourney.models.NewUserModel
+import com.example.tourney.models.UserModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,7 +14,7 @@ import retrofit2.http.POST
 interface APIService {
     //fun getUsers(): List<User>
     @POST("/newUser")
-    suspend fun insertNewUser(@Body user: NewUserModel): User
+    suspend fun insertNewUser(@Body user: NewUserModel): UserModel
 
     companion object{
         private var apiService: APIService? = null

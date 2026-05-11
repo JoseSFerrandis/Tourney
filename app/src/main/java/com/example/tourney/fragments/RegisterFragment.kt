@@ -14,6 +14,7 @@ import com.example.tourney.models.NewUserModel
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
 import com.google.android.material.textfield.TextInputLayout
+import org.mindrot.jbcrypt.BCrypt
 
 // TODO: humanizar código
 class RegisterFragment : Fragment() {
@@ -150,7 +151,8 @@ class RegisterFragment : Fragment() {
     private fun registerUser() {
         val nickname = binding.etNickname.text.toString().trim()
         val email    = binding.etEmail.text.toString().trim()
-        val password = binding.etPassword.text.toString()
+        // Encripta la contraseña
+        val password = BCrypt.hashpw(binding.etPassword.text.toString(), BCrypt.gensalt(12))
 
         // Mostrar loading
         binding.btnRegister.isEnabled = false
@@ -160,19 +162,19 @@ class RegisterFragment : Fragment() {
             NewUserModel(
                 nickname = nickname,
                 email = email,
-                password = password,
+                passwordHash = password,
                 photo = 1
             ),
             requireContext()
-        )
-        Toast.makeText(requireContext(), "Cuenta creada correctamente", Toast.LENGTH_SHORT).show()
+        ) {
+            Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT).show()
+            navigateToLogin()
+        }
 
-        navigateToLogin()
     }
 
     fun navigateToLogin(){
         requireActivity().onBackPressedDispatcher.onBackPressed()
-        // findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
     }
 
 
