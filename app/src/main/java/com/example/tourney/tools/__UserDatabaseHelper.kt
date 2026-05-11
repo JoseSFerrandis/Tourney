@@ -18,15 +18,14 @@ class __UserDatabaseHelper(context: Context) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Si subimos de versión, borramos todo y empezamos de cero
+        // Al subir la versión de 1 a 2, borramos la tabla vieja para que se cree la nueva con el invitado
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
         onCreate(db)
     }
 
     companion object {
-        // Cambiamos el nombre radicalmente para forzar un archivo nuevo
         const val DATABASE_NAME = "tourney_v3_clean.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2 // Subimos a 2 para forzar la actualización
         const val TABLE_USERS = "users"
         const val COL_ID = "id"
         const val COL_NICKNAME = "nickname"
@@ -36,7 +35,6 @@ class __UserDatabaseHelper(context: Context) :
         const val COL_LIST_SHOWABLE_TOURNAMENTS = "list_showable_tournaments"
         const val COL_LIST_FOLLOWING_TOURNAMENTS = "list_following_tournaments"
         const val COL_LIST_JOINED_TOURNAMENTS = "list_joined_tournaments"
-        //const val COL_LIST_ADMIN_TOURNAMENTS = "list_admin_tournaments"
     }
 
     fun createTableUsers(db: SQLiteDatabase) {
@@ -59,7 +57,8 @@ class __UserDatabaseHelper(context: Context) :
         val insert = """
         INSERT INTO $TABLE_USERS ($COL_NICKNAME, $COL_EMAIL, $COL_PASSWORD, $COL_PHOTO, $COL_LIST_SHOWABLE_TOURNAMENTS, $COL_LIST_FOLLOWING_TOURNAMENTS, $COL_LIST_JOINED_TOURNAMENTS) VALUES
         ('admin', 'admin@admin.com', 'admin', 0, "", "", ""),
-        ('user', 'user@user.com', 'user', 0, "", "", "")
+        ('user', 'user@user.com', 'user', 0, "", "", ""),
+        ('invitado', 'invitado@invitado.com', 'invitado', 0, "", "", "")
     """.trimIndent()
         db.execSQL(insert)
     }

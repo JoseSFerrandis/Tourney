@@ -19,11 +19,13 @@
             android:backgroundTint="#1AFFFFFF"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="40dp"
+            android:layout_marginBottom="50sp"
+            android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.508">
 
             <!-- Ícono trofeo -->
             <FrameLayout
@@ -58,6 +60,7 @@
                 android:text="Organiza y participa en torneos"
                 android:textColor="#CCDCFF"
                 android:textSize="18sp" />
+
             <TextView
                 android:layout_width="600dp"
                 android:layout_height="40dp"
@@ -70,9 +73,9 @@
                 android:id="@+id/tilLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-
                 android:layout_marginBottom="20dp"
+
+                android:gravity="center"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -99,8 +102,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:endIconMode="password_toggle"
                 android:gravity="center"
+                app:endIconMode="password_toggle"
 
                 app:hintEnabled="false">
 
@@ -117,12 +120,12 @@
 
             <Button
                 android:id="@+id/btnLoginLogin"
-                android:gravity="center"
-
                 android:layout_width="600dp"
+
                 android:layout_height="76dp"
                 android:layout_marginBottom="12dp"
                 android:backgroundTint="@android:color/white"
+                android:gravity="center"
                 android:text="Iniciar sesión"
                 android:textColor="@color/blue_600"
                 android:textSize="25sp"
@@ -131,14 +134,24 @@
             <Button
                 android:id="@+id/btnForgotPassword"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="600dp"
+                android:layout_width="460dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
 
                 android:text="¿Olvidaste tu contraseña?"
                 android:textColor="@android:color/white"
                 android:textSize="25sp" />
 
+            <Button
+                android:id="@+id/btnModoInvitado"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="360dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:text="Entrar como invitado"
+
+                android:textColor="@android:color/white"
+                android:textSize="22sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -154,24 +167,15 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="600dp"
                 android:layout_height="74dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.02"
                 android:text="Crear cuenta"
                 android:textAllCaps="false"
-                android:fontFamily="sans-serif-medium"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
-                android:letterSpacing="0.02"
+                app:cornerRadius="12dp"
                 app:strokeColor="@android:color/white"
-                app:strokeWidth="1.5dp"
-                app:cornerRadius="12dp" />
-
-            <ImageView
-                android:layout_width="198dp"
-                android:layout_height="187dp"
-                android:contentDescription="TorneoApp"
-                android:padding="0dp"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/tourney_logo"
-                app:tint="@color/blue_600" />
+                app:strokeWidth="1.5dp" />
 
         </LinearLayout>
 

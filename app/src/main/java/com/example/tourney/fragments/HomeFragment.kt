@@ -79,7 +79,11 @@ class HomeFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnProfile.setOnClickListener {
-             findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
+            if (User.actualUser?.id?.toInt() != 3) {
+                findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
+             }else{
+                 Toast.makeText(requireContext(), "No puedes acceder a tu perfil como invitado", Toast.LENGTH_SHORT).show()
+             }
         }
 
         // Search

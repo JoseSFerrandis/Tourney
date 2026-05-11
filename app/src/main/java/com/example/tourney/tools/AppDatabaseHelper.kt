@@ -72,7 +72,7 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(
             )
         """.trimIndent())
 
-        // 5. Tabla de Relaciones Usuario-Torneo (Showable, Following, Joined)
+        // 5. Tabla de Relaciones Usuario-Torneo
         db.execSQL("""
             CREATE TABLE $TABLE_USER_TRN_RELATIONS (
                 $COL_REL_USER_ID INTEGER,
@@ -84,12 +84,14 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(
             )
         """.trimIndent())
 
-        // Insertar usuarios por defecto
+        // Insertar usuarios por defecto (incluyendo invitado)
         db.execSQL("INSERT INTO $TABLE_USERS ($COL_USER_NICKNAME, $COL_USER_EMAIL, $COL_USER_PASSWORD, $COL_USER_PHOTO) VALUES ('admin', 'admin@admin.com', 'admin', 0)")
         db.execSQL("INSERT INTO $TABLE_USERS ($COL_USER_NICKNAME, $COL_USER_EMAIL, $COL_USER_PASSWORD, $COL_USER_PHOTO) VALUES ('user', 'user@user.com', 'user', 0)")
+        db.execSQL("INSERT INTO $TABLE_USERS ($COL_USER_NICKNAME, $COL_USER_EMAIL, $COL_USER_PASSWORD, $COL_USER_PHOTO) VALUES ('invitado', 'invitado@invitado.com', 'invitado', 0)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        // Al detectar cambio de versión, borramos y recreamos todo para que aparezca el 'invitado'
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USER_TRN_RELATIONS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_MATCHES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_PARTICIPANTS")
@@ -100,7 +102,7 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
     companion object {
         const val DATABASE_NAME = "tourney_app.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2 // <--- Subido a 2
 
         // Tabla Usuarios
         const val TABLE_USERS = "users"
