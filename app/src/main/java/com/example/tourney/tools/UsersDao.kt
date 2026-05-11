@@ -35,6 +35,7 @@ class UsersDao(context: Context) {
         db.close()
         return id
     }
+    fun insertNewUser(user: User): Long { return insertNewUser(user.nickname, user.email, user.password, user.photo) }
 
     /**
      * Recupera todos los usuarios de la base de datos reconstruyendo sus listas de torneos

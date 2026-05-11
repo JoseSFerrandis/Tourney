@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentRegisterBinding
 import com.example.tourney.entities.User
+import com.example.tourney.repositories.UserRepository
+import com.example.tourney.tools.APIService
 import com.google.android.material.textfield.TextInputLayout
 
 // TODO: humanizar código
@@ -153,14 +155,15 @@ class RegisterFragment : Fragment() {
         binding.btnRegister.isEnabled = false
         binding.btnRegister.text = "Creando cuenta..."
 
-        UsersDao(requireContext()).insertNewUser(
+        UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).insertNewUser(
             User(
                 id = 0,
                 nickname = nickname,
                 email = email,
                 password = password,
                 photo = 1
-            )
+            ),
+            requireContext()
         )
         Toast.makeText(requireContext(), "Cuenta creada correctamente", Toast.LENGTH_SHORT).show()
 
