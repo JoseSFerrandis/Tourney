@@ -37,8 +37,38 @@ class UsersDao(context: Context) {
     }
 
     /**
+     * Recupera un usuario por su ID
+     */
+    fun getUserById(id: Long): User? {
+        val db = helper.readableDatabase
+        val cursor = db.query(
+            AppDatabaseHelper.TABLE_USERS,
+            null,
+            "${AppDatabaseHelper.COL_USER_ID}=?",
+            arrayOf(id.toString()),
+            null, null, null
+        )
+
+        var user: User? = null
+        if (cursor.moveToFirst()) {
+            user = User(
+                id = id,
+                nickname = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_NICKNAME)),
+                email = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_EMAIL)),
+                password = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PASSWORD)),
+                photo = cursor.getInt(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PHOTO)),
+                showableTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_SHOWABLE, db),
+                followingTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_FOLLOWING, db),
+                joinedTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_JOINED, db)
+            )
+        }
+        cursor.close()
+        db.close()
+        return user
+    }
+
+    /**
      * Recupera todos los usuarios de la base de datos reconstruyendo sus listas de torneos
-     * a partir de la tabla de relaciones.
      */
     fun getAllUsers(): List<User> {
         val db = helper.readableDatabase
@@ -108,7 +138,7 @@ class UsersDao(context: Context) {
     }
 
     /**
-     * Crea una relación entre un usuario y un torneo (Seguir, Unirse, etc)
+     * Crea una relación entre un usuario y un torneo
      */
     fun addTournamentRelation(userId: Long, tournamentId: Long, type: String) {
         val db = helper.writableDatabase
@@ -144,14 +174,12 @@ class UsersDao(context: Context) {
         val db = helper.writableDatabase
         db.beginTransaction()
         try {
-            // 1. Borrar relaciones antiguas de este tipo para este usuario
             db.delete(
                 AppDatabaseHelper.TABLE_USER_TRN_RELATIONS,
                 "${AppDatabaseHelper.COL_REL_USER_ID}=? AND ${AppDatabaseHelper.COL_REL_TYPE}=?",
                 arrayOf(userId.toString(), type)
             )
 
-            // 2. Insertar las nuevas IDs
             val ids = listString.split(",")
                 .filter { it.isNotBlank() }
                 .mapNotNull { it.trim().toLongOrNull() }
@@ -171,30 +199,18 @@ class UsersDao(context: Context) {
         }
     }
 
-    /**
-     * Método de compatibilidad para actualizar la lista de torneos creados vía String
-     */
     fun updateShowableTournamentList(email: String, listString: String) {
         syncTournamentRelations(email, listString, AppDatabaseHelper.REL_TYPE_SHOWABLE)
     }
 
-    /**
-     * Método de compatibilidad para actualizar la lista de torneos seguidos vía String
-     */
     fun updateFollowingTournamentList(email: String, listString: String) {
         syncTournamentRelations(email, listString, AppDatabaseHelper.REL_TYPE_FOLLOWING)
     }
 
-    /**
-     * Método de compatibilidad para actualizar la lista de torneos inscritos vía String
-     */
     fun updateJoinedTournamentList(email: String, listString: String) {
         syncTournamentRelations(email, listString, AppDatabaseHelper.REL_TYPE_JOINED)
     }
 
-    /**
-     * Obtiene el ID de un usuario dado su email
-     */
     fun getUserIdByEmail(email: String): Long {
         val db = helper.readableDatabase
         val cursor = db.query(AppDatabaseHelper.TABLE_USERS, arrayOf(AppDatabaseHelper.COL_USER_ID), "${AppDatabaseHelper.COL_USER_EMAIL}=?", arrayOf(email), null, null, null)
@@ -204,9 +220,6 @@ class UsersDao(context: Context) {
         return id
     }
 
-    /**
-     * Obtiene el nickname de un usuario dado su ID
-     */
     fun getUsernameById(id: Long): String {
         val db = helper.readableDatabase
         val cursor = db.query(AppDatabaseHelper.TABLE_USERS, arrayOf(AppDatabaseHelper.COL_USER_NICKNAME), "${AppDatabaseHelper.COL_USER_ID}=?", arrayOf(id.toString()), null, null, null)
@@ -216,9 +229,6 @@ class UsersDao(context: Context) {
         return name
     }
 
-    /**
-     * Actualiza los datos básicos de perfil del usuario
-     */
     fun updateUser(id: Long, nickname: String, email: String, password: String): Int {
         val db = helper.writableDatabase
         val values = ContentValues().apply {

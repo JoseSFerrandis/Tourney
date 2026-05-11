@@ -16,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tourney.databinding.ActivityMainBinding
+import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
@@ -43,7 +44,10 @@ class MainActivity : AppCompatActivity() {
         binding.fab.imageTintList = getColorStateList(R.color.DarkBlue2)
         
         binding.fab.setOnClickListener {
-            showCustomHomeDialog()
+            if (User.actualUser?.id?.toInt() == 3){
+                navController.navigate(R.id.action_HomeFragment_to_CreateTournamentFragment)
+            }else
+                showCustomHomeDialog()
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -74,7 +78,7 @@ class MainActivity : AppCompatActivity() {
               val users = UsersDao(this).getAllUsers()
               Log.e("DEBUG_USERS", "=== LISTA DE USUARIOS REGISTRADOS ===")
               users.forEach { user ->
-                  Log.e("DEBUG_USERS", "Email: ${user.email} | Password: ${user.password} | Nick: ${user.nickname}")
+                  Log.e("DEBUG_USERS", " ${user.id}  Email: ${user.email} | Password: ${user.password} | Nick: ${user.nickname}")
               }
               Log.e("DEBUG_USERS", "=====================================")
           } catch (e: Exception) {
