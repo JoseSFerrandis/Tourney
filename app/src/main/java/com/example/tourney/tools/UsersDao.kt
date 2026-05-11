@@ -68,6 +68,37 @@ class UsersDao(context: Context) {
     }
 
     /**
+     * Recupera un usuario por su ID
+     */
+    fun getUserById(id: Long): User? {
+        val db = helper.readableDatabase
+        val cursor = db.query(
+            AppDatabaseHelper.TABLE_USERS,
+            null,
+            "${AppDatabaseHelper.COL_USER_ID}=?",
+            arrayOf(id.toString()),
+            null, null, null
+        )
+
+        var user: User? = null
+        if (cursor.moveToFirst()) {
+            user = User(
+                id = id,
+                nickname = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_NICKNAME)),
+                email = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_EMAIL)),
+                password = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PASSWORD)),
+                photo = cursor.getInt(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PHOTO)),
+                showableTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_SHOWABLE, db),
+                followingTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_FOLLOWING, db),
+                joinedTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_JOINED, db)
+            )
+        }
+        cursor.close()
+        db.close()
+        return user
+    }
+
+    /**
      * Recupera todos los usuarios de la base de datos reconstruyendo sus listas de torneos
      */
     fun getAllUsers(): List<User> {
