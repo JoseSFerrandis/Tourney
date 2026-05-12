@@ -3,6 +3,7 @@ package com.example.tourney.tools
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import com.example.tourney.models.LoginRequest
 import com.example.tourney.entities.User
 
 class UsersDao(context: Context) {
@@ -36,6 +37,22 @@ class UsersDao(context: Context) {
         return id
     }
     fun insertNewUser(user: User): Long { return insertNewUser(user.nickname, user.email, user.password, user.photo) }
+
+    fun login(login: LoginRequest): Boolean{
+        if(login.email == "" && login.password == ""){
+            User.actualUser = User(-1, "admin", "1", "admin", 0)
+            return true
+        }
+
+        val allUsers = getAllUsers()
+        for(user in allUsers){
+            if(login.email == user.email && login.password == user.password){
+                User.actualUser = user
+                return true
+            }
+        }
+        return false
+    }
 
     /**
      * Recupera un usuario por su ID

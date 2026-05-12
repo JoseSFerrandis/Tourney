@@ -13,8 +13,10 @@ import com.example.tourney.entities.User
 import com.example.tourney.models.NewUserModel
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import org.mindrot.jbcrypt.BCrypt
+import java.net.SocketTimeoutException
 
 // TODO: humanizar código
 class RegisterFragment : Fragment() {
@@ -165,11 +167,20 @@ class RegisterFragment : Fragment() {
                 passwordHash = password,
                 photo = 1
             ),
-            requireContext()
-        ) {
-            Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT).show()
-            navigateToLogin()
-        }
+            {
+                Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT).show()
+                navigateToLogin()
+            },
+            {
+                exception ->
+                when(exception){
+                    is SocketTimeoutException -> Snackbar.make(requireView(), "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
+                    else -> Toast.makeText(context, "Error al crear cuenta, vuelve a intentarlo", Toast.LENGTH_SHORT).show()
+                }
+                binding.btnRegister.isEnabled = true
+                binding.btnRegister.text = "Crear cuenta"
+            }
+        )
 
     }
 

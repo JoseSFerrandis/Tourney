@@ -91,13 +91,16 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Al detectar cambio de versión, borramos y recreamos todo para que aparezca el 'invitado'
+        // Al detectar cambio de versión, borramos y recreamos para que aparezca el 'invitado'
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USER_TRN_RELATIONS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_MATCHES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_PARTICIPANTS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_TOURNAMENTS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
         onCreate(db)
+    }
+    override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        onUpgrade(db, oldVersion, newVersion)
     }
 
     companion object {

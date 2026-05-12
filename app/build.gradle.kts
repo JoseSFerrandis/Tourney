@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("org.mindrot:jbcrypt:0.4")
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
 
 
     // Unit Testing

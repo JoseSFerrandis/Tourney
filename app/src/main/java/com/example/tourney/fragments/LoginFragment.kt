@@ -13,7 +13,10 @@ import com.example.tourney.MainActivity
 import com.example.tourney.R
 import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentLoginBinding
+import com.example.tourney.repositories.UserRepository
+import com.example.tourney.tools.APIService
 import com.google.android.material.snackbar.Snackbar
+import java.net.SocketTimeoutException
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -31,9 +34,23 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnLoginLogin.setOnClickListener {
-            if(login()) {
-                findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
-            }
+            binding.btnLoginLogin.isEnabled = false
+            binding.btnLoginLogin.text = "Iniciando sesión..."
+
+            UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance())
+                .loginUser(binding.loginEmailInput.text.toString(),
+                    binding.loginPasswordInput.text.toString(),
+                    requireContext(),
+                    { findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment) },
+                    {
+                        exception ->
+                        when(exception){
+                            is SocketTimeoutException -> Snackbar.make(requireView(), "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
+                            else -> Toast.makeText(context, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                        }
+                        binding.btnLoginLogin.isEnabled = true
+                        binding.btnLoginLogin.text = "Iniciar sesión"
+                    })
         }
 
         binding.loginPasswordInput.addTextChangedListener {
@@ -62,7 +79,17 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun login(): Boolean{
+    /*fun login(): Boolean{
+
+        UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance())
+            .loginUser(binding.loginEmailInput.text.toString(),
+                binding.loginPasswordInput.text.toString())
+            {
+                return@loginUser true
+            }
+        return false
+
+        /*
         if(binding.loginEmailInput.text.toString() == "" &&
             binding.loginPasswordInput.text.toString() == ""){
             User.actualUser = User(-1, "admin", "1", "admin", 0)
@@ -78,8 +105,8 @@ class LoginFragment : Fragment() {
             }
         }
         Snackbar.make(binding.root, "Email o contraseña incorrectos", Snackbar.LENGTH_LONG).show()
-        return false
-    }
+        return false*/
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()
