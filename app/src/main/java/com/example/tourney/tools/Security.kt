@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import org.mindrot.jbcrypt.BCrypt
 
 
-class SecurePreferences {
+class Security {
     @Throws(Exception::class)
     fun getEncryptedSharedPreferences(context: Context): SharedPreferences {
         val masterKey = MasterKey.Builder(context)
@@ -23,4 +24,6 @@ class SecurePreferences {
 
         return sharedPrefs
     }
+
+    fun encryptPassword(password: String) = BCrypt.hashpw(password, BCrypt.gensalt(12))
 }
