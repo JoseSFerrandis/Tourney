@@ -32,6 +32,11 @@ class EditAccountFragment : Fragment() {
             binding.etEditEmail.setText(user.email)
         }
 
+        binding.btnChangePasswordEdit.setOnClickListener {
+            // TODO: Implementar navegación a un fragmento de cambio de contraseña
+            // O podrías navegar a RememberPassword si quieres que el flujo sea similar:
+        }
+
         binding.btnSaveAccountChanges.setOnClickListener {
             saveChanges()
         }

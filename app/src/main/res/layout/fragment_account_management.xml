@@ -6,7 +6,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:background="?attr/colorSurface">
 
         <androidx.core.widget.NestedScrollView
@@ -18,14 +17,12 @@
                 android:layout_height="wrap_content">
 
                 <!-- HEADER SECTOR -->
-                <!--este color de fondo  puede ser editable para el usuario -->
                 <View
                     android:id="@+id/headerBackground"
                     android:layout_width="match_parent"
                     android:layout_height="260dp"
                     android:background="@drawable/bg_gradient_blue"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:layout_editor_absoluteX="0dp" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivProfile"
@@ -34,7 +31,7 @@
                     android:layout_marginTop="60dp"
                     android:padding="2dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/database_query_notimplemented"
+                    android:src="@drawable/ic_user_pfp1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -84,7 +81,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginTop="0dp"
                         android:padding="20dp">
 
                         <TextView
@@ -92,13 +88,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
                             android:text="Gestión de cuenta"
-                            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                            app:iconTint="@color/Blue1" />
+                            android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
 
                         <!-- Item: Editar Perfil -->
-
-                        <!-- Item: Preferencias -->
-
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnEditProfile"
                             style="@style/Widget.Material3.Button.TextButton.Icon"
@@ -111,15 +103,28 @@
                             app:iconSize="23dp"
                             app:iconTint="@color/DarkBlue1" />
 
+                        <!-- Item: Preferencias / Avatar -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnPreferences"
                             style="@style/Widget.Material3.Button.TextButton.Icon"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
-                            android:text="Preferencias"
+                            android:text="Cambiar avatar"
                             android:textColor="?attr/colorOnSurface"
                             app:icon="@drawable/ic_edit"
+                            app:iconTint="@color/DarkBlue1" />
+
+                        <!-- Item: Cambiar Contraseña -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnChangePassword"
+                            style="@style/Widget.Material3.Button.TextButton.Icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:text="Cambiar contraseña"
+                            android:textColor="?attr/colorOnSurface"
+                            app:icon="@android:drawable/ic_lock_lock"
                             app:iconTint="@color/DarkBlue1" />
 
                         <com.google.android.material.divider.MaterialDivider

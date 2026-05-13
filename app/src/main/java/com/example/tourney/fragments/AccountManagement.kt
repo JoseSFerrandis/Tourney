@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tourney.R
@@ -30,17 +31,26 @@ class AccountManagement : Fragment() {
         User.actualUser?.let { user ->
             binding.tvName.text = user.nickname
             binding.tvEmail.text = user.email
-            updateProfileImage() // Usamos la función centralizada para la imagen
+            updateProfileImage()
         }
 
-        // Navegación al selector de avatar
-        binding.btnPreferences.text = "Cambiar avatar"
+        // Navegación a Editar Cuenta
+        binding.btnEditProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_to_EditAccount)
+        }
+
+        // Navegación al selector de avatar (Preferencias)
         binding.btnPreferences.setOnClickListener {
             findNavController().navigate(R.id.action_ProfileFragment_to_ProfileChooseFragment)
         }
 
-        binding.btnEditProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_to_EditAccount)
+        // Acción para cambiar contraseña
+        binding.btnChangePassword.setOnClickListener {
+            // TODO: Implementar navegación a un fragmento de cambio de contraseña
+            // O podrías navegar a RememberPassword si quieres que el flujo sea similar:
+            // findNavController().navigate(R.id.RememberPassword) 
+            // (necesitarías añadir la acción en el nav_graph)
+            Toast.makeText(requireContext(), "Funcionalidad de cambiar contraseña próximamente", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnLogout.setOnClickListener {
@@ -51,18 +61,14 @@ class AccountManagement : Fragment() {
 
     private fun updateProfileImage() {
         val pn = User.actualUser?.photo ?: 0
-
-        // Si el número es válido (del 1 al 18)
         if (pn > 0) {
             val resId = resources.getIdentifier("ic_user_pfp$pn", "drawable", requireContext().packageName)
             if (resId != 0) {
                 binding.ivProfile.setImageResource(resId)
             } else {
-                // Si getIdentifier falla por alguna razón, usamos la 1 por defecto
                 binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
             }
         } else {
-            // Imagen por defecto si photo es 0 o null
             binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
         }
     }

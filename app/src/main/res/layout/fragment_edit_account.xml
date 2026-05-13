@@ -36,10 +36,19 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnChangePasswordEdit"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Cambiar contraseña"
+        app:icon="@android:drawable/ic_lock_lock" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSaveAccountChanges"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Guardar Cambios"
         android:backgroundTint="@color/DarkBlue1"/>
 

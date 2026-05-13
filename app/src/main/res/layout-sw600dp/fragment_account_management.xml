@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_gradient_blue"
-        tools:context=".fragments.AccountManagementFragment">
+        tools:context=".fragments.AccountManagement">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="750dp"
@@ -41,7 +41,7 @@
                         android:layout_height="180dp"
                         android:padding="4dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/database_query_notimplemented"
+                        android:src="@drawable/ic_user_pfp1"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                         app:strokeColor="@android:color/white"
                         app:strokeWidth="4dp" />
@@ -107,12 +107,29 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="start|center_vertical"
                         android:paddingStart="32dp"
-                        android:text="Preferencias"
+                        android:text="Cambiar avatar"
                         android:textColor="@android:color/white"
                         android:textSize="26sp"
                         app:backgroundTint="@color/boton_tablet_card_white"
                         app:cornerRadius="16dp"
                         app:icon="@drawable/ic_settings"
+                        app:iconSize="32dp"
+                        app:iconTint="@android:color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnChangePassword"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="32dp"
+                        android:text="Cambiar contraseña"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"
+                        app:backgroundTint="@color/boton_tablet_card_white"
+                        app:cornerRadius="16dp"
+                        app:icon="@android:drawable/ic_lock_lock"
                         app:iconSize="32dp"
                         app:iconTint="@android:color/white" />
 
