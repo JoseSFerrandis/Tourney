@@ -15,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 interface APIService {
@@ -41,6 +42,12 @@ interface APIService {
 
     @GET("/user/getFollowingTournaments")
     suspend fun getFollowingTournaments(@Header("Authorization") token: String): List<Tournament>
+
+    @GET("/user/updateAvatar/{avatarId}")
+    suspend fun updateAvatar(@Header("Authorization") token: String, @Path("avatarId") avatarId: Int): Response<Unit>
+
+
+
 
     @POST("/insertTournament")
     suspend fun insertTournament(@Header("Authorization") token: String, @Body tournament: Tournament): Tournament

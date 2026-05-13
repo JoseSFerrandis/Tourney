@@ -89,6 +89,23 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
         }
     }
 
+    fun updateAvatar(avatarId: Int, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val sharedPreferences = Security().getEncryptedSharedPreferences(context)
+                val token = sharedPreferences.getString("token", "") ?: ""
+                val bearerToken = "Bearer $token"
+
+                val response = api.updateAvatar(bearerToken, avatarId)
+                if(response.isSuccessful) withContext(Dispatchers.Main) { onSuccess() }
+                else withContext(Dispatchers.Main) { onError(Exception("No se ha podido actualizar el avatar")) }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
+                e.printStackTrace()
+            }
+        }
+    }
+
     suspend fun getCreatedTournamentsList(token: String): List<Tournament> = api.getCreatedTournaments(token)
     suspend fun getJoinedTournamentsList(token: String): List<Tournament> = api.getJoinedTournaments(token)
     suspend fun getFollowingTournamentsList(token: String): List<Tournament> = api.getFollowingTournaments(token)
