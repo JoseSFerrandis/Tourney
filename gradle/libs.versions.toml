@@ -8,10 +8,13 @@ espressoCore = "3.7.0"
 appcompat = "1.7.1"
 material = "1.13.0"
 constraintlayout = "2.2.1"
+mockitoInline = "5.2.0"
 navigation = "2.7.7"
 lifecycle = "2.6.2"
 mockito = "5.15.2"
 mockitoKotlin = "5.4.0"
+robolectric = "4.16.1"
+tournamentbracketlib = "1.0.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -25,7 +28,10 @@ androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navi
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+tournamentbracketlib = { module = "com.github.emil-ep:TournamentBracketLib", version.ref = "tournamentbracketlib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

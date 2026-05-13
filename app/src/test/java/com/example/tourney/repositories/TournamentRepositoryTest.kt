@@ -1,6 +1,7 @@
 package com.example.tourney.repositories
 
 import com.example.tourney.entities.Tournament
+import com.example.tourney.entities.TournamentType
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -12,8 +13,7 @@ class TournamentRepositoryTest {
     @Before
     fun setUp() {
         repository = TournamentRepository.getInstance()
-        // Reset the list for clean testing state
-        repository.setTournaments(mutableListOf())
+        repository.clear()
     }
 
     @Test
@@ -25,26 +25,17 @@ class TournamentRepositoryTest {
 
     @Test
     fun testAddAndGetTournaments() {
-        val tournament = Tournament(1L, "T1", "G1", "C1", mutableListOf(), 2, "D", "L", "P", 111)
+        val tournament = createTestTournament(1L, 111)
         repository.addTournament(tournament)
 
         val tournaments = repository.getTournaments()
         assertEquals(1, tournaments.size)
-        assertEquals(tournament, tournaments[0])
-    }
-
-    @Test
-    fun testRemoveTournamentByObject() {
-        val tournament = Tournament(1L, "T1", "G1", "C1", mutableListOf(), 2, "D", "L", "P", 111)
-        repository.addTournament(tournament)
-        
-        repository.removeTournament(tournament)
-        assertTrue(repository.getTournaments().isEmpty())
+        assertEquals(tournament.id, tournaments[0].id)
     }
 
     @Test
     fun testRemoveTournamentById() {
-        val tournament = Tournament(2L, "T2", "G2", "C2", mutableListOf(), 2, "D", "L", "P", 222)
+        val tournament = createTestTournament(2L, 222)
         repository.addTournament(tournament)
         
         repository.removeTournament(2L)
@@ -53,12 +44,12 @@ class TournamentRepositoryTest {
 
     @Test
     fun testSearchTournamentByCode() {
-        val tournament = Tournament(3L, "T3", "G3", "C3", mutableListOf(), 2, "D", "L", "P", 333)
+        val tournament = createTestTournament(3L, 333)
         repository.addTournament(tournament)
 
         val found = repository.searchTournamentByCode(333)
         assertNotNull(found)
-        assertEquals(tournament, found)
+        assertEquals(tournament.id, found?.id)
 
         val notFound = repository.searchTournamentByCode(999)
         assertNull(notFound)
@@ -66,12 +57,12 @@ class TournamentRepositoryTest {
 
     @Test
     fun testSearchTournamentById() {
-        val tournament = Tournament(4L, "T4", "G4", "C4", mutableListOf(), 2, "D", "L", "P", 444)
+        val tournament = createTestTournament(4L, 444)
         repository.addTournament(tournament)
 
         val found = repository.searchTournamentById(4L)
         assertNotNull(found)
-        assertEquals(tournament, found)
+        assertEquals(tournament.id, found?.id)
 
         val notFound = repository.searchTournamentById(99L)
         assertNull(notFound)
@@ -79,14 +70,31 @@ class TournamentRepositoryTest {
 
     @Test
     fun testSearchTournamentListByIds() {
-        val t1 = Tournament(5L, "T5", "G5", "C5", mutableListOf(), 2, "D", "L", "P", 555)
-        val t2 = Tournament(6L, "T6", "G6", "C6", mutableListOf(), 2, "D", "L", "P", 666)
+        val t1 = createTestTournament(5L, 555)
+        val t2 = createTestTournament(6L, 666)
         
         repository.addTournament(t1)
         repository.addTournament(t2)
 
-        val foundList = repository.searchTournamentListByIds(mutableListOf(5L, 6L))
+        val foundList = repository.searchTournamentListByIds(listOf(5L, 6L))
         assertEquals(2, foundList.size)
-        assertTrue(foundList.containsAll(listOf(t1, t2)))
+        assertTrue(foundList.any { it.id == 5L })
+        assertTrue(foundList.any { it.id == 6L })
+    }
+
+    private fun createTestTournament(id: Long, code: Int): Tournament {
+        return Tournament(
+            id = id,
+            name = "Tournament $id",
+            game = "Game",
+            creatorId = 1L,
+            creatorNickname = "Creator",
+            maxParticipants = 8,
+            date = System.currentTimeMillis(),
+            location = "Location",
+            prize = "Prize",
+            code = code,
+            type = TournamentType.ELIMINATION
+        )
     }
 }

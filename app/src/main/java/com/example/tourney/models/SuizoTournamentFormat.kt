@@ -68,7 +68,9 @@ class SuizoTournamentFormat : TournamentFormat {
                 val s2 = match.competitorTwo.score.toFloatOrNull()
                 
                 if (s1 == null || s2 == null) {
-                    Toast.makeText(context, "Faltan puntuaciones en la ronda actual", Toast.LENGTH_SHORT).show()
+                    if (context != null) {
+                        Toast.makeText(context, "Faltan puntuaciones en la ronda actual", Toast.LENGTH_SHORT).show()
+                    }
                     return false
                 }
             }
@@ -93,7 +95,9 @@ class SuizoTournamentFormat : TournamentFormat {
         // 5. Crear la siguiente columna
         t.columnMatches.add(createColumn(createMatches(sortedCompetitors)))
         
-        Toast.makeText(context, "Ronda ${t.columnMatches.size} generada", Toast.LENGTH_SHORT).show()
+        if (context != null) {
+            Toast.makeText(context, "Ronda ${t.columnMatches.size} generada", Toast.LENGTH_SHORT).show()
+        }
         return true
     }
 

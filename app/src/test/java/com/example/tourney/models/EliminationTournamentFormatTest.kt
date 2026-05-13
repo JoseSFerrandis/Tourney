@@ -60,7 +60,7 @@ class EliminationTournamentFormatTest {
 
         // Should add a dummy participant to make it even
         assertEquals(4, tournament.getNotDead().size)
-        assertEquals("", tournament.getNotDead()[3].name)
+        assertEquals("DESCANSO", tournament.getNotDead()[3].name)
     }
 
     @Test

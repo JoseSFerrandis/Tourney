@@ -11,7 +11,7 @@ class UserTest {
     @Before
     fun setUp() {
         user = User(
-            id = 1,
+            id = 1L,
             nickname = "testuser",
             email = "test@example.com",
             password = "password123",

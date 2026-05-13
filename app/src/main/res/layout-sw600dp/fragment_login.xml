@@ -56,10 +56,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="8dp"
                 android:text="Organiza y participa en torneos"
                 android:textColor="#CCDCFF"
                 android:textSize="18sp" />
+
+            <!-- Texto de contacto -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Cualquier incidencia, envíanos un correo a torneobo6@gmail.com"
+                android:textColor="#CCDCFF"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="600dp"

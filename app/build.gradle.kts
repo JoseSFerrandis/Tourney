@@ -57,10 +57,12 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.robolectric)
     
     // Instrumented Testing
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     
-    implementation("com.github.emil-ep:TournamentBracketLib:1.0.4")
+    implementation(libs.tournamentbracketlib)
 }

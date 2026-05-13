@@ -56,7 +56,9 @@ class LiguillaTournamentFormat : TournamentFormat {
                 val s2 = match.competitorTwo.score.toFloatOrNull()
 
                 if (s1 == null || s2 == null) {
-                    Toast.makeText(context, "Faltan puntuaciones en la jornada actual", Toast.LENGTH_SHORT).show()
+                    if (context != null) {
+                        Toast.makeText(context, "Faltan puntuaciones en la jornada actual", Toast.LENGTH_SHORT).show()
+                    }
                     return false
                 }
             }
@@ -68,7 +70,9 @@ class LiguillaTournamentFormat : TournamentFormat {
             val nextJornada = generateJornada(nextJornadaIndex, competitors)
             t.columnMatches.add(createColumn(nextJornada))
 
-            Toast.makeText(context, "Jornada ${nextJornadaIndex + 1} generada", Toast.LENGTH_SHORT).show()
+            if (context != null) {
+                Toast.makeText(context, "Jornada ${nextJornadaIndex + 1} generada", Toast.LENGTH_SHORT).show()
+            }
             return true
         } else {
             // Si ya no hay más jornadas, finalizamos el torneo
