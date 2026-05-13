@@ -11,7 +11,13 @@ import com.example.tourney.R
 import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentRememberPasswordBinding
 import com.example.tourney.entities.User
+import com.example.tourney.repositories.UserRepository
+import com.example.tourney.tools.APIService
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RememberPassword : Fragment() {
     private var _binding: FragmentRememberPasswordBinding? = null
@@ -34,27 +40,27 @@ class RememberPassword : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentRememberPasswordBinding.bind(view)
 
-        binding.btnRememberPassword.setOnClickListener {
-            if(checkCredentials()) {
-                findNavController().navigate(R.id.action_RememberPassword_to_SetNewPassword)
-            }
-        }
+        binding.btnRememberPassword.setOnClickListener { checkCredentials() }
 
     }
 
 
-    fun checkCredentials(): Boolean{
+    fun checkCredentials(){
+        val email = binding.rememberEmailInput.text.toString()
+        val nickname = binding.rememberNicknameInput.text.toString()
 
-        val allUsers = UsersDao(requireContext()).getAllUsers()
-
-        for(user in allUsers){
-            if(binding.rememberEmailInput.text.toString() == user.email &&
-                binding.rememberNicknameInput.text.toString() == user.nickname){
-                User.actualUser = user;
-                return true
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = UserRepository(UsersDao(requireContext()), APIService.getInstance())
+                .rememberPassword(email, nickname){
+                    Snackbar.make(binding.root, "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
+                }
+            withContext(Dispatchers.Main){
+                if(response){
+                    val bundle = Bundle()
+                    bundle.putString("email", email)
+                    findNavController().navigate(R.id.action_RememberPassword_to_SetNewPassword, bundle)
+                }else Snackbar.make(binding.root, "No se ha contrado ningún usuario con esos datos", Snackbar.LENGTH_LONG).show()
             }
         }
-        Snackbar.make(binding.root, "No se ha contrado ningún usuario con esos datos", Snackbar.LENGTH_LONG).show()
-        return false
     }
 }

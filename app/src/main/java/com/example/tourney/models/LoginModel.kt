@@ -1,6 +1,6 @@
 package com.example.tourney.models
 
-data class LoginRequest (
+data class LoginModel (
     val email: String,
     val password: String
 )

@@ -2,10 +2,10 @@ package com.example.tourney.repositories
 
 import android.content.Context
 import com.example.tourney.entities.User
-import com.example.tourney.models.LoginRequest
+import com.example.tourney.models.LoginModel
 import com.example.tourney.models.NewUserModel
 import com.example.tourney.tools.APIService
-import com.example.tourney.tools.SecurePreferences
+import com.example.tourney.tools.Security
 import com.example.tourney.tools.UsersDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +13,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.core.content.edit
 import com.example.tourney.entities.Tournament
+import com.example.tourney.models.RememberPasswordModel
 import kotlinx.coroutines.async
+import retrofit2.Response
 
 
 class UserRepository(private val dao: UsersDao, private val api: APIService) {
@@ -44,11 +46,11 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
     fun loginUser(email: String, password: String, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                val loginResponse = api.loginUser(LoginRequest(email, password))
+                val loginResponse = api.loginUser(LoginModel(email, password))
                 User.actualUser = User(loginResponse.user.id, loginResponse.user.nickname, loginResponse.user.email, "", loginResponse.user.photo)
                 
                 // Guardar el token en SharedPreferences (encriptado)
-                val sharedPreferences = SecurePreferences().getEncryptedSharedPreferences(context)
+                val sharedPreferences = Security().getEncryptedSharedPreferences(context)
                 sharedPreferences.edit { putString("token", loginResponse.token) }
                 
                 // Cargar torneos pasando el contexto para recuperar el token
@@ -62,6 +64,31 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
         }
     }
 
+    suspend fun rememberPassword(email: String, nickname: String, onError: (Exception) -> Unit): Boolean{
+        var response: Response<Unit>? = null;
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
+                response = api.rememberPassword(RememberPasswordModel(email, nickname))
+            }catch (e: Exception){
+                e.printStackTrace()
+                withContext(Dispatchers.Main) { onError(e) }
+            }
+        }.join()
+        return response?.isSuccessful ?: false
+    }
+
+    fun updatePassword(email: String, passwordHash: String, onSuccess: (Boolean) -> Unit, onError: (Exception) -> Unit){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = api.updatePassword(LoginModel(email, passwordHash))
+                withContext(Dispatchers.Main) { onSuccess(response.isSuccessful) }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) { onError(e) }
+                e.printStackTrace()
+            }
+        }
+    }
+
     suspend fun getCreatedTournamentsList(token: String): List<Tournament> = api.getCreatedTournaments(token)
     suspend fun getJoinedTournamentsList(token: String): List<Tournament> = api.getJoinedTournaments(token)
     suspend fun getFollowingTournamentsList(token: String): List<Tournament> = api.getFollowingTournaments(token)
@@ -69,7 +96,7 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
 
     fun loadShowableTournaments(context: Context) = CoroutineScope(Dispatchers.IO).launch {
         try {
-            val sharedPreferences = SecurePreferences().getEncryptedSharedPreferences(context)
+            val sharedPreferences = Security().getEncryptedSharedPreferences(context)
             val token = sharedPreferences.getString("token", "") ?: ""
             val bearerToken = "Bearer $token"
 

@@ -3,7 +3,7 @@ package com.example.tourney.tools
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.example.tourney.models.LoginRequest
+import com.example.tourney.models.LoginModel
 import com.example.tourney.entities.User
 
 class UsersDao(context: Context) {
@@ -38,7 +38,7 @@ class UsersDao(context: Context) {
     }
     fun insertNewUser(user: User): Long { return insertNewUser(user.nickname, user.email, user.password, user.photo) }
 
-    fun login(login: LoginRequest): Boolean{
+    fun login(login: LoginModel): Boolean{
         if(login.email == "" && login.password == ""){
             User.actualUser = User(-1, "admin", "1", "admin", 0)
             return true

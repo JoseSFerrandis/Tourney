@@ -10,12 +10,17 @@ import com.example.tourney.R
 import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentSetNewPasswordBinding
 import com.example.tourney.entities.User
+import com.example.tourney.repositories.UserRepository
+import com.example.tourney.tools.APIService
+import com.example.tourney.tools.Security
 import com.google.android.material.snackbar.Snackbar
 
 class SetNewPassword : Fragment() {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private var _binding: FragmentSetNewPasswordBinding? = null
     private val binding get() = _binding!!
+    private var email: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +39,17 @@ class SetNewPassword : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSetNewPasswordBinding.bind(view)
 
+        email = arguments?.getString("email")
+
         binding.btnCreateNewPassword.setOnClickListener {
-            if(createNewPassword()) {
-                findNavController().navigate(R.id.action_SetNewPassword_to_LoginFragment)
-            }
+            createNewPassword()
+            binding.btnCreateNewPassword.isEnabled = true
         }
 
     }
 
 
-    fun createNewPassword(): Boolean{
+    fun createNewPassword(){
         binding.newPasswordInput.text?.let {
             // Contraseña demasiado corta
             if(it.length < 8 && it.length > 1)
@@ -77,26 +83,24 @@ class SetNewPassword : Fragment() {
 
 
         if(binding.tilNewPassword.error != null ||
-            binding.tilRepeatPassword.error != null){ return false }
+            binding.tilRepeatPassword.error != null){ return }
 
-        val userEmail = User.actualUser?.email ?: return false
-
-        if(
-            UsersDao(requireContext())
-                .updatePassword(userEmail, binding.newPasswordInput.text.toString()) == 1
-            &&
-            binding.newPasswordInput.text.toString() == binding.repeatPasswordInput.text.toString()
-            &&
-            binding.tilNewPassword.error == null
-            &&
-            binding.tilRepeatPassword.error == null
-        )
-        {
-            Snackbar.make(binding.root, "Contraseña actualizada", Snackbar.LENGTH_LONG).show()
-            return true
+        val userEmail = email ?: return
+        if( binding.tilNewPassword.error == null && binding.tilRepeatPassword.error == null ){
+            sendNewPassword(userEmail, binding.newPasswordInput.text.toString())
+            binding.btnCreateNewPassword.isEnabled = false
         }
+    }
 
-        Snackbar.make(binding.root, "No se ha podido actualizar la contraseña", Snackbar.LENGTH_LONG).show()
-        return false
+    private fun sendNewPassword(email: String, password: String){
+        UserRepository(UsersDao(requireContext()), APIService.getInstance())
+            .updatePassword(email, Security().encryptPassword(password),
+                {
+                    if (it) { findNavController().navigate(R.id.action_SetNewPassword_to_LoginFragment) }
+                    else { Snackbar.make(binding.root, "No se ha podido actualizar la contraseña", Snackbar.LENGTH_LONG).show() }
+                },
+                {
+                    Snackbar.make(binding.root, "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
+                })
     }
 }

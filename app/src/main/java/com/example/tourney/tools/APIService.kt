@@ -2,11 +2,13 @@ package com.example.tourney.tools
 
 import com.example.models.LoginResponse
 import com.example.tourney.entities.Tournament
-import com.example.tourney.models.LoginRequest
+import com.example.tourney.models.LoginModel
 import com.example.tourney.models.NewUserModel
+import com.example.tourney.models.RememberPasswordModel
 import com.example.tourney.models.UserModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -20,7 +22,13 @@ interface APIService {
     suspend fun insertNewUser(@Body user: NewUserModel): UserModel
 
     @POST("/login")
-    suspend fun loginUser(@Body login: LoginRequest): LoginResponse
+    suspend fun loginUser(@Body login: LoginModel): LoginResponse
+
+    @POST("/rememberPassword")
+    suspend fun rememberPassword(@Body refreshPassword: RememberPasswordModel): Response<Unit>
+    @POST("/updatePassword")
+    suspend fun updatePassword(@Body loginModel: LoginModel): Response<Unit>
+
 
     @GET("/getUser")
     suspend fun getUserById(@Header("Authorization") token: String): UserModel
