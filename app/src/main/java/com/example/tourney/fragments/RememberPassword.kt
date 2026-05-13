@@ -49,18 +49,19 @@ class RememberPassword : Fragment() {
         val email = binding.rememberEmailInput.text.toString()
         val nickname = binding.rememberNicknameInput.text.toString()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = UserRepository(UsersDao(requireContext()), APIService.getInstance())
-                .rememberPassword(email, nickname){
-                    Snackbar.make(binding.root, "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
-                }
-            withContext(Dispatchers.Main){
-                if(response){
+        UserRepository(UsersDao(requireContext()), APIService.getInstance())
+            .rememberPassword(
+                email,
+                nickname,
+                {
                     val bundle = Bundle()
                     bundle.putString("email", email)
                     findNavController().navigate(R.id.action_RememberPassword_to_SetNewPassword, bundle)
-                }else Snackbar.make(binding.root, "No se ha contrado ningún usuario con esos datos", Snackbar.LENGTH_LONG).show()
-            }
-        }
+                },
+                {
+                    exception ->
+                    Snackbar.make(binding.root, exception.message.toString(), Snackbar.LENGTH_SHORT).show()
+                }
+            )
     }
 }

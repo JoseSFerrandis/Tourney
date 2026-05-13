@@ -64,17 +64,17 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
         }
     }
 
-    suspend fun rememberPassword(email: String, nickname: String, onError: (Exception) -> Unit): Boolean{
-        var response: Response<Unit>? = null;
+    fun rememberPassword(email: String, nickname: String, onSuccess: () -> Unit, onError: (Exception) -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                response = api.rememberPassword(RememberPasswordModel(email, nickname))
+                val response = api.rememberPassword(RememberPasswordModel(email, nickname))
+                if(response.isSuccessful) withContext(Dispatchers.Main) { onSuccess() }
+                else withContext(Dispatchers.Main) { onError(Exception("No se ha encontrado ningún usuario con esos datos")) }
             }catch (e: Exception){
                 e.printStackTrace()
-                withContext(Dispatchers.Main) { onError(e) }
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
             }
-        }.join()
-        return response?.isSuccessful ?: false
+        }
     }
 
     fun updatePassword(email: String, passwordHash: String, onSuccess: (Boolean) -> Unit, onError: (Exception) -> Unit){
