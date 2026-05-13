@@ -11,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 
@@ -19,28 +20,22 @@ interface APIService {
     suspend fun insertNewUser(@Body user: NewUserModel): UserModel
 
     @POST("/login")
-    //suspend fun loginUser(@Body login: LoginRequest): Map<String, String>
     suspend fun loginUser(@Body login: LoginRequest): LoginResponse
 
     @GET("/getUser")
-    suspend fun getUserById(): UserModel
+    suspend fun getUserById(@Header("Authorization") token: String): UserModel
 
     @GET("/user/getCreatedTournaments")
-    suspend fun getCreatedTournaments(): List<Tournament>
+    suspend fun getCreatedTournaments(@Header("Authorization") token: String): List<Tournament>
 
     @GET("/user/getJoinedTournaments")
-    suspend fun getJoinedTournaments(): List<Tournament>
+    suspend fun getJoinedTournaments(@Header("Authorization") token: String): List<Tournament>
 
     @GET("/user/getFollowingTournaments")
-    suspend fun getFollowingTournaments(): List<Tournament>
+    suspend fun getFollowingTournaments(@Header("Authorization") token: String): List<Tournament>
 
     @POST("/insertTournament")
-    suspend fun insertTournament(@Body tournament: Tournament): Tournament
-
-
-
-
-
+    suspend fun insertTournament(@Header("Authorization") token: String, @Body tournament: Tournament): Tournament
 
     companion object{
         private var apiService: APIService? = null

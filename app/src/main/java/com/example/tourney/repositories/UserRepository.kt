@@ -1,7 +1,6 @@
 package com.example.tourney.repositories
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.example.tourney.entities.User
 import com.example.tourney.models.LoginRequest
 import com.example.tourney.models.NewUserModel
@@ -15,7 +14,6 @@ import kotlinx.coroutines.withContext
 import androidx.core.content.edit
 import com.example.tourney.entities.Tournament
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 
 
 class UserRepository(private val dao: UsersDao, private val api: APIService) {
@@ -48,40 +46,49 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
             try{
                 val loginResponse = api.loginUser(LoginRequest(email, password))
                 User.actualUser = User(loginResponse.user.id, loginResponse.user.nickname, loginResponse.user.email, "", loginResponse.user.photo)
-                //dao.login(LoginRequest(email, password))
-                withContext(Dispatchers.Main) { onSuccess() } // Toast de éxito y navegación a login
-
+                
                 // Guardar el token en SharedPreferences (encriptado)
-                val sharedPreferences = SecurePreferences().getEncryptedSharedPreferences( context )
+                val sharedPreferences = SecurePreferences().getEncryptedSharedPreferences(context)
                 sharedPreferences.edit { putString("token", loginResponse.token) }
+                
+                // Cargar torneos pasando el contexto para recuperar el token
+                loadShowableTournaments(context)
+                
+                withContext(Dispatchers.Main) { onSuccess() }
             }catch (e: Exception){
-                withContext(Dispatchers.Main) { onError(e) } // Toast de error
+                withContext(Dispatchers.Main) { onError(e) }
                 e.printStackTrace()
             }
         }
     }
 
-    suspend fun getCreatedTournamentsList(): List<Tournament> = api.getCreatedTournaments()
-    suspend fun getJoinedTournamentsList(): List<Tournament> = api.getJoinedTournaments()
-    suspend fun getFollowingTournamentsList(): List<Tournament> = api.getFollowingTournaments()
+    suspend fun getCreatedTournamentsList(token: String): List<Tournament> = api.getCreatedTournaments(token)
+    suspend fun getJoinedTournamentsList(token: String): List<Tournament> = api.getJoinedTournaments(token)
+    suspend fun getFollowingTournamentsList(token: String): List<Tournament> = api.getFollowingTournaments(token)
 
 
-    fun loadShowableTournaments() = CoroutineScope(Dispatchers.IO).launch {
-        val createdTournamentList = async { getCreatedTournamentsList() }
-        val joinedTournamentList = async { getJoinedTournamentsList() }
-        val followingTournamentList = async { getFollowingTournamentsList() }
+    fun loadShowableTournaments(context: Context) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val sharedPreferences = SecurePreferences().getEncryptedSharedPreferences(context)
+            val token = sharedPreferences.getString("token", "") ?: ""
+            val bearerToken = "Bearer $token"
 
-        val created = createdTournamentList.await()
-        val joined = joinedTournamentList.await()
-        val following = followingTournamentList.await()
+            val createdTournamentList = async { getCreatedTournamentsList(bearerToken) }
+            val joinedTournamentList = async { getJoinedTournamentsList(bearerToken) }
+            val followingTournamentList = async { getFollowingTournamentsList(bearerToken) }
 
-        User.actualUser?.showableTournamentList?.addAll(created.map { it.id })
-        User.actualUser?.showableTournamentList?.addAll(joined.map { it.id })
-        User.actualUser?.showableTournamentList?.addAll(following.map { it.id })
+            val created = createdTournamentList.await()
+            val joined = joinedTournamentList.await()
+            val following = followingTournamentList.await()
+
+            User.actualUser?.showableTournamentList?.clear()
+            User.actualUser?.showableTournamentList?.addAll(created.map { it.id })
+            User.actualUser?.showableTournamentList?.addAll(joined.map { it.id })
+            User.actualUser?.showableTournamentList?.addAll(following.map { it.id })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
-
-
-
 
     companion object{
         private var instance: UserRepository? = null
