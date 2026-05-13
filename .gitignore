@@ -14,3 +14,5 @@
 .cxx
 local.properties
 app/build
+/.idea/vcs.xml
+/.idea/misc.xml
