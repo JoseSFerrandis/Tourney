@@ -158,7 +158,7 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(
         const val COL_REL_TRN_ID = "tournament_id"
         const val COL_REL_TYPE = "relation_type"
         
-        const val REL_TYPE_SHOWABLE = "SHOWABLE"
+        const val REL_TYPE_CREATED = "CREATED"
         const val REL_TYPE_FOLLOWING = "FOLLOWING"
         const val REL_TYPE_JOINED = "JOINED"
     }

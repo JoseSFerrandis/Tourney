@@ -50,7 +50,7 @@ class TournamentsDao(context: Context) {
                 val relValues = ContentValues().apply {
                     put(AppDatabaseHelper.COL_REL_USER_ID, t.creatorId)
                     put(AppDatabaseHelper.COL_REL_TRN_ID, tournamentId)
-                    put(AppDatabaseHelper.COL_REL_TYPE, AppDatabaseHelper.REL_TYPE_SHOWABLE)
+                    put(AppDatabaseHelper.COL_REL_TYPE, AppDatabaseHelper.REL_TYPE_CREATED)
                 }
                 db.insert(AppDatabaseHelper.TABLE_USER_TRN_RELATIONS, null, relValues)
 

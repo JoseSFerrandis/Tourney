@@ -41,7 +41,9 @@ class LoginFragment : Fragment() {
                 .loginUser(binding.loginEmailInput.text.toString(),
                     binding.loginPasswordInput.text.toString(),
                     requireContext(),
-                    { findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment) },
+                    {
+                        findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
+                    },
                     {
                         exception ->
                         when(exception){

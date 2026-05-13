@@ -1,6 +1,7 @@
 package com.example.tourney.tools
 
 import com.example.models.LoginResponse
+import com.example.tourney.entities.Tournament
 import com.example.tourney.models.LoginRequest
 import com.example.tourney.models.NewUserModel
 import com.example.tourney.models.UserModel
@@ -21,9 +22,22 @@ interface APIService {
     //suspend fun loginUser(@Body login: LoginRequest): Map<String, String>
     suspend fun loginUser(@Body login: LoginRequest): LoginResponse
 
-
     @GET("/getUser")
     suspend fun getUserById(): UserModel
+
+    @GET("/user/getCreatedTournaments")
+    suspend fun getCreatedTournaments(): List<Tournament>
+
+    @GET("/user/getJoinedTournaments")
+    suspend fun getJoinedTournaments(): List<Tournament>
+
+    @GET("/user/getFollowingTournaments")
+    suspend fun getFollowingTournaments(): List<Tournament>
+
+    @POST("/insertTournament")
+    suspend fun insertTournament(@Body tournament: Tournament): Tournament
+
+
 
 
 

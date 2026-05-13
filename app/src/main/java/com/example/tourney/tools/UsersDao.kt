@@ -75,7 +75,7 @@ class UsersDao(context: Context) {
                 email = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_EMAIL)),
                 password = cursor.getString(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PASSWORD)),
                 photo = cursor.getInt(cursor.getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PHOTO)),
-                showableTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_SHOWABLE, db),
+                showableTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_CREATED, db),
                 followingTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_FOLLOWING, db),
                 joinedTournamentList = getRelationsForUser(id, AppDatabaseHelper.REL_TYPE_JOINED, db)
             )
@@ -102,7 +102,7 @@ class UsersDao(context: Context) {
                     email = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_EMAIL)),
                     password = getString(getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PASSWORD)),
                     photo = getInt(getColumnIndexOrThrow(AppDatabaseHelper.COL_USER_PHOTO)),
-                    showableTournamentList = getRelationsForUser(userId, AppDatabaseHelper.REL_TYPE_SHOWABLE, db),
+                    showableTournamentList = getRelationsForUser(userId, AppDatabaseHelper.REL_TYPE_CREATED, db),
                     followingTournamentList = getRelationsForUser(userId, AppDatabaseHelper.REL_TYPE_FOLLOWING, db),
                     joinedTournamentList = getRelationsForUser(userId, AppDatabaseHelper.REL_TYPE_JOINED, db)
                 )
@@ -218,7 +218,7 @@ class UsersDao(context: Context) {
     }
 
     fun updateShowableTournamentList(email: String, listString: String) {
-        syncTournamentRelations(email, listString, AppDatabaseHelper.REL_TYPE_SHOWABLE)
+        syncTournamentRelations(email, listString, AppDatabaseHelper.REL_TYPE_CREATED)
     }
 
     fun updateFollowingTournamentList(email: String, listString: String) {
