@@ -39,4 +39,9 @@
     <string name="rules_liguilla">En un torneo de liga (liguilla), todos los participantes se enfrentan entre sí a lo largo de varias jornadas. Se otorgan puntos por cada victoria o empate, y el ganador es el que acumula más puntos al final de todas las jornadas.</string>
     <string name="rules_suizo">En un torneo suizo, los participantes se emparejan en cada ronda con oponentes que tienen una puntuación similar. No hay eliminación; todos juegan un número predeterminado de rondas. El ganador es el que acumula más puntos al final del torneo.</string>
     <string name="rules_otro">Reglas personalizadas del torneo. Consulta con el creador del torneo para más detalles.</string>
+    <string name="editar_cuenta">Editar cuenta</string>
+    <string name="cambiar_avatar">Cambiar avatar</string>
+    <string name="cambiar_contrase_a">Cambiar contraseña</string>
+    <string name="cerrar_sesi_n">Cerrar sesión</string>
+    <string name="gesti_n_de_cuenta">Gestión de cuenta</string>
 </resources>

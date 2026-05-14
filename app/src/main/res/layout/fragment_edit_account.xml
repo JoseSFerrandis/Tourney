@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Guardar Cambios"
-        android:backgroundTint="@color/DarkBlue1"/>
+        android:backgroundTint="@color/DarkBlue1"
+        android:text="Guardar Cambios" />
 
 </LinearLayout>

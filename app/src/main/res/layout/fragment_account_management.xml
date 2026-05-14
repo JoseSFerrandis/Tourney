@@ -87,7 +87,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
-                            android:text="Gestión de cuenta"
+                            android:text="@string/gesti_n_de_cuenta"
                             android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
 
                         <!-- Item: Editar Perfil -->
@@ -97,7 +97,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
-                            android:text="Editar cuenta"
+                            android:text="@string/editar_cuenta"
                             android:textColor="?attr/colorOnSurface"
                             app:icon="@drawable/ic_settings"
                             app:iconSize="23dp"
@@ -110,7 +110,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
-                            android:text="Cambiar avatar"
+                            android:text="@string/cambiar_avatar"
                             android:textColor="?attr/colorOnSurface"
                             app:icon="@drawable/ic_edit"
                             app:iconTint="@color/DarkBlue1" />
@@ -122,7 +122,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
-                            android:text="Cambiar contraseña"
+                            android:text="@string/cambiar_contrase_a"
                             android:textColor="?attr/colorOnSurface"
                             app:icon="@android:drawable/ic_lock_lock"
                             app:iconTint="@color/DarkBlue1" />
@@ -138,7 +138,7 @@
                             style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Cerrar sesión"
+                            android:text="@string/cerrar_sesi_n"
                             android:textColor="@color/white"
                             app:backgroundTint="@color/DarkBlue1"
                             app:icon="@drawable/ic_logout"
