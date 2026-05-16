@@ -22,11 +22,11 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/fondo_tablet_card"
+                android:backgroundTint="?attr/appColorPrimaryLight"
                 app:cardCornerRadius="32dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="@color/fondo_tablet_card">
+                app:strokeColor="?attr/appColorPrimaryLight">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,7 +59,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Únete a la arena gamer"
-                        android:textColor="#CCDCFF"
+                        android:textColor="?attr/appColorSecondaryLight"
+
                         android:textSize="18sp" />
 
                     <View
@@ -88,7 +89,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:text="NICKNAME"
-                                android:textColor="#CCDCFF"
+                                android:textColor="?attr/appColorSecondaryLight"
+
                                 android:textSize="13sp"
                                 android:letterSpacing="0.1"
                                 android:textStyle="bold" />
@@ -108,7 +110,7 @@
                                     android:hint="Tu gamertag"
                                     android:inputType="text"
                                     android:paddingHorizontal="16dp"
-                                    android:textColor="@color/blue_600"
+                                    android:textColor="?attr/appColorSecondary"
                                     android:textSize="20sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -127,7 +129,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:text="EMAIL"
-                                android:textColor="#CCDCFF"
+                                android:textColor="?attr/appColorSecondaryLight"
+
                                 android:textSize="13sp"
                                 android:letterSpacing="0.1"
                                 android:textStyle="bold" />
@@ -147,7 +150,7 @@
                                     android:hint="gamer@ejemplo.com"
                                     android:inputType="textEmailAddress"
                                     android:paddingHorizontal="16dp"
-                                    android:textColor="@color/blue_600"
+                                    android:textColor="?attr/appColorSecondary"
                                     android:textSize="20sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -166,7 +169,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:text="CONTRASEÑA"
-                                android:textColor="#CCDCFF"
+                                android:textColor="?attr/appColorSecondaryLight"
+
                                 android:textSize="13sp"
                                 android:letterSpacing="0.1"
                                 android:textStyle="bold" />
@@ -187,7 +191,7 @@
                                     android:hint="Mínimo 8 caracteres"
                                     android:inputType="textPassword"
                                     android:paddingHorizontal="16dp"
-                                    android:textColor="@color/blue_600"
+                                    android:textColor="?attr/appColorSecondary"
                                     android:textSize="20sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -206,7 +210,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:text="CONFIRMAR"
-                                android:textColor="#CCDCFF"
+                                android:textColor="?attr/appColorSecondaryLight"
+
                                 android:textSize="13sp"
                                 android:letterSpacing="0.1"
                                 android:textStyle="bold" />
@@ -227,7 +232,7 @@
                                     android:hint="Repite la clave"
                                     android:inputType="textPassword"
                                     android:paddingHorizontal="16dp"
-                                    android:textColor="@color/blue_600"
+                                    android:textColor="?attr/appColorSecondary"
                                     android:textSize="20sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -242,7 +247,7 @@
                         android:text="CREAR CUENTA"
                         android:textSize="25sp"
                         android:textStyle="bold"
-                        android:textColor="@color/blue_600"
+                        android:textColor="?attr/appColorSecondary"
                         app:backgroundTint="@android:color/white"
                         app:cornerRadius="16dp" />
 
@@ -258,7 +263,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="¿Ya tienes cuenta? "
-                            android:textColor="#CCDCFF"
+                            android:textColor="?attr/appColorSecondaryLight"
+
                             android:textSize="28sp" />
 
                         <TextView

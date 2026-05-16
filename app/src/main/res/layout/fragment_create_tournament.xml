@@ -38,7 +38,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="5dp"
                     android:text="Completa los detalles del evento"
-                    android:textColor="#CCDCFF"
+                    android:textColor="?attr/appColorSecondaryLight"
+
                     android:textSize="14sp" />
 
                 <!-- Formulario -->
@@ -48,7 +49,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="32dp"
                     android:text="Con *, son campos obligatorios"
-                    android:textColor="#CC0A00"
+                    android:textColor="?attr/appColorError"
                     android:textSize="12sp" />
 
                 <LinearLayout

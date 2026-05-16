@@ -40,7 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hola, usuario"
-                        android:textColor="@color/tablet_title_black"
+                        android:textColor="?attr/appColorPrimary"
                         android:textSize="42sp"
                         android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Encuentra tu próximo desafío"
-                        android:textColor="@color/tablet_title_black"
+                        android:textColor="?attr/appColorPrimary"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -218,9 +218,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_filter_tournament"
-                    app:tabTextColor="@color/DarkBlue1"
-                    app:tabIndicatorColor="@color/DarkBlue2"
-                    app:tabSelectedTextColor="@color/DarkBlue2"
+                    app:tabTextColor="?attr/appColorPrimary"
+                    app:tabIndicatorColor="?attr/appColorPrimaryDark"
+                    app:tabSelectedTextColor="?attr/appColorPrimaryDark"
                     app:tabTextAppearance="@style/TabLayoutTextAppearanceTablet"
                     android:layout_marginBottom="16dp">
 

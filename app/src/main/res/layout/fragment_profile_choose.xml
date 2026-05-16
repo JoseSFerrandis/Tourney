@@ -34,7 +34,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="32dp"
                 android:text="Selecciona una imagen de perfil"
-                android:textColor="#CCDCFF"
+                android:textColor="?attr/appColorSecondaryLight"
+
                 android:textSize="14sp" />
 
             <androidx.recyclerview.widget.RecyclerView

@@ -19,7 +19,7 @@
                 android:id="@+id/cardManagement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#1AFFFFFF"
+                android:backgroundTint="?attr/gradientStartColor"
                 app:cardCornerRadius="32dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
@@ -87,7 +87,7 @@
                                         android:visibility="gone"
                                         app:icon="@drawable/ic_settings"
                                         app:iconSize="24dp"
-                                        app:iconTint="@color/boton_movil_card" />
+                                        app:iconTint="?attr/appColorSecondary"/>
 
                                     <CheckBox
                                         android:id="@+id/btnFollow"
@@ -107,7 +107,8 @@
                                 android:layout_marginTop="4dp"
                                 android:text="League of legends"
                                 android:textAlignment="center"
-                                android:textColor="#CCDCFF"
+                                android:textColor="?attr/appColorSecondaryLight"
+
                                 android:textSize="22sp" />
 
                             <TextView
@@ -294,7 +295,7 @@
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
-                                app:backgroundTint="@color/blue_600"
+                                app:backgroundTint="?attr/appColorSecondary"
                                 app:cornerRadius="16dp"
                                 app:icon="@drawable/ic_join_tournament"
                                 app:iconSize="24dp"
@@ -309,7 +310,7 @@
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
-                                app:backgroundTint="@color/boton_tablet_card"
+                                app:backgroundTint="?attr/appColorPrimary"
                                 app:cornerRadius="16dp"
                                 app:icon="@drawable/ic_check"
                                 app:iconSize="24dp"
@@ -324,7 +325,7 @@
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
-                                app:backgroundTint="@color/boton_tablet_card"
+                                app:backgroundTint="?attr/appColorPrimary"
                                 app:cornerRadius="16dp"
                                 app:icon="@drawable/ic_settings"
                                 app:iconSize="24dp"
@@ -338,7 +339,7 @@
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
-                                app:backgroundTint="@color/boton_tablet_card"
+                                app:backgroundTint="?attr/appColorPrimary"
                                 app:cornerRadius="16dp"
                                 app:icon="@drawable/ic_people"
                                 app:iconSize="24dp"

@@ -91,7 +91,7 @@
                                     android:backgroundTint="@color/boton_tablet_card_white"
                                     app:icon="@drawable/ic_settings"
                                     app:iconSize="22dp"
-                                    app:iconTint="@color/boton_movil_card" />
+                                    app:iconTint="?attr/appColorPrimary" />
 
                                 <CheckBox
                                     android:id="@+id/btnFollow"
@@ -333,7 +333,7 @@
                             android:textSize="17dp"
                             android:text="Unirse al torneo"
                             android:textColor="@color/white"
-                            app:backgroundTint="@color/blue_600"
+                            app:backgroundTint="?attr/appColorSecondary"
                             app:icon="@drawable/ic_join_tournament"
                             app:iconTint="@color/white" />
 
@@ -348,7 +348,7 @@
                             android:textSize="18sp"
                             android:text="Clasificación"
                             android:textColor="@color/white"
-                            app:backgroundTint="@color/boton_tablet_card"
+                            app:backgroundTint="?attr/appColorPrimary"
                             app:icon="@drawable/ic_check"
                             app:iconTint="@color/white" />
 
@@ -360,7 +360,7 @@
                             android:textSize="18sp"
                             android:text="Emparejamientos"
                             android:textColor="@color/white"
-                            app:backgroundTint="@color/boton_tablet_card"
+                            app:backgroundTint="?attr/appColorPrimary"
                             app:icon="@drawable/ic_settings"
                             app:iconTint="@color/white" />
 

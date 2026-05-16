@@ -23,7 +23,7 @@
                     android:id="@+id/cardJoin"
                     android:layout_width="600dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/fondo_tablet_card"
+                    android:backgroundTint="?attr/appColorPrimaryLight"
                     app:cardCornerRadius="32dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="1dp"
@@ -72,7 +72,8 @@
                             android:layout_marginBottom="40dp"
                             android:gravity="center"
                             android:text="Introduce el código de invitación para inscribirte."
-                            android:textColor="#CCDCFF"
+                            android:textColor="?attr/appColorSecondaryLight"
+
                             android:textSize="24sp" />
 
                         <!-- Input para el código -->
@@ -84,7 +85,8 @@
                             android:hint="Código del torneo"
                             app:hintEnabled="true"
                             app:hintTextColor="@android:color/white"
-                            android:textColorHint="#CCDCFF"
+                            android:textColorHint="?attr/appColorSecondaryLight"
+
                             app:endIconMode="clear_text"
                             app:endIconTint="@android:color/white">
 
@@ -92,7 +94,7 @@
                                 android:id="@+id/etTournamentCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="76dp"
-                                android:textColor="@color/blue_600"
+                                android:textColor="?attr/appColorSecondary"
                                 android:background="@drawable/bg_input_white"
                                 android:inputType="textCapCharacters"
                                 android:maxLength="10"
@@ -109,10 +111,10 @@
                             android:text="Confirmar inscripción"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:textColor="@color/blue_600"
+                            android:textColor="?attr/appColorSecondary"
                             app:backgroundTint="@android:color/white"
                             app:icon="@drawable/ic_check"
-                            app:iconTint="@color/blue_600"
+                            app:iconTint="?attr/appColorSecondary"
                             app:iconGravity="textStart"
                             app:iconSize="28dp"
                             app:cornerRadius="16dp" />
