@@ -116,6 +116,7 @@
                             app:iconTint="?attr/appColorPrimary" />
 
                         <!-- Item: Cambiar Contraseña -->
+
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnChangePassword"
                             style="@style/Widget.Material3.Button.TextButton.Icon"
@@ -125,7 +126,7 @@
                             android:text="@string/cambiar_contrase_a"
                             android:textColor="?attr/colorOnSurface"
                             app:icon="@android:drawable/ic_lock_lock"
-                            app:iconTint="@color/DarkBlue1" />
+                            app:iconTint="?attr/appColorPrimary" />
 
                         <com.google.android.material.divider.MaterialDivider
                             android:layout_width="match_parent"

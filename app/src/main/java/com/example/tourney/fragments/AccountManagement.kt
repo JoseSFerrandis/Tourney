@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.example.tourney.adapters.ThemeOption
 import com.example.tourney.databinding.FragmentAccountManagementBinding
 import com.example.tourney.entities.User
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 
 class AccountManagement : Fragment() {
 
@@ -49,15 +51,80 @@ class AccountManagement : Fragment() {
         }
 
         // Cambiar Color de la App (Editar cuenta)
-        binding.btnEditProfile.text = "Personalizar Colores"
         binding.btnEditProfile.setOnClickListener {
             showThemeSelectorCustom()
+        }
+
+        // Cambiar Contraseña
+        binding.btnChangePassword.setOnClickListener {
+            showInsertPasswordDialog()
         }
 
         binding.btnLogout.setOnClickListener {
             User.actualUser = null
             findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
         }
+    }
+
+    private fun showInsertPasswordDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_insert_current_password, null)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnAccept = dialogView.findViewById<Button>(R.id.btnAccept)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+
+        btnAccept.setOnClickListener {
+            // Lógica de validación próximamente
+            val Password = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
+
+            Toast.makeText(requireContext(), " ${Password.text} Comprobando contraseña actual...", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+            showInsertNewPasswordDialog()
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showInsertNewPasswordDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_insert_new_password, null)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnAccept = dialogView.findViewById<Button>(R.id.btnAccept)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+
+        btnAccept.setOnClickListener {
+            // Lógica de validación próximamente
+            val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
+            val Password2 = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
+
+            if (Password1.text.toString() == Password2.text.toString()) {
+
+                Toast.makeText(requireContext(), "Contraseña cambiada correctamente", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            } else {
+                Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            dialog.dismiss()
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun showThemeSelectorCustom() {
@@ -78,7 +145,7 @@ class AccountManagement : Fragment() {
 
         val dialogView = layoutInflater.inflate(R.layout.dialog_theme_selector, null)
         val rvThemes = dialogView.findViewById<RecyclerView>(R.id.rvThemes)
-        
+
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setView(dialogView)
             .create()
@@ -89,7 +156,7 @@ class AccountManagement : Fragment() {
         rvThemes.adapter = ThemeAdapter(themeOptions) { selectedOption ->
             val prefs = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
             prefs.edit().putString("user_theme", selectedOption.key).apply()
-            
+
             dialog.dismiss()
             requireActivity().recreate()
         }
