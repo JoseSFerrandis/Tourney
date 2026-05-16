@@ -34,7 +34,7 @@
                     android:contentDescription="TorneoApp"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/tourney_logo"
-                    app:tint="@color/blue_600" />
+                    app:tint="?attr/appColorSecondary" />
             </FrameLayout>
 
             <!-- Título -->
@@ -55,7 +55,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="32dp"
                 android:text="Organiza y participa en torneos"
-                android:textColor="#CCDCFF"
+                android:textColor="?attr/appColorSecondaryLight"
+
                 android:textSize="14sp" />
 
             <!-- Formulario (max-w-sm equivalente) -->
@@ -137,7 +138,7 @@
                     android:layout_marginBottom="8dp"
                     android:backgroundTint="@android:color/white"
                     android:text="Iniciar sesión"
-                    android:textColor="@color/blue_600"
+                    android:textColor="?attr/appColorSecondary"
                     android:textSize="14sp" />
 
                 <!-- Botón ¿Olvidaste tu contraseña? -->
@@ -174,7 +175,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="¿No tienes cuenta?"
-                android:textColor="#CCDCFF"
+                android:textColor="?attr/appColorSecondaryLight"
+
                 android:textSize="13sp" />
 
             <com.google.android.material.button.MaterialButton

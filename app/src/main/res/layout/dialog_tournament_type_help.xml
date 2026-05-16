@@ -31,13 +31,13 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/ic_help"
-                app:tint="@color/boton_movil_card"
+                app:tint="?attr/appColorPrimary"
                 android:alpha="0.9" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tipos de Torneo"
-                android:textColor="@color/blue_600"
+                android:textColor="?attr/appColorSecondary"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textAlignment="center"
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Liguilla"
-                android:textColor="@color/boton_movil_card"
+                android:textColor="?attr/appColorPrimary"
                 android:textStyle="bold"
                 android:textSize="20sp" />
             <TextView
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Suizo"
-                android:textColor="@color/boton_movil_card"
+                android:textColor="?attr/appColorPrimary"
                 android:textStyle="bold"
                 android:textSize="20sp" />
             <TextView
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Eliminación"
-                android:textColor="@color/boton_movil_card"
+                android:textColor="?attr/appColorPrimary"
                 android:textStyle="bold"
                 android:textSize="20sp" />
             <TextView
@@ -100,7 +100,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textAllCaps="false"
-                app:backgroundTint="@color/boton_movil_card"
+                app:backgroundTint="?attr/appColorPrimary"
                 app:cornerRadius="12dp" />
 
         </LinearLayout>

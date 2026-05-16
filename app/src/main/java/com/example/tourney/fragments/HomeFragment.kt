@@ -1,6 +1,7 @@
 package com.example.tourney.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,7 @@ class HomeFragment : Fragment() {
         val tabLayout = binding.tabLayout
 
         updateTournamentAdapter()
+        Log.e("DEBUG_USERS", " ${User.actualUser?.id}  Email: ${User.actualUser?.email} | Password: ${User.actualUser?.password} , ${User.actualUser?.nickname}")
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
@@ -79,11 +81,11 @@ class HomeFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnProfile.setOnClickListener {
-            if (User.actualUser?.id?.toInt() != 3) {
+            //if (User.actualUser?.id?.toInt() != 3) {
                 findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
-             }else{
-                 Toast.makeText(requireContext(), "No puedes acceder a tu perfil como invitado", Toast.LENGTH_SHORT).show()
-             }
+             //}else{
+               //  Toast.makeText(requireContext(), "No puedes acceder a tu perfil como invitado", Toast.LENGTH_SHORT).show()
+             //}
         }
 
         // Search

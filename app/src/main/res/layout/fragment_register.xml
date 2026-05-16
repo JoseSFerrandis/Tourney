@@ -258,7 +258,7 @@
                 app:strokeColor="@android:color/white"
                 app:strokeWidth="1.5dp"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/boton_movil_card"
+                app:backgroundTint="?attr/appColorPrimary"
                 app:cornerRadius="10dp"
                 app:iconTint="@color/white"
                 app:iconPadding="8dp"

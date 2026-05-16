@@ -4,9 +4,145 @@
         <!-- Forzar fondos blancos en modo día -->
         <item name="android:windowBackground">@color/white</item>
         <item name="colorSurface">@color/white</item>
+
+        <!-- Valores por defecto para el gradiente (Azul Clásico) -->
+        <item name="gradientStartColor">#3B82F6</item>
+        <item name="gradientEndColor">#1D4ED8</item>
+        <item name="appColorPrimary">#1e4fd9</item>
+        <item name="appColorPrimaryDark">#041C9E</item>
+        <item name="appColorPrimaryLight">#5287F5</item>
+        <item name="appColorSecondary">#0368B0</item>
+        <item name="appColorSecondaryLight">#CCDCFF</item>
+        <item name="appColorTertiary">#33FFFFFF</item>
+        <item name="appColorTertiaryLight">#7ADAFF</item>
+        <item name="appColorError">#CC0A00</item>
     </style>
 
+    <!-- Tema Azul (Clásico) -->
     <style name="Theme.Tourney" parent="Base.Theme.Tourney" />
+
+    <!-- 1. Tema Púrpura -->
+    <style name="Theme.Tourney.Purple" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#7C3AED</item>
+        <item name="gradientEndColor">#4C1D95</item>
+        <item name="appColorPrimary">#911ED9</item>
+        <item name="appColorPrimaryDark">#59049E</item>
+        <item name="appColorPrimaryLight">#AC71F0</item>
+        <item name="appColorSecondary">#5B21B6</item>
+        <item name="appColorSecondaryLight">#EDE9FE</item>
+    </style>
+
+    <!-- 2. Gris Plata (Light) -->
+    <style name="Theme.Tourney.GraySilver" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#9CA3AF</item>
+        <item name="gradientEndColor">#4B5563</item>
+        <item name="appColorPrimary">#6B7280</item>
+        <item name="appColorPrimaryDark">#374151</item>
+        <item name="appColorPrimaryLight">#D1D5DB</item>
+        <item name="appColorSecondary">#1F2937</item>
+        <item name="appColorSecondaryLight">#F3F4F6</item>
+    </style>
+
+    <!-- 3. Gris Pizarra (Medium) -->
+    <style name="Theme.Tourney.GraySlate" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#64748B</item>
+        <item name="gradientEndColor">#334155</item>
+        <item name="appColorPrimary">#475569</item>
+        <item name="appColorPrimaryDark">#1E293B</item>
+        <item name="appColorPrimaryLight">#94A3B8</item>
+        <item name="appColorSecondary">#0F172A</item>
+        <item name="appColorSecondaryLight">#F1F5F9</item>
+    </style>
+
+    <!-- 4. Gris Carbón (Dark) -->
+    <style name="Theme.Tourney.GrayCharcoal" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#374151</item>
+        <item name="gradientEndColor">#111827</item>
+        <item name="appColorPrimary">#1F2937</item>
+        <item name="appColorPrimaryDark">#030712</item>
+        <item name="appColorPrimaryLight">#4B5563</item>
+        <item name="appColorSecondary">#000000</item>
+        <item name="appColorSecondaryLight">#9CA3AF</item>
+    </style>
+
+    <!-- 5. Cyan Tropical -->
+    <style name="Theme.Tourney.Cyan" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#06B6D4</item>
+        <item name="gradientEndColor">#0891B2</item>
+        <item name="appColorPrimary">#0E7490</item>
+        <item name="appColorPrimaryDark">#155E75</item>
+        <item name="appColorPrimaryLight">#67E8F9</item>
+        <item name="appColorSecondary">#164E63</item>
+        <item name="appColorSecondaryLight">#CFFAFE</item>
+    </style>
+
+    <!-- 6. Verde Marino -->
+    <style name="Theme.Tourney.SeaGreen" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#14B8A6</item>
+        <item name="gradientEndColor">#0D9488</item>
+        <item name="appColorPrimary">#0F766E</item>
+        <item name="appColorPrimaryDark">#134E4A</item>
+        <item name="appColorPrimaryLight">#5EEAD4</item>
+        <item name="appColorSecondary">#042F2E</item>
+        <item name="appColorSecondaryLight">#CCFBF1</item>
+    </style>
+
+    <!-- 7. Verde Esmeralda -->
+    <style name="Theme.Tourney.Emerald" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#10B981</item>
+        <item name="gradientEndColor">#059669</item>
+        <item name="appColorPrimary">#047857</item>
+        <item name="appColorPrimaryDark">#064E3B</item>
+        <item name="appColorPrimaryLight">#6EE7B7</item>
+        <item name="appColorSecondary">#064E3B</item>
+        <item name="appColorSecondaryLight">#D1FAE5</item>
+    </style>
+
+    <!-- 8. Naranja Atardecer -->
+    <style name="Theme.Tourney.Sunset" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#F59E0B</item>
+        <item name="gradientEndColor">#D97706</item>
+        <item name="appColorPrimary">#B45309</item>
+        <item name="appColorPrimaryDark">#78350F</item>
+        <item name="appColorPrimaryLight">#FCD34D</item>
+        <item name="appColorSecondary">#451A03</item>
+        <item name="appColorSecondaryLight">#FEF3C7</item>
+    </style>
+
+    <!-- 9. Rojo Carmesí -->
+    <style name="Theme.Tourney.Crimson" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#EF4444</item>
+        <item name="gradientEndColor">#B91C1C</item>
+        <item name="appColorPrimary">#991B1B</item>
+        <item name="appColorPrimaryDark">#7F1D1D</item>
+        <item name="appColorPrimaryLight">#FCA5A5</item>
+        <item name="appColorSecondary">#450A0A</item>
+        <item name="appColorSecondaryLight">#FEE2E2</item>
+        <item name="appColorError">#8e0700</item>
+
+    </style>
+
+    <!-- 10. Sakura (Rosa) -->
+    <style name="Theme.Tourney.Sakura" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#F472B6</item>
+        <item name="gradientEndColor">#DB2777</item>
+        <item name="appColorPrimary">#BE185D</item>
+        <item name="appColorPrimaryDark">#831843</item>
+        <item name="appColorPrimaryLight">#F9A8D4</item>
+        <item name="appColorSecondary">#500724</item>
+        <item name="appColorSecondaryLight">#FCE7F3</item>
+    </style>
+
+    <!-- 11. Medianoche (Deep Navy) -->
+    <style name="Theme.Tourney.Midnight" parent="Base.Theme.Tourney">
+        <item name="gradientStartColor">#1E293B</item>
+        <item name="gradientEndColor">#0F172A</item>
+        <item name="appColorPrimary">#1e1b4b</item>
+        <item name="appColorPrimaryDark">#000000</item>
+        <item name="appColorPrimaryLight">#312e81</item>
+        <item name="appColorSecondary">#4338ca</item>
+        <item name="appColorSecondaryLight">#e0e7ff</item>
+    </style>
 
     <!-- Estilo para el texto de los Tabs (Usado en Tablet) -->
     <style name="TabLayoutTextAppearanceTablet" parent="TextAppearance.Design.Tab">

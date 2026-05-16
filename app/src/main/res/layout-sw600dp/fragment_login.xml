@@ -16,7 +16,7 @@
             android:layout_width="760dp"
             android:layout_height="1197dp"
             android:background="@drawable/bg_circle_white"
-            android:backgroundTint="#1AFFFFFF"
+            android:backgroundTint="?attr/gradientStartColor"
             android:gravity="center"
             android:orientation="vertical"
             android:layout_marginBottom="50sp"
@@ -41,7 +41,7 @@
                     android:contentDescription="TorneoApp"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/tourney_logo"
-                    app:tint="@color/blue_600" />
+                    app:tint="?attr/appColorSecondary" />
             </FrameLayout>
 
             <TextView
@@ -58,8 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:text="Organiza y participa en torneos"
-                android:textColor="#CCDCFF"
-                android:textSize="18sp" />
+                android:textColor="?attr/appColorSecondaryLight"
+                android:textSize="22sp" />
 
             <TextView
                 android:layout_width="600dp"
@@ -127,7 +127,7 @@
                 android:backgroundTint="@android:color/white"
                 android:gravity="center"
                 android:text="Iniciar sesión"
-                android:textColor="@color/blue_600"
+                android:textColor="?attr/appColorSecondary"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
@@ -159,7 +159,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="3dp"
                 android:text="¿No tienes cuenta?"
-                android:textColor="@color/tablet_secondary"
+                android:textColor="?attr/appColorSecondaryLight"
                 android:textSize="25sp" />
 
             <com.google.android.material.button.MaterialButton

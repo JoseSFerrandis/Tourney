@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="gradientStartColor" format="color" />
+    <attr name="gradientEndColor" format="color" />
+    <attr name="appColorPrimary" format="color" />
+    <attr name="appColorPrimaryDark" format="color" />
+    <attr name="appColorPrimaryLight" format="color" />
+    <attr name="appColorSecondary" format="color" />
+    <attr name="appColorSecondaryLight" format="color" />
+    <attr name="appColorTertiary" format="color" />
+    <attr name="appColorTertiaryLight" format="color" />
+    <attr name="appColorError" format="color" />
+</resources>

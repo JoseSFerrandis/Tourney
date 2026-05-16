@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="¿Qué quieres hacer?"
-            android:textColor="@color/blue_600"
+            android:textColor="?attr/appColorSecondary"
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginBottom="32dp"/>
@@ -35,7 +35,7 @@
             android:textStyle="bold"
             app:icon="@drawable/ic_plus"
             app:iconTint="@color/white"
-            app:backgroundTint="@color/boton_movil_card"
+            app:backgroundTint="?attr/appColorPrimary"
             app:cornerRadius="16dp"
             android:layout_marginBottom="16dp"
             app:iconGravity="textStart"
@@ -52,7 +52,7 @@
             android:textStyle="bold"
             app:icon="@drawable/ic_join_tournament"
             app:iconTint="@color/white"
-            app:backgroundTint="@color/boton_movil_card"
+            app:backgroundTint="?attr/appColorPrimary"
             app:cornerRadius="16dp"
             app:iconGravity="textStart"
             app:iconPadding="12dp"/>

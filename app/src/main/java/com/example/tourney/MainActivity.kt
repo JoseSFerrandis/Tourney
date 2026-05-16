@@ -1,5 +1,6 @@
 package com.example.tourney
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -16,7 +17,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tourney.databinding.ActivityMainBinding
-import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
@@ -28,6 +28,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Cargar preferencia de tema antes de super.onCreate
+        val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedTheme = prefs.getString("user_theme", "Blue")
+        
+        val themeId = when (selectedTheme) {
+            "Purple" -> R.style.Theme_Tourney_Purple
+            "GraySilver" -> R.style.Theme_Tourney_GraySilver
+            "GraySlate" -> R.style.Theme_Tourney_GraySlate
+            "GrayCharcoal" -> R.style.Theme_Tourney_GrayCharcoal
+            "Cyan" -> R.style.Theme_Tourney_Cyan
+            "SeaGreen" -> R.style.Theme_Tourney_SeaGreen
+            "Emerald" -> R.style.Theme_Tourney_Emerald
+            "Sunset" -> R.style.Theme_Tourney_Sunset
+            "Crimson" -> R.style.Theme_Tourney_Crimson
+            "Sakura" -> R.style.Theme_Tourney_Sakura
+            "Midnight" -> R.style.Theme_Tourney_Midnight
+            else -> R.style.Theme_Tourney
+        }
+        setTheme(themeId)
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -44,10 +64,7 @@ class MainActivity : AppCompatActivity() {
         binding.fab.imageTintList = getColorStateList(R.color.DarkBlue2)
         
         binding.fab.setOnClickListener {
-            if (User.actualUser?.id?.toInt() == 3){
-                navController.navigate(R.id.action_HomeFragment_to_CreateTournamentFragment)
-            }else
-                showCustomHomeDialog()
+            showCustomHomeDialog()
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -73,27 +90,25 @@ class MainActivity : AppCompatActivity() {
         logAllUsers()
     }
 
-      private fun logAllUsers() {
-          try {
-              val users = UsersDao(this).getAllUsers()
-              Log.e("DEBUG_USERS", "=== LISTA DE USUARIOS REGISTRADOS ===")
-              users.forEach { user ->
-                  Log.e("DEBUG_USERS", " ${user.id}  Email: ${user.email} | Password: ${user.password} | Nick: ${user.nickname}")
-              }
-              Log.e("DEBUG_USERS", "=====================================")
-          } catch (e: Exception) {
-              Log.e("DEBUG_USERS", "Error al leer usuarios: ${e.message}")
-          }
-      }
+    private fun logAllUsers() {
+        try {
+            val users = UsersDao(this).getAllUsers()
+            Log.e("DEBUG_USERS", "=== LISTA DE USUARIOS REGISTRADOS ===")
+            users.forEach { user ->
+                Log.e("DEBUG_USERS", "Email: ${user.email} | Password: ${user.password} | Nick: ${user.nickname}")
+            }
+            Log.e("DEBUG_USERS", "=====================================")
+        } catch (e: Exception) {
+            Log.e("DEBUG_USERS", "Error al leer usuarios: ${e.message}")
+        }
+    }
 
-    //La nueva función para el alert Custom
     private fun showCustomHomeDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_home_options, null)
         val dialog = MaterialAlertDialogBuilder(this)
             .setView(dialogView)
             .create()
 
-        // Ajustar fondo transparente para que se vean los bordes redondeados del CardView
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val btnCreate = dialogView.findViewById<Button>(R.id.btnCreateOption)
