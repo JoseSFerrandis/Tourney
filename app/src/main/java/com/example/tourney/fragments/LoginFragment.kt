@@ -16,6 +16,7 @@ import com.example.tourney.databinding.FragmentLoginBinding
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.TimeoutCancellationException
 import java.net.SocketTimeoutException
 
 class LoginFragment : Fragment() {
@@ -47,7 +48,7 @@ class LoginFragment : Fragment() {
                     {
                         exception ->
                         when(exception){
-                            is SocketTimeoutException -> Snackbar.make(requireView(), "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
+                            is TimeoutCancellationException -> Snackbar.make(requireView(), "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
                             else -> Toast.makeText(context, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                         }
                         binding.btnLoginLogin.isEnabled = true

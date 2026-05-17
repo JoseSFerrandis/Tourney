@@ -12,9 +12,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.core.content.edit
+import com.example.models.PasswordModel
 import com.example.tourney.entities.Tournament
 import com.example.tourney.models.RememberPasswordModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.withTimeout
 import retrofit2.Response
 
 
@@ -22,19 +24,21 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
     fun insertNewUser(user: NewUserModel, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val newUser = api.insertNewUser(user)
-                // TODO: Quitar dao en producción
-                dao.insertNewUser(
-                    User(
-                        id = 0,
-                        nickname = user.nickname,
-                        email = user.email,
-                        password = user.passwordHash,
-                        photo = user.photo
+                withTimeout(5000){
+                    val newUser = api.insertNewUser(user)
+                    // TODO: Quitar dao en producción
+                    dao.insertNewUser(
+                        User(
+                            id = 0,
+                            nickname = user.nickname,
+                            email = user.email,
+                            password = user.passwordHash,
+                            photo = user.photo
+                        )
                     )
-                )
-                withContext(Dispatchers.Main) { onSuccess() } // Toast de éxito y navegación a login
-                println("Usuario insertado correctamente")
+                    withContext(Dispatchers.Main) { onSuccess() } // Toast de éxito y navegación a login
+                    println("Usuario insertado correctamente")
+                }
             } catch (e: Exception) {
                 println("Error al insertar usuario")
                 withContext(Dispatchers.Main) { onError(e) } // Toast de error
@@ -46,17 +50,43 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
     fun loginUser(email: String, password: String, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                val loginResponse = api.loginUser(LoginModel(email, password))
-                User.actualUser = User(loginResponse.user.id, loginResponse.user.nickname, loginResponse.user.email, "", loginResponse.user.photo)
-                
-                // Guardar el token en SharedPreferences (encriptado)
-                val sharedPreferences = Security().getEncryptedSharedPreferences(context)
-                sharedPreferences.edit { putString("token", loginResponse.token) }
-                
-                // Cargar torneos pasando el contexto para recuperar el token
-                loadShowableTournaments(context)
-                
-                withContext(Dispatchers.Main) { onSuccess() }
+                withTimeout(5000){
+                    val loginResponse = api.loginUser(LoginModel(email, password))
+                    User.actualUser = User(
+                        loginResponse.user.id,
+                        loginResponse.user.nickname,
+                        loginResponse.user.email,
+                        "",
+                        loginResponse.user.photo
+                    )
+
+                    // Guardar el token en SharedPreferences (encriptado)
+                    val sharedPreferences = Security().getEncryptedSharedPreferences(context)
+                    sharedPreferences.edit { putString("token", loginResponse.token) }
+
+                    // Cargar torneos pasando el contexto para recuperar el token
+                    loadShowableTournaments(context)
+
+                    withContext(Dispatchers.Main) { onSuccess() }
+                }
+            }catch (e: Exception){
+                withContext(Dispatchers.Main) { onError(e) }
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun checkPassword(password: String, context: Context, onSuccess: (Boolean) -> Unit, onError: (Exception) -> Unit){
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
+                withTimeout(5000) {
+                    val sharedPreferences = Security().getEncryptedSharedPreferences(context)
+                    val token = sharedPreferences.getString("token", "") ?: ""
+                    val bearerToken = "Bearer $token"
+
+                    val response = api.checkPassword(bearerToken, PasswordModel(password))
+                    withContext(Dispatchers.Main) { onSuccess(response.isSuccessful) }
+                }
             }catch (e: Exception){
                 withContext(Dispatchers.Main) { onError(e) }
                 e.printStackTrace()
@@ -67,9 +97,11 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
     fun rememberPassword(email: String, nickname: String, onSuccess: () -> Unit, onError: (Exception) -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                val response = api.rememberPassword(RememberPasswordModel(email, nickname))
-                if(response.isSuccessful) withContext(Dispatchers.Main) { onSuccess() }
-                else withContext(Dispatchers.Main) { onError(Exception("No se ha encontrado ningún usuario con esos datos")) }
+                withTimeout(5000){
+                    val response = api.rememberPassword(RememberPasswordModel(email, nickname))
+                    if (response.isSuccessful) withContext(Dispatchers.Main) { onSuccess() }
+                    else withContext(Dispatchers.Main) { onError(Exception("No se ha encontrado ningún usuario con esos datos")) }
+                }
             }catch (e: Exception){
                 e.printStackTrace()
                 withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
@@ -77,11 +109,31 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
         }
     }
 
+    fun updatePassword(password: String, context: Context, onSuccess: (updated: Boolean) -> Unit, onError: (Exception) -> Unit){
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
+                withTimeout(5000){
+                    val sharedPreferences = Security().getEncryptedSharedPreferences(context)
+                    val token = sharedPreferences.getString("token", "") ?: ""
+                    val bearerToken = "Bearer $token"
+
+                    val response = api.updatePassword(bearerToken, PasswordModel(password))
+                    withContext(Dispatchers.Main) { onSuccess(response.isSuccessful) }
+                }
+            }catch (e: Exception){
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
+                e.printStackTrace()
+            }
+        }
+    }
+
     fun updatePassword(email: String, passwordHash: String, onSuccess: (Boolean) -> Unit, onError: (Exception) -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = api.updatePassword(LoginModel(email, passwordHash))
-                withContext(Dispatchers.Main) { onSuccess(response.isSuccessful) }
+                withTimeout(5000) {
+                    val response = api.updatePassword(LoginModel(email, passwordHash))
+                    withContext(Dispatchers.Main) { onSuccess(response.isSuccessful) }
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) { onError(e) }
                 e.printStackTrace()
@@ -92,13 +144,15 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
     fun updateAvatar(avatarId: Int, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val sharedPreferences = Security().getEncryptedSharedPreferences(context)
-                val token = sharedPreferences.getString("token", "") ?: ""
-                val bearerToken = "Bearer $token"
+                withTimeout(5000) {
+                    val sharedPreferences = Security().getEncryptedSharedPreferences(context)
+                    val token = sharedPreferences.getString("token", "") ?: ""
+                    val bearerToken = "Bearer $token"
 
-                val response = api.updateAvatar(bearerToken, avatarId)
-                if(response.isSuccessful) withContext(Dispatchers.Main) { onSuccess() }
-                else withContext(Dispatchers.Main) { onError(Exception("No se ha podido actualizar el avatar")) }
+                    val response = api.updateAvatar(bearerToken, avatarId)
+                    if (response.isSuccessful) withContext(Dispatchers.Main) { onSuccess() }
+                    else withContext(Dispatchers.Main) { onError(Exception("No se ha podido actualizar el avatar")) }
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
                 e.printStackTrace()

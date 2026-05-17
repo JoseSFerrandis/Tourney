@@ -19,6 +19,9 @@ import com.example.tourney.adapters.ThemeAdapter
 import com.example.tourney.adapters.ThemeOption
 import com.example.tourney.databinding.FragmentAccountManagementBinding
 import com.example.tourney.entities.User
+import com.example.tourney.repositories.UserRepository
+import com.example.tourney.tools.APIService
+import com.example.tourney.tools.UsersDao
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 
@@ -78,12 +81,29 @@ class AccountManagement : Fragment() {
         val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
 
         btnAccept.setOnClickListener {
+            btnAccept.isEnabled = false
+            btnAccept.text = "Comprobando..."
             // Lógica de validación próximamente
             val Password = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
 
-            Toast.makeText(requireContext(), " ${Password.text} Comprobando contraseña actual...", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-            showInsertNewPasswordDialog()
+            UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).checkPassword(
+                Password.text.toString(),
+                requireContext(),
+                {
+                    if(it){
+                        dialog.dismiss()
+                        showInsertNewPasswordDialog()
+                    }else{
+                        Toast.makeText(requireContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show()
+                        btnAccept.isEnabled = true
+                        btnAccept.text = "Cambiar contraseña"
+                    }
+                },
+                {
+                    btnAccept.isEnabled = true
+                    btnAccept.text = "Cambiar contraseña"
+                    Toast.makeText(requireContext(), "Error al comprobar contraseña", Toast.LENGTH_SHORT).show()
+                })
         }
 
         btnCancel.setOnClickListener {
@@ -105,19 +125,39 @@ class AccountManagement : Fragment() {
         val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
 
         btnAccept.setOnClickListener {
-            // Lógica de validación próximamente
-            val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
-            val Password2 = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
+            btnAccept.isEnabled = false
+            btnAccept.text = "Actualizando..."
 
-            if (Password1.text.toString() == Password2.text.toString()) {
+            val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etNewPassword)
+            val Password2 = dialogView.findViewById<TextInputEditText>(R.id.etRepeatPassword)
 
-                Toast.makeText(requireContext(), "Contraseña cambiada correctamente", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
-            } else {
+            // TODO: comprobar que la nueva contraseña sea válida
+
+            if(Password1.text.toString() != Password2.text.toString()){
+                btnAccept.isEnabled = true
+                btnAccept.text = "Cambiar contraseña"
                 Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
+                return@setOnClickListener
+            }else{
+                UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).updatePassword(
+                    Password2.text.toString(),
+                    requireContext(),
+                    { updated ->
+                        if(updated){
+                            Toast.makeText(requireContext(), "Contraseña actualizada", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }else{
+                            btnAccept.isEnabled = true
+                            btnAccept.text = "Cambiar contraseña"
+                            Toast.makeText(requireContext(), "Error al actualizar contraseña", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    {
+                        btnAccept.isEnabled = true
+                        btnAccept.text = "Cambiar contraseña"
+                        Toast.makeText(requireContext(), "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Toast.LENGTH_SHORT).show()
+                    })
             }
-            dialog.dismiss()
         }
 
         btnCancel.setOnClickListener {

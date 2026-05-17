@@ -1,6 +1,7 @@
 package com.example.tourney.tools
 
 import com.example.models.LoginResponse
+import com.example.models.PasswordModel
 import com.example.tourney.entities.Tournament
 import com.example.tourney.models.LoginModel
 import com.example.tourney.models.NewUserModel
@@ -45,6 +46,12 @@ interface APIService {
 
     @GET("/user/updateAvatar/{avatarId}")
     suspend fun updateAvatar(@Header("Authorization") token: String, @Path("avatarId") avatarId: Int): Response<Unit>
+
+    @POST("/user/checkPassword")
+    suspend fun checkPassword(@Header("Authorization") token: String, @Body password: PasswordModel): Response<Unit>
+
+    @POST("/user/updatePassword")
+    suspend fun updatePassword(@Header("Authorization") token: String, @Body password: PasswordModel): Response<Unit>
 
 
 
