@@ -52,7 +52,7 @@ class LoginFragment : Fragment() {
         
         binding.btnModoInvitado?.setOnClickListener {
             // Cargamos al usuario invitado desde la BD (ID 3 por defecto)
-            val invitado = UsersDao(requireContext()).getUserById(3)
+            val invitado = UsersDao(requireContext()).getUserById(1)
             if (invitado != null) {
                 User.actualUser = invitado
                 findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
@@ -63,12 +63,6 @@ class LoginFragment : Fragment() {
     }
 
     fun login(): Boolean{
-        if(binding.loginEmailInput.text.toString() == "" &&
-            binding.loginPasswordInput.text.toString() == ""){
-            User.actualUser = User(-1, "admin", "1", "admin", 0)
-            return true
-        }
-
         val allUsers = UsersDao(requireContext()).getAllUsers()
         for(user in allUsers){
             if(binding.loginEmailInput.text.toString() == user.email &&
