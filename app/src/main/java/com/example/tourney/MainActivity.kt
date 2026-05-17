@@ -1,6 +1,7 @@
 package com.example.tourney
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.example.tourney.databinding.ActivityMainBinding
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity() {
@@ -60,8 +62,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.fab.setImageBitmap(resources.getDrawable(R.drawable.ic_trophy).toBitmap())
-        binding.fab.backgroundTintList = getColorStateList(R.color.white)
-        binding.fab.imageTintList = getColorStateList(R.color.DarkBlue2)
+        binding.fab.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+        
+        // Resolvemos el color del tema dinámicamente
+        val primaryColor = MaterialColors.getColor(binding.fab, R.attr.appColorPrimaryDark)
+        binding.fab.imageTintList = ColorStateList.valueOf(primaryColor)
         
         binding.fab.setOnClickListener {
             showCustomHomeDialog()

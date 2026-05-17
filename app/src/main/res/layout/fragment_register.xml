@@ -91,7 +91,7 @@
                         android:id="@+id/etNickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Tu gamertag único"
+                        android:hint="Tu nombre de usuario único"
                         android:inputType="text"
                         android:textColor="@color/black"
                         android:textColorHint="@color/text_hint"
@@ -183,8 +183,7 @@
                 app:endIconMode="password_toggle"
                 app:endIconTint="@color/text_secondary"
                 app:errorTextColor="@color/error_red"
-                app:hintTextColor="@color/text_secondary"
-                app:passwordToggleEnabled="true">
+                app:hintTextColor="@color/text_secondary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
