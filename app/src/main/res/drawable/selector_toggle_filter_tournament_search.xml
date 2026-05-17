@@ -3,8 +3,8 @@
     <!-- ESTADO: ACTIVADO (Checked) -->
     <item android:state_checked="true">
         <shape android:shape="rectangle">
-            <solid android:color="?attr/appColorPrimaryDark" /> <!-- Relleno azul -->
-            <stroke android:width="2dp" android:color="?attr/appColorPrimary" /> <!-- Borde más oscuro -->
+            <solid android:color="?attr/appColorPrimary" /> <!-- Relleno azul -->
+            <stroke android:width="2dp" android:color="?attr/appColorPrimaryDark" /> <!-- Borde más oscuro -->
             <corners android:radius="12dp" />
         </shape>
     </item>
