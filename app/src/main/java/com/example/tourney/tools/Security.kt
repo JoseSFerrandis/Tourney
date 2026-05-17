@@ -24,6 +24,4 @@ class Security {
 
         return sharedPrefs
     }
-
-    fun encryptPassword(password: String) = BCrypt.hashpw(password, BCrypt.gensalt(12))
 }

@@ -9,14 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentRegisterBinding
-import com.example.tourney.entities.User
 import com.example.tourney.models.NewUserModel
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
 import com.example.tourney.tools.Security
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import org.mindrot.jbcrypt.BCrypt
 import java.net.SocketTimeoutException
 
 // TODO: humanizar código
@@ -155,7 +153,7 @@ class RegisterFragment : Fragment() {
         val nickname = binding.etNickname.text.toString().trim()
         val email    = binding.etEmail.text.toString().trim()
         // Encripta la contraseña
-        val password = Security().encryptPassword(binding.etPassword.text.toString())
+        val password = binding.etPassword.text.toString()
 
 
         // Mostrar loading
@@ -166,7 +164,7 @@ class RegisterFragment : Fragment() {
             NewUserModel(
                 nickname = nickname,
                 email = email,
-                passwordHash = password,
+                password = password,
                 photo = 1
             ),
             {

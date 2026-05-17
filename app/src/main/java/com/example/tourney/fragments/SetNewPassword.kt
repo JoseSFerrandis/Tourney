@@ -94,9 +94,12 @@ class SetNewPassword : Fragment() {
 
     private fun sendNewPassword(email: String, password: String){
         UserRepository(UsersDao(requireContext()), APIService.getInstance())
-            .updatePassword(email, Security().encryptPassword(password),
+            .updatePassword(email, password,
                 {
-                    if (it) { findNavController().navigate(R.id.action_SetNewPassword_to_LoginFragment) }
+                    if (it) {
+                        findNavController().navigate(R.id.action_SetNewPassword_to_LoginFragment)
+                        Snackbar.make(binding.root, "Contraseña actualizada", Snackbar.LENGTH_LONG).show()
+                    }
                     else { Snackbar.make(binding.root, "No se ha podido actualizar la contraseña", Snackbar.LENGTH_LONG).show() }
                 },
                 {

@@ -17,7 +17,6 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.models.RememberPasswordModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withTimeout
-import retrofit2.Response
 
 
 class UserRepository(private val dao: UsersDao, private val api: APIService) {
@@ -32,7 +31,7 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
                             id = 0,
                             nickname = user.nickname,
                             email = user.email,
-                            password = user.passwordHash,
+                            password = user.password,
                             photo = user.photo
                         )
                     )
