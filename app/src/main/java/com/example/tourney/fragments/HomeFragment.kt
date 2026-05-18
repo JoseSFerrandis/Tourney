@@ -43,19 +43,27 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager = binding.pager!!
+        viewPager = binding.pager
         val tabLayout = binding.tabLayout
 
         updateTournamentAdapter()
         Log.e("DEBUG_USERS", " ${User.actualUser?.id}  Email: ${User.actualUser?.email} | Password: ${User.actualUser?.password} , ${User.actualUser?.nickname}")
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = "Mis torneos"
-                1 -> tab.text = "Participando"
-                2 -> tab.text = "Siguiendo"
-            }
-        }.attach()
+        if(User.actualUser?.logged == true) {
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                when (position) {
+                    0 -> tab.text = "Mis torneos"
+                    1 -> tab.text = "Participando"
+                    2 -> tab.text = "Siguiendo"
+                }
+            }.attach()
+        }else {
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                when (position) {
+                    0 -> tab.text = "Mis torneos"
+                }
+            }.attach()
+        }
 
         setupListeners()
         updateProfileImage()
@@ -89,34 +97,34 @@ class HomeFragment : Fragment() {
         }
 
         // Search
-        binding.btnSearchTournament?.setOnClickListener {
+        binding.btnSearchTournament.setOnClickListener {
             viewModel.updateSearch(binding.etSearch.text.toString().trim())
 
             // Cierra el menú de filtros si estuviera abierto
-            binding.vwFiltersTournamentSearch?.isVisible = false
+            binding.vwFiltersTournamentSearch.isVisible = false
         }
-        binding.btnSearchFilters?.setOnClickListener {
-            binding.vwFiltersTournamentSearch?.isVisible?.let { binding.vwFiltersTournamentSearch?.isVisible = !it }
+        binding.btnSearchFilters.setOnClickListener {
+            binding.vwFiltersTournamentSearch.isVisible = !binding.vwFiltersTournamentSearch.isVisible
         }
-        binding.chkFilterTournamentSearchName?.setOnClickListener {
-            viewModel.updateFilterByNames(binding.chkFilterTournamentSearchName?.isChecked?: false)
+        binding.chkFilterTournamentSearchName.setOnClickListener {
+            viewModel.updateFilterByNames(binding.chkFilterTournamentSearchName.isChecked)
         }
-        binding.chkFilterTournamentSearchGame?.setOnClickListener {
-            viewModel.updateFilterByGames(binding.chkFilterTournamentSearchGame?.isChecked?: false)
+        binding.chkFilterTournamentSearchGame.setOnClickListener {
+            viewModel.updateFilterByGames(binding.chkFilterTournamentSearchGame.isChecked)
         }
 
         // Formats
-        binding.btnFilterTournamentSearchEliminacion?.isChecked = true
-        binding.btnFilterTournamentSearchEliminacion?.setOnClickListener {
-            viewModel.updateFilterByElimination(binding.btnFilterTournamentSearchEliminacion?.isChecked?: false)
+        binding.btnFilterTournamentSearchEliminacion.isChecked = true
+        binding.btnFilterTournamentSearchEliminacion.setOnClickListener {
+            viewModel.updateFilterByElimination(binding.btnFilterTournamentSearchEliminacion.isChecked)
         }
-        binding.btnFilterTournamentSearchLiguilla?.isChecked = true
-        binding.btnFilterTournamentSearchLiguilla?.setOnClickListener {
-            viewModel.updateFilterByLiguilla(binding.btnFilterTournamentSearchLiguilla?.isChecked?: false)
+        binding.btnFilterTournamentSearchLiguilla.isChecked = true
+        binding.btnFilterTournamentSearchLiguilla.setOnClickListener {
+            viewModel.updateFilterByLiguilla(binding.btnFilterTournamentSearchLiguilla.isChecked)
         }
-        binding.btnFilterTournamentSearchSuizo?.isChecked = true
-        binding.btnFilterTournamentSearchSuizo?.setOnClickListener {
-            viewModel.updateFilterBySuizo(binding.btnFilterTournamentSearchSuizo?.isChecked?: false)
+        binding.btnFilterTournamentSearchSuizo.isChecked = true
+        binding.btnFilterTournamentSearchSuizo.setOnClickListener {
+            viewModel.updateFilterBySuizo(binding.btnFilterTournamentSearchSuizo.isChecked)
         }
     }
 
@@ -138,14 +146,18 @@ class HomeFragment : Fragment() {
 
 class TournamentCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = 3 // "Mis torneos","Inscrito" y "Siguiendo"
+    override fun getItemCount(): Int =
+        if(User.actualUser?.logged == true) 3 else 1
 
     override fun createFragment(position: Int): Fragment {
         val user = User.actualUser
-        return when (position) {
-            0 -> TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
-            1 -> TournamentListFragment.newInstance(user?.joinedTournamentList ?: emptyList())
-            else -> TournamentListFragment.newInstance(user?.followingTournamentList ?: emptyList())
-        }
+        if(user?.logged == true)
+            return when (position) {
+                0 -> TournamentListFragment.newInstance(user.showableTournamentList)
+                1 -> TournamentListFragment.newInstance(user.joinedTournamentList)
+                else -> TournamentListFragment.newInstance(user.followingTournamentList)
+            }
+        else
+            return TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
     }
 }
