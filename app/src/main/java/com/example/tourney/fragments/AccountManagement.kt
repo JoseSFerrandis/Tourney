@@ -60,7 +60,7 @@ class AccountManagement : Fragment() {
         binding.btnChangePassword.setOnClickListener { showInsertPasswordDialog() }
 
         // Cambiar tema
-        binding.btnEditThemes?.setOnClickListener { showThemeSelectorCustom() }
+        binding.btnEditThemes.setOnClickListener { showThemeSelectorCustom() }
 
         binding.btnLogout.setOnClickListener {
             User.actualUser = null
@@ -322,6 +322,11 @@ class AccountManagement : Fragment() {
         } else {
             binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshData()
     }
 
     override fun onDestroyView() {

@@ -47,8 +47,18 @@ class ProfileChooseFragment : Fragment() {
             
             val currentUser = User.actualUser
             if (currentUser != null) {
-                // 1. Actualizar en la base de datos (SQLite)
-                //val rows = UsersDao(requireContext()).updateAvatar(currentUser.email, selectedNumber)
+                // Invitado
+                if(!currentUser.logged){
+                    val rows = UsersDao(requireContext()).updateAvatar(currentUser.email, selectedNumber)
+                    if(rows > 0){
+                        Toast.makeText(requireContext(), "Avatar actualizado", Toast.LENGTH_SHORT).show()
+                        // 2. Actualizar el objeto global para que el cambio se vea al instante
+                        currentUser.photo = selectedNumber
+                        findNavController().popBackStack()
+                        return@AvatarAdapter
+                    }
+                }
+                // Cuenta real
                 UserRepository(UsersDao(requireContext()), APIService.getInstance())
                     .updateAvatar(
                         selectedNumber,
