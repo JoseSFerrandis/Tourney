@@ -125,20 +125,38 @@ class AccountManagement : Fragment() {
         val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
 
         btnAccept.setOnClickListener {
-            btnAccept.isEnabled = false
-            btnAccept.text = "Actualizando..."
 
             val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etNewPassword)
             val Password2 = dialogView.findViewById<TextInputEditText>(R.id.etRepeatPassword)
 
-            // TODO: comprobar que la nueva contraseña sea válida
 
+            if(Password1.text.toString().length < 8){
+                Toast.makeText(requireContext(), "La contraseña debe tener al menos 8 caracteres", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(!Password1.text.toString().matches(Regex(".*[A-Z].*"))){
+                Toast.makeText(requireContext(), "La contraseña debe tener al menos una mayúscula", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(!Password1.text.toString().matches(Regex(".*[0-9].*"))){
+                Toast.makeText(requireContext(), "La contraseña debe tener al menos un número", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(!Password1.text.toString().matches(Regex(".*[a-z].*"))){
+                Toast.makeText(requireContext(), "La contraseña debe tener al menos una minúscula", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(!Password1.text.toString().matches(Regex(".*[!@#$%^&*()].*"))){
+                Toast.makeText(requireContext(), "La contraseña debe tener al menos un carácter especial", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if(Password1.text.toString() != Password2.text.toString()){
-                btnAccept.isEnabled = true
-                btnAccept.text = "Cambiar contraseña"
                 Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }else{
+                btnAccept.isEnabled = false
+                btnAccept.text = "Actualizando..."
+
                 UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).updatePassword(
                     Password2.text.toString(),
                     requireContext(),

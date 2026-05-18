@@ -63,6 +63,14 @@ class SetNewPassword : Fragment() {
             else if(!it.contains(Regex("\\d")))
                 binding.tilNewPassword.error = "Debe tener al menos un número"
 
+                // Contraseña sin minúsculas
+            else if(!it.contains(Regex("[a-z]")))
+                binding.tilNewPassword.error = "Debe tener al menos una minúscula"
+
+                // Contraseña sin caracteres especiales
+            else if(!it.contains(Regex("[^a-zA-Z\\d]")))
+                binding.tilNewPassword.error = "Debe tener al menos un carácter especial"
+
             // Contraseña válida
             else {
                 binding.tilNewPassword.error = null

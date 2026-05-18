@@ -123,6 +123,26 @@ class RegisterFragment : Fragment() {
                 setError(binding.tilPasswordConfirm, "Las contraseñas no coinciden")
                 isValid = false
             }
+            password.length < 8 -> {
+                setError(binding.tilPasswordConfirm, "Mínimo 8 caracteres")
+                isValid = false
+            }
+            !password.matches(Regex(".*[A-Z].*")) -> {
+                setError(binding.tilPasswordConfirm, "Debe tener al menos una mayúscula")
+                isValid = false
+            }
+            !password.matches(Regex(".*[a-z].*")) -> {
+                setError(binding.tilPasswordConfirm, "Debe tener al menos una minúscula")
+                isValid = false
+            }
+            !password.matches(Regex(".*\\d.*")) -> {
+                setError(binding.tilPasswordConfirm, "Debe tener al menos un número")
+                isValid = false
+            }
+            !password.matches(Regex(".*[!@#$%^&*()].*")) -> {
+                setError(binding.tilPasswordConfirm, "Debe tener al menos un carácter especial")
+                isValid = false
+            }
         }
 
         return isValid
