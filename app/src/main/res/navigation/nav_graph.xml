@@ -168,7 +168,7 @@
     <fragment
         android:id="@+id/MatchesFragment"
         android:name="com.example.tourney.fragments.MatchesFragment"
-        android:label="Emparejamiento"
+        android:label="Emparejamientos"
         tools:layout="@layout/fragment_matches">
         <action
             android:id="@+id/action_MatchesFragment_to_ClasificationListFragment"
@@ -190,5 +190,11 @@
         android:name="com.example.tourney.fragments.TournamentThumbnailChooseFragment"
         android:label="Elegir Miniatura"
         tools:layout="@layout/fragment_tournament_thumbnail_choose" />
+
+    <fragment
+        android:id="@+id/TermsDetailFragment"
+        android:name="com.example.tourney.fragments.TermsDetailFragment"
+        android:label="Términos Detallados"
+        tools:layout="@layout/fragment_terms_detail" />
 
 </navigation>
