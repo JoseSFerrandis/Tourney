@@ -15,6 +15,8 @@ import com.example.tourney.tools.APIService
 import com.example.tourney.tools.Security
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.TimeoutCancellationException
+import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
 // TODO: humanizar código
@@ -67,19 +69,6 @@ class RegisterFragment : Fragment() {
 
 
         clearError(binding.tilNickname)
-
-        // Check availability
-        val allUsers = UsersDao(requireContext()).getAllUsers()
-        for(user in allUsers){
-            if(nickname == user.nickname){
-                setError(binding.tilNickname, "El nickname ya está en uso")
-                isValid = false
-            }
-            if(email == user.email){
-                setError(binding.tilEmail, "El email ya está en uso")
-                isValid = false
-            }
-        }
 
         // Nickname
         when {
@@ -167,14 +156,22 @@ class RegisterFragment : Fragment() {
                 password = password,
                 photo = 1
             ),
-            {
-                Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT).show()
-                navigateToLogin()
+            { succeed ->
+                if(succeed){
+                    Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT).show()
+                    navigateToLogin()
+                }else{
+                    binding.btnRegister.isEnabled = true
+                    binding.btnRegister.text = "Crear cuenta"
+
+                    setError(binding.tilEmail, "Ya existe una cuenta con ese email")
+                }
             },
             {
                 exception ->
                 when(exception){
-                    is SocketTimeoutException -> Snackbar.make(requireView(), "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
+                    is TimeoutCancellationException -> Snackbar.make(requireView(), "No se pudo establecer conexión con el servidor. Vuelve a intentarlo", Snackbar.LENGTH_SHORT).show()
+                    is HttpException -> Toast.makeText(context, "Ya existe una cuenta con ese email", Toast.LENGTH_SHORT).show()
                     else -> Toast.makeText(context, "Error al crear cuenta, vuelve a intentarlo", Toast.LENGTH_SHORT).show()
                 }
                 binding.btnRegister.isEnabled = true

@@ -20,13 +20,12 @@ import kotlinx.coroutines.withTimeout
 
 
 class UserRepository(private val dao: UsersDao, private val api: APIService) {
-    fun insertNewUser(user: NewUserModel, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+    fun insertNewUser(user: NewUserModel, onSuccess: (succeed: Boolean) -> Unit, onError: (Exception) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 withTimeout(5000){
                     val newUser = api.insertNewUser(user)
-                    // TODO: Quitar dao en producción
-                    dao.insertNewUser(
+                    /*dao.insertNewUser(
                         User(
                             id = 0,
                             nickname = user.nickname,
@@ -34,8 +33,8 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
                             password = user.password,
                             photo = user.photo
                         )
-                    )
-                    withContext(Dispatchers.Main) { onSuccess() } // Toast de éxito y navegación a login
+                    )*/
+                    withContext(Dispatchers.Main) { onSuccess(newUser.id != -1L) } // Toast de éxito y navegación a login
                     println("Usuario insertado correctamente")
                 }
             } catch (e: Exception) {
