@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import androidx.core.content.edit
 import com.example.models.PasswordModel
 import com.example.tourney.entities.Tournament
-import com.example.tourney.models.RememberPasswordModel
+import com.example.tourney.models.EmailAndNickname
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withTimeout
 
@@ -55,7 +55,8 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
                         loginResponse.user.nickname,
                         loginResponse.user.email,
                         "",
-                        loginResponse.user.photo
+                        loginResponse.user.photo,
+                        logged = true
                     )
 
                     // Guardar el token en SharedPreferences (encriptado)
@@ -96,7 +97,7 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
         CoroutineScope(Dispatchers.IO).launch {
             try{
                 withTimeout(5000){
-                    val response = api.rememberPassword(RememberPasswordModel(email, nickname))
+                    val response = api.rememberPassword(EmailAndNickname(email, nickname))
                     if (response.isSuccessful) withContext(Dispatchers.Main) { onSuccess() }
                     else withContext(Dispatchers.Main) { onError(Exception("No se ha encontrado ningún usuario con esos datos")) }
                 }
@@ -156,6 +157,31 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
                 e.printStackTrace()
             }
         }
+    }
+
+    fun editAccount(email: String, nickname: String, context: Context, onSuccess: (result: Int) -> Unit, onError: (Exception) -> Unit){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                withTimeout(5000) {
+                    val sharedPreferences = Security().getEncryptedSharedPreferences(context)
+                    val token = sharedPreferences.getString("token", "") ?: ""
+                    val bearerToken = "Bearer $token"
+
+                    val response = api.editAccount(bearerToken, EmailAndNickname(email, nickname))
+                    withContext(Dispatchers.Main) { onSuccess(
+                        when{
+                            response.isSuccessful -> 0  // Ok
+                            response.code() == 409 -> 1  // Conflict
+                            else -> 2  // Bad request
+                        }
+                    ) }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
+                e.printStackTrace()
+            }
+        }
+
     }
 
     suspend fun getCreatedTournamentsList(token: String): List<Tournament> = api.getCreatedTournaments(token)

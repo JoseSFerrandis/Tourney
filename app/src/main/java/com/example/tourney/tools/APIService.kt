@@ -5,7 +5,7 @@ import com.example.models.PasswordModel
 import com.example.tourney.entities.Tournament
 import com.example.tourney.models.LoginModel
 import com.example.tourney.models.NewUserModel
-import com.example.tourney.models.RememberPasswordModel
+import com.example.tourney.models.EmailAndNickname
 import com.example.tourney.models.UserModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,7 +27,7 @@ interface APIService {
     suspend fun loginUser(@Body login: LoginModel): LoginResponse
 
     @POST("/rememberPassword")
-    suspend fun rememberPassword(@Body refreshPassword: RememberPasswordModel): Response<Unit>
+    suspend fun rememberPassword(@Body refreshPassword: EmailAndNickname): Response<Unit>
     @POST("/updatePassword")
     suspend fun updatePassword(@Body loginModel: LoginModel): Response<Unit>
 
@@ -52,6 +52,10 @@ interface APIService {
 
     @POST("/user/updatePassword")
     suspend fun updatePassword(@Header("Authorization") token: String, @Body password: PasswordModel): Response<Unit>
+
+    @POST("/user/editAccount")
+    suspend fun editAccount(@Header("Authorization") token: String, @Body emailAndNickname: EmailAndNickname): Response<Unit>
+
 
 
 

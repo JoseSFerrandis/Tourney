@@ -13,8 +13,9 @@ data class User (
     var photo: Int,
     var showableTournamentList: MutableList<Long> = mutableListOf(),
     var followingTournamentList: MutableList<Long> = mutableListOf(),
-    var joinedTournamentList: MutableList<Long> = mutableListOf()
+    var joinedTournamentList: MutableList<Long> = mutableListOf(),
     //var adminTournamentList: MutableList<Long> = mutableListOf()
+    var logged: Boolean = false
 ): Parcelable{
     fun addShowableTournament(id: Long){ showableTournamentList.add(id) }
     fun addFollowingTournament(id: Long){ followingTournamentList.add(id) }

@@ -134,6 +134,23 @@
                         app:iconSize="32dp"
                         app:iconTint="@android:color/white" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEditThemes"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="32dp"
+                        android:text="Cambiar tema"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"
+                        app:backgroundTint="@color/boton_tablet_card_white"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_themes"
+                        app:iconSize="32dp"
+                        app:iconTint="@android:color/white" />
+
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

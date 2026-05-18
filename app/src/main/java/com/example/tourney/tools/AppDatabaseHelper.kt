@@ -87,7 +87,7 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(
         // Insertar usuarios por defecto (incluyendo invitado)
         db.execSQL("INSERT INTO $TABLE_USERS ($COL_USER_NICKNAME, $COL_USER_EMAIL, $COL_USER_PASSWORD, $COL_USER_PHOTO) VALUES ('admin', 'admin@admin.com', 'admin', 0)")
         db.execSQL("INSERT INTO $TABLE_USERS ($COL_USER_NICKNAME, $COL_USER_EMAIL, $COL_USER_PASSWORD, $COL_USER_PHOTO) VALUES ('user', 'user@user.com', 'user', 0)")
-        db.execSQL("INSERT INTO $TABLE_USERS ($COL_USER_NICKNAME, $COL_USER_EMAIL, $COL_USER_PASSWORD, $COL_USER_PHOTO) VALUES ('invitado', 'invitado@invitado.com', 'invitado', 0)")
+        db.execSQL("INSERT INTO $TABLE_USERS ($COL_USER_NICKNAME, $COL_USER_EMAIL, $COL_USER_PASSWORD, $COL_USER_PHOTO) VALUES ('invitad@', '', '', 0)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -105,7 +105,7 @@ class AppDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
     companion object {
         const val DATABASE_NAME = "tourney_app.db"
-        const val DATABASE_VERSION = 2 // <--- Subido a 2
+        const val DATABASE_VERSION = 3 // <--- Subido a 2
 
         // Tabla Usuarios
         const val TABLE_USERS = "users"

@@ -44,4 +44,5 @@
     <string name="cambiar_contrase_a">Cambiar contraseña</string>
     <string name="cerrar_sesi_n">Cerrar sesión</string>
     <string name="gesti_n_de_cuenta">Gestión de cuenta</string>
+    <string name="change_theme">Cambiar tema</string>
 </resources>

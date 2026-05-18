@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.example.tourney.databinding.FragmentAccountManagementBinding
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
+import com.example.tourney.tools.CheckValues
 import com.example.tourney.tools.UsersDao
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -42,11 +44,7 @@ class AccountManagement : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         
         // Cargar datos del usuario actual
-        User.actualUser?.let { user ->
-            binding.tvName.text = user.nickname
-            binding.tvEmail.text = user.email
-            updateProfileImage() 
-        }
+        refreshData()
 
         // Cambiar Avatar (Preferencias)
         binding.btnPreferences.setOnClickListener {
@@ -54,19 +52,107 @@ class AccountManagement : Fragment() {
         }
 
         // Cambiar Color de la App (Editar cuenta)
-        binding.btnEditProfile.setOnClickListener {
-            showThemeSelectorCustom()
-        }
+        if(User.actualUser?.logged == false) binding.btnEditProfile.visibility = View.GONE
+        binding.btnEditProfile.setOnClickListener { showEditAccountDialog() }
 
         // Cambiar Contraseña
-        binding.btnChangePassword.setOnClickListener {
-            showInsertPasswordDialog()
-        }
+        if(User.actualUser?.logged == false) binding.btnChangePassword.visibility = View.GONE
+        binding.btnChangePassword.setOnClickListener { showInsertPasswordDialog() }
+
+        // Cambiar tema
+        binding.btnEditThemes?.setOnClickListener { showThemeSelectorCustom() }
 
         binding.btnLogout.setOnClickListener {
             User.actualUser = null
             findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
         }
+    }
+
+    private fun refreshData(){
+        User.actualUser?.let { user ->
+            binding.tvName.text = user.nickname
+            binding.tvEmail.text = user.email
+            updateProfileImage()
+        }
+    }
+
+    private fun showEditAccountDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_account, null)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val editEmail = dialogView.findViewById<TextInputEditText>(R.id.etEditEmail)
+        val editNickname = dialogView.findViewById<TextInputEditText>(R.id.etEditNickname)
+        editEmail.setText(User.actualUser?.email)
+        editNickname.setText(User.actualUser?.nickname)
+
+        val btnSave = dialogView.findViewById<Button>(R.id.btnSaveAccountChanges)
+        val btnChangePassword = dialogView.findViewById<Button>(R.id.btnChangePassword)
+
+        btnChangePassword.setOnClickListener { showInsertPasswordDialog() }
+
+        btnSave.setOnClickListener {
+            val email = editEmail.text.toString()
+            val nickname = editNickname.text.toString()
+
+            if(email.isEmpty() || nickname.isEmpty()){
+                Toast.makeText(requireContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(!CheckValues.checkEmail(email)){
+                Toast.makeText(requireContext(), "Por favor, introduce un email válido", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
+                btnChangePassword.isEnabled = false
+                btnSave.isEnabled = false
+                btnSave.text = "Actualizando..."
+
+                UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).editAccount(
+                    email,
+                    nickname,
+                    requireContext(),
+                    {
+                        when (it) {
+                            0 -> {
+                                Toast.makeText(requireContext(), "Cuenta actualizada", Toast.LENGTH_SHORT).show()
+                                User.actualUser?.email = email
+                                User.actualUser?.nickname = nickname
+                                refreshData()
+                                dialog.dismiss()
+                            }
+                            1 -> {
+                                Toast.makeText(requireContext(), "Ya existe una cuenta con ese email", Toast.LENGTH_SHORT)
+                                    .show()
+                                btnSave.isEnabled = true
+                                btnSave.text = "Guardar cambios"
+                                btnChangePassword.isEnabled = true
+                            }
+                            else -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Ya existe una cuenta con ese nickname",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnSave.isEnabled = true
+                                btnSave.text = "Guardar cambios"
+                                btnChangePassword.isEnabled = true
+                            }
+                        }
+                    },
+                    {
+                        Toast.makeText(requireContext(), "Error al actualizar cuenta", Toast.LENGTH_SHORT).show()
+                        btnSave.isEnabled = true
+                        btnSave.text = "Guardar cambios"
+                        btnChangePassword.isEnabled = true
+                    }
+                )
+            }
+        }
+
+        dialog.show()
     }
 
     private fun showInsertPasswordDialog() {
