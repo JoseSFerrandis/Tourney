@@ -21,6 +21,8 @@ import com.example.tourney.databinding.ActivityMainBinding
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Cargar preferencia de tema antes de super.onCreate
+        // 1. Cargar preferencia de tema antes de super.onCreate
         val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val selectedTheme = prefs.getString("user_theme", "Blue")
         
@@ -93,6 +95,57 @@ class MainActivity : AppCompatActivity() {
 
         // DEBUG: Log de todos los usuarios registrados
         logAllUsers()
+
+        // Comprobar consentimiento de cookies/términos
+        checkCookiesConsent()
+    }
+
+    private fun checkCookiesConsent() {
+        val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        if (!prefs.getBoolean("cookies_accepted", false)) {
+            showCookiesDialog()
+        }
+    }
+
+    private fun showCookiesDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.cookies_alert, null)
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setView(dialogView)
+            .setCancelable(false) // No permite salir sin aceptar
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val cbTerms = dialogView.findViewById<MaterialCheckBox>(R.id.cbTerms)
+        val cbPrivacy = dialogView.findViewById<MaterialCheckBox>(R.id.cbPrivacy)
+        val btnAccept = dialogView.findViewById<MaterialButton>(R.id.btnAcceptCookies)
+
+        // Obtenemos los colores del tema actual para el botón
+        val colorPrimary = MaterialColors.getColor(this, R.attr.appColorPrimary, Color.BLUE)
+        val colorPrimaryLight = MaterialColors.getColor(this, R.attr.appColorPrimaryLight, Color.LTGRAY)
+
+        val updateButtonState = {
+            val isAccepted = cbTerms.isChecked && cbPrivacy.isChecked
+            btnAccept.isEnabled = isAccepted
+            
+            // Si no está aceptado, ponemos el color claro del atributo del tema
+            val targetColor = if (isAccepted) colorPrimary else colorPrimaryLight
+            btnAccept.backgroundTintList = ColorStateList.valueOf(targetColor)
+        }
+
+        // Inicializamos el estado del botón
+        updateButtonState()
+
+        cbTerms.setOnCheckedChangeListener { _, _ -> updateButtonState() }
+        cbPrivacy.setOnCheckedChangeListener { _, _ -> updateButtonState() }
+
+        btnAccept.setOnClickListener {
+            val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            prefs.edit().putBoolean("cookies_accepted", true).apply()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun logAllUsers() {
@@ -108,12 +161,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //La nueva función para el alert Custom
     private fun showCustomHomeDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_home_options, null)
         val dialog = MaterialAlertDialogBuilder(this)
             .setView(dialogView)
             .create()
 
+        // Ajustar fondo transparente para que se vean los bordes redondeados del CardView
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val btnCreate = dialogView.findViewById<Button>(R.id.btnCreateOption)
