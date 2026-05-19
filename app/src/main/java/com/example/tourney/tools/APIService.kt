@@ -6,6 +6,8 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.models.LoginModel
 import com.example.tourney.models.NewUserModel
 import com.example.tourney.models.EmailAndNickname
+import com.example.tourney.models.IdModel
+import com.example.tourney.models.TournamentModel
 import com.example.tourney.models.UserModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -60,8 +62,8 @@ interface APIService {
 
 
 
-    @POST("/insertTournament")
-    suspend fun insertTournament(@Header("Authorization") token: String, @Body tournament: Tournament): Tournament
+    @POST("/tournament/createTournament")
+    suspend fun insertTournament(@Header("Authorization") token: String, @Body tournament: TournamentModel): Response<IdModel>
 
     companion object{
         private var apiService: APIService? = null

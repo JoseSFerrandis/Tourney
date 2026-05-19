@@ -3,17 +3,38 @@ package com.example.tourney.repositories
 import android.content.Context
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.User
+import com.example.tourney.models.TournamentModel
+import com.example.tourney.tools.APIService
+import com.example.tourney.tools.Security
 import com.example.tourney.tools.TournamentsDao
+import com.example.tourney.tools.UsersDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 
-class TournamentRepository private constructor() {
+class TournamentRepository (private val tournamentsDao: TournamentsDao, private val usersDao: UsersDao, private val api: APIService) {
     private var tournaments: MutableList<Tournament> = mutableListOf()
     private var isLoaded = false
 
     companion object {
-        private val instance = TournamentRepository()
-        fun getInstance(): TournamentRepository {
-            return instance
+        private var instance: TournamentRepository? = null
+
+        fun getInstance(context: Context): TournamentRepository {
+            if (instance == null) {
+                instance = TournamentRepository(
+                    TournamentsDao(context),
+                    UsersDao(context),
+                    APIService.getInstance()
+                )
+            }
+            return instance!!
         }
+    }
+
+    fun addTournamentsToMemory(tournaments: MutableList<Tournament>){
+        this.tournaments.addAll(tournaments)
     }
 
     fun loadFromDatabase(context: Context) {
@@ -26,9 +47,54 @@ class TournamentRepository private constructor() {
 
     fun getTournaments(): MutableList<Tournament> { return tournaments }
 
-    fun addTournament(tournament: Tournament) {
-        if (!tournaments.any { it.id == tournament.id }) {
-            tournaments.add(0, tournament)
+    fun insertTournament(tournament: Tournament, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        if(User.actualUser?.logged == false){
+            tournament.id = tournamentsDao.insertTournament(tournament)
+            if (!tournaments.any { it.id == tournament.id }){
+                onSuccess()
+
+                User.actualUser?.addShowableTournament(tournament.id)
+                tournaments.add(0, tournament)
+            }else onError(Exception("El torneo ya existe en la base de datos local"))
+        }else{
+            CoroutineScope(Dispatchers.IO).launch {
+                try{
+                    withTimeout(5000){
+                        val sharedPreferences = Security().getEncryptedSharedPreferences(context)
+                        val token = sharedPreferences.getString("token", "") ?: ""
+                        val bearerToken = "Bearer $token"
+
+                        val tournamentModel = TournamentModel(
+                            id = 0,
+                            name = tournament.name,
+                            game = tournament.game,
+                            creatorId = tournament.creatorId,
+                            creatorNickname = tournament.creatorNickname,
+                            participantList = tournament.participantList,
+                            maxParticipants = tournament.maxParticipants,
+                            date = tournament.date,
+                            location = tournament.location,
+                            prize = tournament.prize,
+                            code = tournament.code,
+                            type = tournament.type,
+                            tournamentStatus = tournament.tournamentStatus,
+                            thumbnail = tournament.thumbnail
+                        )
+                        val response = api.insertTournament(bearerToken, tournamentModel)
+                        if(response.isSuccessful){
+                            tournament.id = response.body()?.id ?: -1
+                            User.actualUser?.addShowableTournament(tournament.id)
+                            tournaments.add(0, tournament)
+                            withContext(Dispatchers.Main) { onSuccess() }
+                        }else{
+                            withContext(Dispatchers.Main) { onError(Exception("No se ha podido insertar el torneo en la base de datos remota")) }
+                        }
+                    }
+                }catch (e: Exception){
+                    withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
+                    e.printStackTrace()
+                }
+            }
         }
     }
 

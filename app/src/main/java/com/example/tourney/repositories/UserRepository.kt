@@ -203,10 +203,14 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
             val joined = joinedTournamentList.await()
             val following = followingTournamentList.await()
 
+            TournamentRepository.getInstance(context).addTournamentsToMemory(created.toMutableList())
+            TournamentRepository.getInstance(context).addTournamentsToMemory(joined.toMutableList())
+            TournamentRepository.getInstance(context).addTournamentsToMemory(following.toMutableList())
+
             User.actualUser?.showableTournamentList?.clear()
             User.actualUser?.showableTournamentList?.addAll(created.map { it.id })
-            User.actualUser?.showableTournamentList?.addAll(joined.map { it.id })
-            User.actualUser?.showableTournamentList?.addAll(following.map { it.id })
+            User.actualUser?.joinedTournamentList?.addAll(joined.map { it.id })
+            User.actualUser?.followingTournamentList?.addAll(following.map { it.id })
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -11,7 +11,6 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -19,7 +18,9 @@ import com.example.tourney.R
 import com.example.tourney.databinding.FragmentCreateTournamentBinding
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.User
+import com.example.tourney.models.TournamentModel
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.APIService
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,6 +37,12 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCreateTournamentBinding.bind(view)
         val context = requireContext()
+
+        // Oculta el campo de código si el usuario es un invitado
+        if(User.actualUser?.logged == false){
+            binding.tvCode.visibility = View.GONE
+            binding.etCode.visibility = View.GONE
+        }
 
         // Infla el spinner de selección de tipo de torneo
         binding.spTournamentType.adapter = ArrayAdapter.createFromResource(
@@ -97,37 +104,26 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                     type = type
                 )
 
-                // 1. GUARDAR EN LA BASE DE DATOS
-                val tournamentsDao = TournamentsDao(context)
-                val newId = tournamentsDao.insertTournament(newTournament)
-                
-                if (newId != -1L) {
-                    newTournament.id = newId
-                    
-                    // 2. ACTUALIZAR EN REPOSITORIO Y USUARIO
-                    TournamentRepository.getInstance().addTournament(newTournament)
-                    User.actualUser?.addShowableTournament(newTournament.id)
-                    
-                    UsersDao(context).updateShowableTournamentList(
-                        User.actualUser?.email ?: "", 
-                        User.actualUser?.showableTournamentList.toString().replace("[", "").replace("]", "")
-                    )
+                TournamentRepository.getInstance(requireContext()).insertTournament(
+                    newTournament,
+                    requireContext(),
+                    {
+                        Toast.makeText(requireContext(), "Torneo creado correctamente", Toast.LENGTH_SHORT).show()
 
-                    Toast.makeText(requireContext(), "Torneo '$name' creado con éxito", Toast.LENGTH_LONG).show()
-
-                    // Ir a la pantalla del torneo recién creado
-                    val bundle = Bundle().apply {
-                        putParcelable("tournament_data", newTournament)
+                        // Ir a la pantalla del torneo recién creado
+                        val bundle = Bundle().apply {
+                            putParcelable("tournament_data", newTournament)
+                        }
+                        try {
+                            findNavController().navigate(R.id.action_CreateTournamentFragment_to_TournamentFragment, bundle)
+                        } catch (e: Exception) {
+                            Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
+                        }
+                    },
+                    { exception ->
+                        Toast.makeText(requireContext(), exception.message, Toast.LENGTH_SHORT).show()
                     }
-
-                    try {
-                        findNavController().navigate(R.id.action_CreateTournamentFragment_to_TournamentFragment, bundle)
-                    } catch (e: Exception) {
-                        Snackbar.make(binding.root, "Acción de navegación no encontrada", Snackbar.LENGTH_LONG).show()
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "Error al guardar el torneo en la base de datos", Toast.LENGTH_SHORT).show()
-                }
+                )
 
             } else {
                 Toast.makeText(requireContext(), "Por favor, completa los campos obligatorios", Toast.LENGTH_SHORT).show()

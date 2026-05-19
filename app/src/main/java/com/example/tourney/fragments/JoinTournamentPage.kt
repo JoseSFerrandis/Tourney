@@ -11,6 +11,9 @@ import com.example.tourney.R
 import com.example.tourney.databinding.FragmentJoinTournamentPageBinding
 import com.example.tourney.entities.Tournament
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.APIService
+import com.example.tourney.tools.TournamentsDao
+import com.example.tourney.tools.UsersDao
 
 class JoinTournamentPage : Fragment(R.layout.fragment_join_tournament_page) {
 
@@ -26,7 +29,7 @@ class JoinTournamentPage : Fragment(R.layout.fragment_join_tournament_page) {
             var foundTournament: Tournament?
             if (code.isNotBlank()) {
                 try{
-                    foundTournament = TournamentRepository.getInstance().searchTournamentByCode(code.toInt())
+                    foundTournament = TournamentRepository.getInstance(requireContext()).searchTournamentByCode(code.toInt())
                 } catch (e: NumberFormatException){
                     binding.tilTournamentCode.error = "Por favor, introduce un código válido"
                     return@setOnClickListener

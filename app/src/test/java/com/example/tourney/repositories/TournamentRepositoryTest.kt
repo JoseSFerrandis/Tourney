@@ -26,7 +26,7 @@ class TournamentRepositoryTest {
     @Test
     fun testAddAndGetTournaments() {
         val tournament = Tournament(1L, "T1", "G1", "C1", mutableListOf(), 2, "D", "L", "P", 111)
-        repository.addTournament(tournament)
+        repository.insertTournament(tournament)
 
         val tournaments = repository.getTournaments()
         assertEquals(1, tournaments.size)
@@ -36,7 +36,7 @@ class TournamentRepositoryTest {
     @Test
     fun testRemoveTournamentByObject() {
         val tournament = Tournament(1L, "T1", "G1", "C1", mutableListOf(), 2, "D", "L", "P", 111)
-        repository.addTournament(tournament)
+        repository.insertTournament(tournament)
         
         repository.removeTournament(tournament)
         assertTrue(repository.getTournaments().isEmpty())
@@ -45,7 +45,7 @@ class TournamentRepositoryTest {
     @Test
     fun testRemoveTournamentById() {
         val tournament = Tournament(2L, "T2", "G2", "C2", mutableListOf(), 2, "D", "L", "P", 222)
-        repository.addTournament(tournament)
+        repository.insertTournament(tournament)
         
         repository.removeTournament(2L)
         assertTrue(repository.getTournaments().isEmpty())
@@ -54,7 +54,7 @@ class TournamentRepositoryTest {
     @Test
     fun testSearchTournamentByCode() {
         val tournament = Tournament(3L, "T3", "G3", "C3", mutableListOf(), 2, "D", "L", "P", 333)
-        repository.addTournament(tournament)
+        repository.insertTournament(tournament)
 
         val found = repository.searchTournamentByCode(333)
         assertNotNull(found)
@@ -67,7 +67,7 @@ class TournamentRepositoryTest {
     @Test
     fun testSearchTournamentById() {
         val tournament = Tournament(4L, "T4", "G4", "C4", mutableListOf(), 2, "D", "L", "P", 444)
-        repository.addTournament(tournament)
+        repository.insertTournament(tournament)
 
         val found = repository.searchTournamentById(4L)
         assertNotNull(found)
@@ -82,8 +82,8 @@ class TournamentRepositoryTest {
         val t1 = Tournament(5L, "T5", "G5", "C5", mutableListOf(), 2, "D", "L", "P", 555)
         val t2 = Tournament(6L, "T6", "G6", "C6", mutableListOf(), 2, "D", "L", "P", 666)
         
-        repository.addTournament(t1)
-        repository.addTournament(t2)
+        repository.insertTournament(t1)
+        repository.insertTournament(t2)
 
         val foundList = repository.searchTournamentListByIds(mutableListOf(5L, 6L))
         assertEquals(2, foundList.size)

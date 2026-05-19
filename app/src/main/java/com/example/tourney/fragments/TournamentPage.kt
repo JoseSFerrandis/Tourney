@@ -20,6 +20,7 @@ import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.APIService
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import com.google.android.material.button.MaterialButton
@@ -270,7 +271,7 @@ class TournamentPage : Fragment() {
             .setTitle("Eliminar torneo")
             .setMessage("¿Estás seguro de que deseas eliminar este torneo?")
             .setPositiveButton("Sí") { _, _ ->
-                TournamentRepository.getInstance().deleteTournament(requireContext(), tournament.id)
+                TournamentRepository.getInstance(requireContext()).deleteTournament(requireContext(), tournament.id)
                 Toast.makeText(requireContext(), "Torneo eliminado", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }

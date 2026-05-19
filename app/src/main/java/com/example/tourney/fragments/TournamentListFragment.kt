@@ -12,6 +12,9 @@ import com.example.tourney.R
 import com.example.tourney.adapters.TournamentAdapter
 import com.example.tourney.databinding.FragmentTournamentListBinding
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.APIService
+import com.example.tourney.tools.TournamentsDao
+import com.example.tourney.tools.UsersDao
 import com.example.tourney.viewModel.HomeViewModel
 
 class TournamentListFragment : Fragment() {
@@ -42,7 +45,7 @@ class TournamentListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val ids = arguments?.getLongArray(ARG_IDS)?.toList() ?: emptyList()
         val tournaments =
-            TournamentRepository.getInstance().searchTournamentListByIds(ids.toMutableList())
+            TournamentRepository.getInstance(requireContext()).searchTournamentListByIds(ids.toMutableList())
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = TournamentAdapter(tournaments) { tournament ->

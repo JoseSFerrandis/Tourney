@@ -19,7 +19,9 @@ import com.example.tourney.R
 import com.example.tourney.databinding.FragmentEditTournamentBinding
 import com.example.tourney.entities.Tournament
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.APIService
 import com.example.tourney.tools.TournamentsDao
+import com.example.tourney.tools.UsersDao
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Calendar
 
@@ -128,7 +130,7 @@ class EditTournamentFragment : Fragment(R.layout.fragment_edit_tournament) {
 
                     if (success) {
                         // 3. Sincronizamos el repositorio manteniendo la posición original
-                        TournamentRepository.getInstance().updateTournamentInList(t)
+                        TournamentRepository.getInstance(requireContext()).updateTournamentInList(t)
                         
                         Toast.makeText(requireContext(), "Torneo actualizado correctamente", Toast.LENGTH_SHORT).show()
                         findNavController().popBackStack()

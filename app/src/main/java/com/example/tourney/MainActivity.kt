@@ -23,6 +23,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tourney.databinding.ActivityMainBinding
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.tools.APIService
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import com.google.android.material.button.MaterialButton
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        TournamentRepository.getInstance().loadFromDatabase(this)
+        TournamentRepository.getInstance(this).loadFromDatabase(this)
 
         // DEBUG: Log de todos los usuarios registrados
         logAllUsers()
