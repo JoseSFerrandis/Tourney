@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tourney.R
 import com.example.tourney.databinding.FragmentEditTournamentBinding
 import com.example.tourney.entities.Tournament
+import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -50,6 +51,11 @@ class EditTournamentFragment : Fragment(R.layout.fragment_edit_tournament) {
     }
 
     private fun setupUI() {
+        if(User.actualUser?.logged == false){
+            binding.etCode.visibility = View.GONE
+            binding.tvCode.visibility = View.GONE
+        }
+
         tournament?.let { t ->
             binding.etName.setText(t.name)
             binding.etGame.setText(t.game)

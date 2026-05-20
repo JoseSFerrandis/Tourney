@@ -37,7 +37,10 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         _binding = FragmentCreateTournamentBinding.bind(view)
         val context = requireContext()
 
-        if(User.actualUser?.logged == false) binding.etCode.visibility = View.GONE
+        if(User.actualUser?.logged == false) {
+            binding.etCode.visibility = View.GONE
+            binding.tvCode?.visibility = View.GONE
+        }
 
         // Infla el spinner de selección de tipo de torneo
         binding.spTournamentType.adapter = ArrayAdapter.createFromResource(
