@@ -116,7 +116,6 @@
                             app:iconTint="?attr/appColorPrimary" />
 
                         <!-- Item: Cambiar Contraseña -->
-
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnChangePassword"
                             style="@style/Widget.Material3.Button.TextButton.Icon"
@@ -126,6 +125,19 @@
                             android:text="@string/cambiar_contrase_a"
                             android:textColor="?attr/colorOnSurface"
                             app:icon="@android:drawable/ic_lock_lock"
+                            app:iconTint="?attr/appColorPrimary" />
+
+                        <!-- Item: Editar tema -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnEditThemes"
+                            style="@style/Widget.Material3.Button.TextButton.Icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/change_theme"
+                            android:textColor="?attr/colorOnSurface"
+                            app:icon="@drawable/ic_themes"
+                            app:iconSize="23dp"
                             app:iconTint="?attr/appColorPrimary" />
 
                         <com.google.android.material.divider.MaterialDivider

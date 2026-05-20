@@ -68,6 +68,7 @@ class LoginFragment : Fragment() {
             if(binding.loginEmailInput.text.toString() == user.email &&
                 binding.loginPasswordInput.text.toString() == user.password){
                 User.actualUser = user
+                User.actualUser!!.logged = true
                 return true
             }
         }

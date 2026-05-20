@@ -18,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tourney.databinding.ActivityMainBinding
+import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
 import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Cargar preferencia de tema antes de super.onCreate
+        // 1. Cargar preferencia de tema antes de super.onCreate
         val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val selectedTheme = prefs.getString("user_theme", "Blue")
         
@@ -63,14 +64,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setImageBitmap(resources.getDrawable(R.drawable.ic_trophy).toBitmap())
         binding.fab.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
-        
-        // Resolvemos el color del tema dinámicamente
+
         val primaryColor = MaterialColors.getColor(binding.fab, R.attr.appColorPrimaryDark)
         binding.fab.imageTintList = ColorStateList.valueOf(primaryColor)
         
-        binding.fab.setOnClickListener {
-            showCustomHomeDialog()
-        }
+        binding.fab.setOnClickListener { showCustomHomeDialog() }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -118,6 +116,7 @@ class MainActivity : AppCompatActivity() {
 
         val btnCreate = dialogView.findViewById<Button>(R.id.btnCreateOption)
         val btnJoin = dialogView.findViewById<Button>(R.id.btnJoinOption)
+        if(User.actualUser?.logged == false) btnJoin.visibility = View.GONE
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 

@@ -19,6 +19,7 @@ import com.example.tourney.adapters.ThemeAdapter
 import com.example.tourney.adapters.ThemeOption
 import com.example.tourney.databinding.FragmentAccountManagementBinding
 import com.example.tourney.entities.User
+import com.example.tourney.tools.UsersDao
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 
@@ -39,30 +40,87 @@ class AccountManagement : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         
         // Cargar datos del usuario actual
-        User.actualUser?.let { user ->
-            binding.tvName.text = user.nickname
-            binding.tvEmail.text = user.email
-            updateProfileImage() 
-        }
+        refreshData()
 
         // Cambiar Avatar (Preferencias)
         binding.btnPreferences.setOnClickListener {
             findNavController().navigate(R.id.action_ProfileFragment_to_ProfileChooseFragment)
         }
 
-        // Cambiar Color de la App (Editar cuenta)
-        binding.btnEditProfile.setOnClickListener {
-            showThemeSelectorCustom()
-        }
+        // Cambiar datos de cuenta
+        if(User.actualUser?.logged == false) binding.btnEditProfile.visibility = View.GONE
+        binding.btnEditProfile.setOnClickListener { showEditAccountDialog() }
 
         // Cambiar Contraseña
-        binding.btnChangePassword.setOnClickListener {
-            showInsertPasswordDialog()
-        }
+        if(User.actualUser?.logged == false) binding.btnChangePassword.visibility = View.GONE
+        binding.btnChangePassword.setOnClickListener { showInsertPasswordDialog() }
+
+        // Cambiar tema
+        binding.btnEditThemes.setOnClickListener { showThemeSelectorCustom() }
 
         binding.btnLogout.setOnClickListener {
             User.actualUser = null
             findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
+        }
+    }
+
+    private fun showEditAccountDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_account, null)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val editEmail = dialogView.findViewById<TextInputEditText>(R.id.etEditEmail)
+        val editNickname = dialogView.findViewById<TextInputEditText>(R.id.etEditNickname)
+        editEmail.setText(User.actualUser?.email)
+        editNickname.setText(User.actualUser?.nickname)
+
+        val btnSave = dialogView.findViewById<Button>(R.id.btnSaveAccountChanges)
+        val btnChangePassword = dialogView.findViewById<Button>(R.id.btnChangePassword)
+
+        btnChangePassword.setOnClickListener { showInsertPasswordDialog() }
+
+        btnSave.setOnClickListener {
+            val email = editEmail.text.toString()
+            val nickname = editNickname.text.toString()
+
+            if(email.isEmpty() || nickname.isEmpty()){
+                Toast.makeText(requireContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Check email and nickname availability
+            val userList = UsersDao(requireContext()).getAllUsers()
+            val emailExists = userList.any { it -> it.email == email && it.email != User.actualUser?.email }
+            val nicknameExists = userList.any { it -> it.nickname == nickname && it.nickname != User.actualUser?.nickname }
+
+            if(emailExists){
+                Toast.makeText(requireContext(), "Ese email ya está en uso", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(nicknameExists){
+                Toast.makeText(requireContext(), "Ese nickname ya está en uso", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Update user data
+            User.actualUser?.email = email
+            User.actualUser?.nickname = nickname
+            UsersDao(requireContext()).updateUser(User.actualUser!!.id, nickname, email, User.actualUser!!.password)
+            refreshData()
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun refreshData(){
+        User.actualUser?.let { user ->
+            binding.tvName.text = user.nickname
+            binding.tvEmail.text = user.email
+            updateProfileImage()
         }
     }
 
