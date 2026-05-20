@@ -49,6 +49,17 @@ class RegisterFragment : Fragment() {
         binding.tvLogin.setOnClickListener {
             navigateToLogin()
         }
+
+        binding.etPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && binding.tilPassword.error != null) {
+                binding.tilPassword.error = null
+            }
+        }
+        binding.etPasswordConfirm.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && binding.tilPasswordConfirm.error != null) {
+                binding.tilPasswordConfirm.error = null
+            }
+        }
     }
 
     private fun validateFields(): Boolean {
