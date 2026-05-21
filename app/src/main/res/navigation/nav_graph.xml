@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_ProfileFragment_to_ProfileChooseFragment"
             app:destination="@id/ProfileChooseFragment" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_privacyFragmentDest"
+            app:destination="@id/privacyFragmentDest" />
     </fragment>
 
     <fragment
@@ -168,7 +171,7 @@
     <fragment
         android:id="@+id/MatchesFragment"
         android:name="com.example.tourney.fragments.MatchesFragment"
-        android:label="Emparejamientos"
+        android:label="Emparejamiento"
         tools:layout="@layout/fragment_matches">
         <action
             android:id="@+id/action_MatchesFragment_to_ClasificationListFragment"
@@ -192,9 +195,15 @@
         tools:layout="@layout/fragment_tournament_thumbnail_choose" />
 
     <fragment
-        android:id="@+id/TermsDetailFragment"
+        android:id="@+id/privacyFragmentDest"
         android:name="com.example.tourney.fragments.TermsDetailFragment"
-        android:label="Términos Detallados"
+        android:label="Acuerdo de Confidencialidad"
         tools:layout="@layout/fragment_terms_detail" />
+
+    <fragment
+        android:id="@+id/contactFragmentDest"
+        android:name="com.example.tourney.fragments.ContactFragment"
+        android:label="Contacto"
+        tools:layout="@layout/fragment_contact" />
 
 </navigation>

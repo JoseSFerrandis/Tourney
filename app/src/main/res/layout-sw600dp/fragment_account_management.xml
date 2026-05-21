@@ -78,7 +78,6 @@
                         android:letterSpacing="0.1"
                         android:text="Gestión de cuenta"
                         android:textColor="?attr/appColorSecondaryLight"
-
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -148,6 +147,40 @@
                         app:backgroundTint="@color/boton_tablet_card_white"
                         app:cornerRadius="16dp"
                         app:icon="@drawable/ic_themes"
+                        app:iconSize="32dp"
+                        app:iconTint="@android:color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnViewTerms"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="32dp"
+                        android:text="Términos y Privacidad"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"
+                        app:backgroundTint="@color/boton_tablet_card_white"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_help"
+                        app:iconSize="32dp"
+                        app:iconTint="@android:color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPrivacyCookies"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="32dp"
+                        android:text="Privacidad y cookies"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"
+                        app:backgroundTint="@color/boton_tablet_card_white"
+                        app:cornerRadius="16dp"
+                        app:icon="@android:drawable/ic_menu_info_details"
                         app:iconSize="32dp"
                         app:iconTint="@android:color/white" />
 

@@ -62,17 +62,19 @@ class AccountManagement : Fragment() {
         // Cambiar tema
         binding.btnEditThemes.setOnClickListener { showThemeSelectorCustom() }
 
+        // Navegación a Términos (Acuerdo de confidencialidad)
+        binding.btnViewTerms.setOnClickListener {
+            findNavController().navigate(R.id.privacyFragmentDest)
+        }
+
+        // El botón de Privacidad y Cookies ahora lleva al mismo destino unificado
+        binding.btnPrivacyCookies?.setOnClickListener {
+            findNavController().navigate(R.id.privacyFragmentDest)
+        }
+
         binding.btnLogout.setOnClickListener {
             User.actualUser = null
             findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
-        }
-    }
-
-    private fun refreshData(){
-        User.actualUser?.let { user ->
-            binding.tvName.text = user.nickname
-            binding.tvEmail.text = user.email
-            updateProfileImage()
         }
     }
 
@@ -155,6 +157,14 @@ class AccountManagement : Fragment() {
         dialog.show()
     }
 
+    private fun refreshData(){
+        User.actualUser?.let { user ->
+            binding.tvName.text = user.nickname
+            binding.tvEmail.text = user.email
+            updateProfileImage()
+        }
+    }
+
     private fun showInsertPasswordDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_insert_current_password, null)
         val dialog = MaterialAlertDialogBuilder(requireContext())
@@ -192,10 +202,7 @@ class AccountManagement : Fragment() {
                 })
         }
 
-        btnCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        btnCancel.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -208,8 +215,6 @@ class AccountManagement : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val btnAccept = dialogView.findViewById<Button>(R.id.btnAccept)
-        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
-
         btnAccept.setOnClickListener {
 
             val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etNewPassword)
@@ -303,10 +308,7 @@ class AccountManagement : Fragment() {
             }
         }
 
-        btnCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        dialog.findViewById<Button>(R.id.btnCancel)?.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -352,9 +354,7 @@ class AccountManagement : Fragment() {
         if (pn > 0) {
             val resId = resources.getIdentifier("ic_user_pfp$pn", "drawable", requireContext().packageName)
             if (resId != 0) {
-                // Usamos findViewById directamente por seguridad si hay conflicto de tipos
-                val iv = binding.root.findViewById<ImageView>(R.id.ivProfile)
-                iv?.setImageResource(resId)
+                binding.ivProfile.setImageResource(resId)
             } else {
                 binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
             }
