@@ -318,7 +318,6 @@ class AccountManagement : Fragment() {
             ThemeOption("Verde", "SeaGreen", Color.parseColor("#0F766E")),
             ThemeOption("Esmeralda", "Emerald", Color.parseColor("#047857")),
             ThemeOption("Naranja ", "Sunset", Color.parseColor("#B45309")),
-            ThemeOption("Rojo", "Crimson", Color.parseColor("#991B1B")),
             ThemeOption("Rosa", "Sakura", Color.parseColor("#BE185D")),
             ThemeOption("Medianoche", "Midnight", Color.parseColor("#1e1b4b"))
         )
