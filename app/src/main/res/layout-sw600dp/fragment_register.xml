@@ -9,10 +9,10 @@
         android:background="@drawable/bg_gradient_blue"
         tools:context=".fragments.RegisterFragment">
 
+        <!-- Cambiamos wrap_content por 0dp para que adjustResize funcione -->
         <androidx.core.widget.NestedScrollView
             android:layout_width="700dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="32dp"
+            android:layout_height="0dp"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -22,6 +22,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="32dp"
                 android:backgroundTint="?attr/appColorPrimaryLight"
                 app:cardCornerRadius="32dp"
                 app:cardElevation="0dp"
@@ -35,13 +36,10 @@
                     android:orientation="vertical"
                     android:padding="48dp">
 
-                    <!-- Logo / Ícono superior -->
-
-                    <!-- Título -->
                     <ImageView
-                        android:layout_width="180dp"
-                        android:layout_height="180dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginBottom="8dp"
                         android:src="@mipmap/tourney_logo"
                         app:tint="@android:color/white" />
 
@@ -53,14 +51,12 @@
                         android:textSize="36sp"
                         android:textStyle="bold" />
 
-                    <!-- Subtítulo -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Únete a la arena gamer"
                         android:textColor="?attr/appColorSecondaryLight"
-
                         android:textSize="18sp" />
 
                     <View
@@ -69,7 +65,6 @@
                         android:layout_marginVertical="32dp"
                         android:background="@android:color/white" />
 
-                    <!-- Formulario en Rejilla (2 columnas) -->
                     <GridLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -90,7 +85,6 @@
                                 android:layout_marginBottom="8dp"
                                 android:text="NICKNAME"
                                 android:textColor="?attr/appColorSecondaryLight"
-
                                 android:textSize="13sp"
                                 android:letterSpacing="0.1"
                                 android:textStyle="bold" />
@@ -99,8 +93,7 @@
                                 android:id="@+id/tilNickname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:hintEnabled="false"
-                                app:errorEnabled="true">
+                                app:hintEnabled="false">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etNickname"
@@ -130,7 +123,6 @@
                                 android:layout_marginBottom="8dp"
                                 android:text="EMAIL"
                                 android:textColor="?attr/appColorSecondaryLight"
-
                                 android:textSize="13sp"
                                 android:letterSpacing="0.1"
                                 android:textStyle="bold" />
@@ -139,8 +131,7 @@
                                 android:id="@+id/tilEmail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:hintEnabled="false"
-                                app:errorEnabled="true">
+                                app:hintEnabled="false">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etEmail"
@@ -170,7 +161,6 @@
                                 android:layout_marginBottom="8dp"
                                 android:text="CONTRASEÑA"
                                 android:textColor="?attr/appColorSecondaryLight"
-
                                 android:textSize="13sp"
                                 android:letterSpacing="0.1"
                                 android:textStyle="bold" />
@@ -180,7 +170,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:hintEnabled="false"
-                                app:errorEnabled="true"
                                 app:endIconMode="password_toggle">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -196,7 +185,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
-                        <!-- CONFIRMAR CONTRASEÑA -->
+                        <!-- CONFIRMAR -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -211,7 +200,6 @@
                                 android:layout_marginBottom="8dp"
                                 android:text="CONFIRMAR"
                                 android:textColor="?attr/appColorSecondaryLight"
-
                                 android:textSize="13sp"
                                 android:letterSpacing="0.1"
                                 android:textStyle="bold" />
@@ -221,7 +209,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:hintEnabled="false"
-                                app:errorEnabled="true"
                                 app:endIconMode="password_toggle">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -238,7 +225,6 @@
                         </LinearLayout>
                     </GridLayout>
 
-                    <!-- Botón Crear Cuenta -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRegister"
                         android:layout_width="500dp"
@@ -251,7 +237,6 @@
                         app:backgroundTint="@android:color/white"
                         app:cornerRadius="16dp" />
 
-                    <!-- ¿Ya tienes cuenta? -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -264,7 +249,6 @@
                             android:layout_height="wrap_content"
                             android:text="¿Ya tienes cuenta? "
                             android:textColor="?attr/appColorSecondaryLight"
-
                             android:textSize="28sp" />
 
                         <TextView

@@ -19,6 +19,15 @@ class UsersDao(context: Context) {
         db.close()
     }
 
+    fun checkPassword(email: String, password: String): Boolean{
+        val db = helper.readableDatabase
+        val cursor = db.query(AppDatabaseHelper.TABLE_USERS, null, "${AppDatabaseHelper.COL_USER_EMAIL}=? AND ${AppDatabaseHelper.COL_USER_PASSWORD}=?", arrayOf(email, password), null, null, null)
+        val exists = cursor.moveToFirst()
+        cursor.close()
+        db.close()
+        return exists
+    }
+
     /**
      * Inserta un nuevo usuario en la base de datos
      * @return el ID del usuario insertado o -1 si hubo un error

@@ -139,9 +139,12 @@ class AccountManagement : Fragment() {
             // Lógica de validación próximamente
             val Password = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
 
-            Toast.makeText(requireContext(), " ${Password.text} Comprobando contraseña actual...", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-            showInsertNewPasswordDialog()
+            if(UsersDao(requireContext()).checkPassword(User.actualUser?.email ?: "", Password.text.toString())){
+                dialog.dismiss()
+                showInsertNewPasswordDialog()
+            }else{
+                Toast.makeText(requireContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnCancel.setOnClickListener {
@@ -164,18 +167,25 @@ class AccountManagement : Fragment() {
 
         btnAccept.setOnClickListener {
             // Lógica de validación próximamente
-            val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
-            val Password2 = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
+            val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etNewPassword)
+            val Password2 = dialogView.findViewById<TextInputEditText>(R.id.etNewPassword2)
+
+            if(Password1.text.toString().length < 8){
+                Toast.makeText(requireContext(), "La contraseña debe tener al menos 8 caracteres", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(!Password1.text.toString().contains(Regex("[A-Z]"))){
+                Toast.makeText(requireContext(), "La contraseña debe tener al menos una mayúscula", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             if (Password1.text.toString() == Password2.text.toString()) {
-
+                UsersDao(requireContext()).updatePassword(User.actualUser?.email ?: "", Password1.text.toString())
                 Toast.makeText(requireContext(), "Contraseña cambiada correctamente", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             } else {
                 Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
             }
-            dialog.dismiss()
         }
 
         btnCancel.setOnClickListener {

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="550dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="40dp"
+    app:cardElevation="12dp"
+    app:strokeWidth="0dp"
+    android:layout_gravity="center"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="48dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacidad y Términos"
+            android:textColor="?attr/appColorPrimaryDark"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Para continuar usando Tourney, por favor acepta nuestras políticas de uso."
+            android:textColor="@color/text_secondary"
+            android:textSize="18sp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            android:textAlignment="center"/>
+
+        <!-- Texto para ver términos detallados -->
+        <TextView
+            android:id="@+id/tvReadMoreTerms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver términos detallados"
+            android:textColor="?attr/appColorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Acepto los términos y condiciones."
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:buttonTint="?attr/appColorPrimary"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbPrivacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Acepto la política de cookies."
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:buttonTint="?attr/appColorPrimary"
+            android:layout_marginBottom="32dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAcceptCookies"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Aceptar y Continuar"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:enabled="false"
+            app:backgroundTint="?attr/appColorPrimaryLight"
+            app:cornerRadius="20dp" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

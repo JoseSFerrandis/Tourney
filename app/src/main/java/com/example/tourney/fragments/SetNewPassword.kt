@@ -34,6 +34,14 @@ class SetNewPassword : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSetNewPasswordBinding.bind(view)
 
+        binding.newPasswordInput.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.tilNewPassword.error = null
+        }
+        binding.repeatPasswordInput.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.tilRepeatPassword.error = null
+        }
+
+
         binding.btnCreateNewPassword.setOnClickListener {
             if(createNewPassword()) {
                 findNavController().navigate(R.id.action_SetNewPassword_to_LoginFragment)
@@ -46,7 +54,7 @@ class SetNewPassword : Fragment() {
     fun createNewPassword(): Boolean{
         binding.newPasswordInput.text?.let {
             // Contraseña demasiado corta
-            if(it.length < 8 && it.length > 1)
+            if(it.length in 2..<8)
                 binding.tilNewPassword.error = "Debe tener al menos 8 caracteres"
 
             // Contraseña sin mayúsculas

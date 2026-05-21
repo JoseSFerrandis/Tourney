@@ -6,19 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import com.example.tourney.tools.UsersDao
 import com.example.tourney.databinding.FragmentRegisterBinding
+import com.example.tourney.tools.UsersDao
 import com.google.android.material.textfield.TextInputLayout
 
-// TODO: humanizar código
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-
-    // ── ViewModel (opcional – conecta con tu capa de datos) ──────────────────
-    // private val viewModel: AuthViewModel by viewModels()
+    
+    private val usersDao by lazy { UsersDao(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,117 +30,116 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        
+        setupValidationListeners()
         setupClickListeners()
     }
 
-
     private fun setupClickListeners() {
-
-        // Botón principal: Crear cuenta
         binding.btnRegister.setOnClickListener {
             if (validateFields()) {
-                registerUser()
+                performRegistration()
             }
         }
 
-        // Ir a login
         binding.tvLogin.setOnClickListener {
             navigateToLogin()
         }
+    }
 
-        binding.etPassword.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && binding.tilPassword.error != null) {
-                binding.tilPassword.error = null
-            }
-        }
-        binding.etPasswordConfirm.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && binding.tilPasswordConfirm.error != null) {
-                binding.tilPasswordConfirm.error = null
-            }
-        }
+    /**
+     * "Humaniza" la experiencia: limpia los errores en cuanto el usuario empieza a escribir.
+     */
+    private fun setupValidationListeners() {
+        binding.etNickname.doOnTextChanged { _, _, _, _ -> clearError(binding.tilNickname) }
+        binding.etEmail.doOnTextChanged { _, _, _, _ -> clearError(binding.tilEmail) }
+        binding.etPassword.doOnTextChanged { _, _, _, _ -> clearError(binding.tilPassword) }
+        binding.etPasswordConfirm.doOnTextChanged { _, _, _, _ -> clearError(binding.tilPasswordConfirm) }
     }
 
     private fun validateFields(): Boolean {
+        val nickname = binding.etNickname.text?.toString()?.trim() ?: ""
+        val email = binding.etEmail.text?.toString()?.trim() ?: ""
+        val password = binding.etPassword.text?.toString() ?: ""
+        val confirm = binding.etPasswordConfirm.text?.toString() ?: ""
+
         var isValid = true
 
-        val nickname = binding.etNickname.text?.toString()?.trim() ?: ""
-        val email    = binding.etEmail.text?.toString()?.trim() ?: ""
-        val password = binding.etPassword.text?.toString() ?: ""
-        val confirm  = binding.etPasswordConfirm.text?.toString() ?: ""
-
-
-        clearError(binding.tilNickname)
-
-        // Check availability
-        val allUsers = UsersDao(requireContext()).getAllUsers()
-        for(user in allUsers){
-            if(nickname == user.nickname){
-                setError(binding.tilNickname, "El nickname ya está en uso")
-                isValid = false
-            }
-            if(email == user.email){
-                setError(binding.tilEmail, "El email ya está en uso")
-                isValid = false
-            }
-        }
-
-        // Nickname
+        // 1. Validar Nickname
         when {
             nickname.isEmpty() -> {
-                setError(binding.tilNickname, "El nickname es obligatorio")
+                setError(binding.tilNickname, "¡No olvides tu nombre de guerrero!")
                 isValid = false
             }
             nickname.length < 3 -> {
-                setError(binding.tilNickname, "Mínimo 3 caracteres")
+                setError(binding.tilNickname, "El nombre es un poco corto (mín. 3)")
                 isValid = false
             }
             !nickname.matches(Regex("^[a-zA-Z0-9_]+\$")) -> {
-                setError(binding.tilNickname, "Solo letras, números y guiones bajos")
+                setError(binding.tilNickname, "Usa solo letras, números o guiones bajos")
+                isValid = false
+            }
+            usersDao.getAllUsers().any { it.nickname.equals(nickname, true) } -> {
+                setError(binding.tilNickname, "Este nickname ya está en batalla. Elige otro.")
                 isValid = false
             }
         }
 
-        // Email
-        clearError(binding.tilEmail)
+        // 2. Validar Email
         when {
             email.isEmpty() -> {
-                setError(binding.tilEmail, "El email es obligatorio")
+                setError(binding.tilEmail, "Necesitamos un email para contactarte")
                 isValid = false
             }
             !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                setError(binding.tilEmail, "Email no válido")
+                setError(binding.tilEmail, "Ese email no parece correcto")
+                isValid = false
+            }
+            usersDao.getAllUsers().any { it.email.equals(email, true) } -> {
+                setError(binding.tilEmail, "Este email ya tiene una cuenta activa")
                 isValid = false
             }
         }
 
-        // Contraseña
-        clearError(binding.tilPassword)
+        // 3. Validar Contraseña
         when {
             password.isEmpty() -> {
-                setError(binding.tilPassword, "La contraseña es obligatoria")
+                setError(binding.tilPassword, "La seguridad es lo primero. Pon una clave.")
                 isValid = false
             }
             password.length < 8 -> {
-                setError(binding.tilPassword, "Mínimo 8 caracteres")
+                setError(binding.tilPassword, "La contraseña debe tener al menos 8 caracteres")
                 isValid = false
             }
         }
 
-        // Confirmar contraseña
-        clearError(binding.tilPasswordConfirm)
-        when {
-            confirm.isEmpty() -> {
-                setError(binding.tilPasswordConfirm, "Confirma tu contraseña")
-                isValid = false
-            }
-            confirm != password -> {
-                setError(binding.tilPasswordConfirm, "Las contraseñas no coinciden")
-                isValid = false
-            }
+        // 4. Confirmar Contraseña
+        if (confirm != password) {
+            setError(binding.tilPasswordConfirm, "Las contraseñas no coinciden")
+            isValid = false
         }
 
         return isValid
+    }
+
+    private fun performRegistration() {
+        val nickname = binding.etNickname.text.toString().trim()
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString()
+
+        // Estado visual de carga
+        binding.btnRegister.isEnabled = false
+        binding.btnRegister.text = "Preparando tu arena..."
+
+        try {
+            usersDao.insertNewUser(nickname, email, password)
+            Toast.makeText(requireContext(), "¡Bienvenido a Tourney, $nickname!", Toast.LENGTH_LONG).show()
+            navigateToLogin()
+        } catch (e: Exception) {
+            binding.btnRegister.isEnabled = true
+            binding.btnRegister.text = "CREAR CUENTA"
+            Toast.makeText(requireContext(), "Error al crear la cuenta. Inténtalo de nuevo.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setError(til: TextInputLayout, message: String) {
@@ -150,30 +148,15 @@ class RegisterFragment : Fragment() {
     }
 
     private fun clearError(til: TextInputLayout) {
-        til.error = null
-        til.isErrorEnabled = false
+        if (til.error != null) {
+            til.error = null
+            til.isErrorEnabled = false
+        }
     }
 
-    private fun registerUser() {
-        val nickname = binding.etNickname.text.toString().trim()
-        val email    = binding.etEmail.text.toString().trim()
-        val password = binding.etPassword.text.toString()
-
-        // Mostrar loading
-        binding.btnRegister.isEnabled = false
-        binding.btnRegister.text = "Creando cuenta..."
-
-        UsersDao(requireContext()).insertNewUser(nickname, email, password)
-        Toast.makeText(requireContext(), "Cuenta creada correctamente", Toast.LENGTH_SHORT).show()
-
-        navigateToLogin()
-    }
-
-    fun navigateToLogin(){
+    private fun navigateToLogin() {
         requireActivity().onBackPressedDispatcher.onBackPressed()
-        // findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
