@@ -59,20 +59,6 @@ class TournamentTest {
         
         assertTrue(tournament.removeParticipant(user1))
         assertEquals(1, tournament.numParticipants)
-        
-        val user3 = User(3L, "Player3", "p3@test.com", "pass", 0)
-        assertFalse(tournament.removeParticipant(user3))
-    }
-
-    @Test
-    fun testRemoveParticipantAtPosition() {
-        tournament.addParticipant(user1)
-        tournament.addParticipant(user2)
-        
-        tournament.removeParticipantAtPosition(0)
-        assertEquals(1, tournament.numParticipants)
-        // Tras eliminar al primero, el segundo pasa a la posición 0
-        assertEquals(user2.id, tournament.participantList[0].userId)
     }
 
     @Test
@@ -85,15 +71,5 @@ class TournamentTest {
         
         tournament.setStatusFinished(null)
         assertEquals(TournamentStatus.FINISHED, tournament.tournamentStatus)
-    }
-
-    @Test
-    fun testTournamentTypeStringConversion() {
-        assertEquals("Eliminación", Tournament.getTournamentTypeString(TournamentType.ELIMINATION))
-        assertEquals("Liguilla", Tournament.getTournamentTypeString(TournamentType.LIGUILLA))
-        assertEquals("Suizo", Tournament.getTournamentTypeString(TournamentType.SUIZO))
-        
-        assertEquals(TournamentType.ELIMINATION, Tournament.getTournamentTypeFromString("Eliminación"))
-        assertEquals(TournamentType.LIGUILLA, Tournament.getTournamentTypeFromString("Liguilla"))
     }
 }

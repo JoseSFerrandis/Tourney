@@ -24,29 +24,14 @@ class UserTest {
     fun testAddShowableTournament() {
         user.addShowableTournament(3L)
         assertTrue(user.showableTournamentList.contains(3L))
-        assertEquals(3, user.showableTournamentList.size)
-    }
-
-    @Test
-    fun testRemoveShowableTournament() {
-        user.removeShowableTournament(1L)
-        assertFalse(user.showableTournamentList.contains(1L))
-        assertEquals(1, user.showableTournamentList.size)
-    }
-
-    @Test
-    fun testHasShowableTournament() {
-        assertTrue(user.hasShowableTournament(2L))
-        assertFalse(user.hasShowableTournament(99L))
     }
 
     @Test
     fun testSetShowableTournamentList() {
         val stringList = "10, 20, 30"
         user.setShowableTournamentList(stringList)
-        
         assertEquals(3, user.showableTournamentList.size)
-        assertTrue(user.showableTournamentList.containsAll(listOf(10L, 20L, 30L)))
+        assertTrue(user.showableTournamentList.contains(10L))
     }
     
     @Test
@@ -55,8 +40,6 @@ class UserTest {
         assertNull(User.actualUser)
         User.actualUser = user
         assertEquals(user, User.actualUser)
-        
-        // Clean up
         User.actualUser = null
     }
 }

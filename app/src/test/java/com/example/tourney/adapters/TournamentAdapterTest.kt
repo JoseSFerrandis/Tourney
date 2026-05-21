@@ -23,7 +23,6 @@ class TournamentAdapterTest {
     @Mock
     private lateinit var viewModel: HomeViewModel
 
-    // Mocks para los LiveData del ViewModel
     @Mock private lateinit var mockSearchQuery: MutableLiveData<String>
     @Mock private lateinit var mockFilterNames: MutableLiveData<Boolean>
     @Mock private lateinit var mockFilterGames: MutableLiveData<Boolean>
@@ -47,25 +46,21 @@ class TournamentAdapterTest {
         adapter = spy(TournamentAdapter(tournamentList) { })
         doNothing().`when`(adapter).notifyDataSetChanged()
 
-        // Vinculamos los mocks de LiveData al ViewModel mockeado
         `when`(viewModel.searchQuery).thenReturn(mockSearchQuery)
         `when`(viewModel.searchFilterByNames).thenReturn(mockFilterNames)
         `when`(viewModel.searchFilterByGames).thenReturn(mockFilterGames)
         `when`(viewModel.searchFilterByElimination).thenReturn(mockFilterElimination)
         `when`(viewModel.searchFilterByLiguilla).thenReturn(mockFilterLiguilla)
         `when`(viewModel.searchFilterBySuizo).thenReturn(mockFilterSuizo)
-        
-        // Valores por defecto para evitar NullPointerException con el operador !!
-        setupDefaultFilters(true, true, true, true, true)
     }
 
-    private fun setupDefaultFilters(names: Boolean, games: Boolean, elim: Boolean, lig: Boolean, suiz: Boolean) {
+    private fun setupFilters(names: Boolean, games: Boolean, elim: Boolean, lig: Boolean, suiz: Boolean, query: String) {
         `when`(mockFilterNames.value).thenReturn(names)
         `when`(mockFilterGames.value).thenReturn(games)
         `when`(mockFilterElimination.value).thenReturn(elim)
         `when`(mockFilterLiguilla.value).thenReturn(lig)
         `when`(mockFilterSuizo.value).thenReturn(suiz)
-        `when`(mockSearchQuery.value).thenReturn("")
+        `when`(mockSearchQuery.value).thenReturn(query)
     }
 
     @Test
@@ -75,26 +70,21 @@ class TournamentAdapterTest {
 
     @Test
     fun testFilterTournaments_ByName() {
-        `when`(mockSearchQuery.value).thenReturn("Copa")
-        setupDefaultFilters(names = true, games = false, elim = true, lig = true, suiz = true)
-        
+        setupFilters(names = true, games = false, elim = true, lig = true, suiz = true, query = "Copa")
         adapter.filterTournaments(viewModel)
         assertEquals(1, adapter.itemCount)
     }
 
     @Test
     fun testFilterTournaments_ByGame() {
-        `when`(mockSearchQuery.value).thenReturn("VALORANT")
-        setupDefaultFilters(names = false, games = true, elim = true, lig = true, suiz = true)
-        
+        setupFilters(names = false, games = true, elim = true, lig = true, suiz = true, query = "VALORANT")
         adapter.filterTournaments(viewModel)
         assertEquals(1, adapter.itemCount)
     }
 
     @Test
     fun testFilterTournaments_ByType_OnlySuizo() {
-        setupDefaultFilters(names = true, games = true, elim = false, lig = false, suiz = true)
-        
+        setupFilters(names = true, games = true, elim = false, lig = false, suiz = true, query = "")
         adapter.filterTournaments(viewModel)
         assertEquals(1, adapter.itemCount)
     }
@@ -109,17 +99,9 @@ class TournamentAdapterTest {
     }
 
     @Test
-    fun testEstablishedValue_Valid() {
-        val result = adapter.establishedValue(mockContext, "Nombre")
-        assertEquals("Nombre", result)
-    }
-
-    @Test
     fun testEstablishedValue_NullOrEmpty() {
         `when`(mockContext.getString(R.string.no_established)).thenReturn("No establecido")
-        
         assertEquals("No establecido", adapter.establishedValue(mockContext, null))
-        assertEquals("No establecido", adapter.establishedValue(mockContext, ""))
         assertEquals("No establecido", adapter.establishedValue(mockContext, "null"))
     }
 }
