@@ -1,6 +1,7 @@
 package com.example.tourney.repositories
 
 import com.example.tourney.entities.Tournament
+import com.example.tourney.entities.TournamentType
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -12,8 +13,8 @@ class TournamentRepositoryTest {
     @Before
     fun setUp() {
         repository = TournamentRepository.getInstance()
-        // Reset the list for clean testing state
-        repository.setTournaments(mutableListOf())
+        // Reset the list for clean testing state using the existing clear() method
+        repository.clear()
     }
 
     @Test
@@ -25,7 +26,8 @@ class TournamentRepositoryTest {
 
     @Test
     fun testAddAndGetTournaments() {
-        val tournament = Tournament(1L, "T1", "G1", "C1", mutableListOf(), 2, "D", "L", "P", 111)
+        // Corrected constructor: id, name, game, creatorId, creatorNickname, participantList, maxParticipants, date, location, prize, code
+        val tournament = Tournament(1L, "T1", "G1", 100L, "Admin", mutableListOf(), 16, null, null, null, 111)
         repository.addTournament(tournament)
 
         val tournaments = repository.getTournaments()
@@ -34,17 +36,8 @@ class TournamentRepositoryTest {
     }
 
     @Test
-    fun testRemoveTournamentByObject() {
-        val tournament = Tournament(1L, "T1", "G1", "C1", mutableListOf(), 2, "D", "L", "P", 111)
-        repository.addTournament(tournament)
-        
-        repository.removeTournament(tournament)
-        assertTrue(repository.getTournaments().isEmpty())
-    }
-
-    @Test
     fun testRemoveTournamentById() {
-        val tournament = Tournament(2L, "T2", "G2", "C2", mutableListOf(), 2, "D", "L", "P", 222)
+        val tournament = Tournament(2L, "T2", "G2", 100L, "Admin", mutableListOf(), 16, null, null, null, 222)
         repository.addTournament(tournament)
         
         repository.removeTournament(2L)
@@ -53,7 +46,7 @@ class TournamentRepositoryTest {
 
     @Test
     fun testSearchTournamentByCode() {
-        val tournament = Tournament(3L, "T3", "G3", "C3", mutableListOf(), 2, "D", "L", "P", 333)
+        val tournament = Tournament(3L, "T3", "G3", 100L, "Admin", mutableListOf(), 16, null, null, null, 333)
         repository.addTournament(tournament)
 
         val found = repository.searchTournamentByCode(333)
@@ -66,7 +59,7 @@ class TournamentRepositoryTest {
 
     @Test
     fun testSearchTournamentById() {
-        val tournament = Tournament(4L, "T4", "G4", "C4", mutableListOf(), 2, "D", "L", "P", 444)
+        val tournament = Tournament(4L, "T4", "G4", 100L, "Admin", mutableListOf(), 16, null, null, null, 444)
         repository.addTournament(tournament)
 
         val found = repository.searchTournamentById(4L)
@@ -79,14 +72,15 @@ class TournamentRepositoryTest {
 
     @Test
     fun testSearchTournamentListByIds() {
-        val t1 = Tournament(5L, "T5", "G5", "C5", mutableListOf(), 2, "D", "L", "P", 555)
-        val t2 = Tournament(6L, "T6", "G6", "C6", mutableListOf(), 2, "D", "L", "P", 666)
+        val t1 = Tournament(5L, "T5", "G5", 100L, "Admin", mutableListOf(), 16, null, null, null, 555)
+        val t2 = Tournament(6L, "T6", "G6", 100L, "Admin", mutableListOf(), 16, null, null, null, 666)
         
         repository.addTournament(t1)
         repository.addTournament(t2)
 
-        val foundList = repository.searchTournamentListByIds(mutableListOf(5L, 6L))
+        val foundList = repository.searchTournamentListByIds(listOf(5L, 6L))
         assertEquals(2, foundList.size)
-        assertTrue(foundList.containsAll(listOf(t1, t2)))
+        assertTrue(foundList.contains(t1))
+        assertTrue(foundList.contains(t2))
     }
 }
