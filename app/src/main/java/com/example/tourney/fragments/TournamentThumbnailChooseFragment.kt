@@ -42,7 +42,7 @@ class TournamentThumbnailChooseFragment : Fragment() {
             R.drawable.tournament_thumbnail_4,
             R.drawable.tournament_thumbnail_5,
             R.drawable.tournament_thumbnail_6,
-            R.drawable.tournament_thumbnail_13,
+            R.drawable.tournament_thumbnail_7,
             R.drawable.tournament_thumbnail_8,
             R.drawable.tournament_thumbnail_9,
             R.drawable.tournament_thumbnail_10,
