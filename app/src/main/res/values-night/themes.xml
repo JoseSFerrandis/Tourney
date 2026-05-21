@@ -1,8 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme para modo noche. -->
     <style name="Base.Theme.Tourney" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Forzar fondos negros en modo noche -->
         <item name="android:windowBackground">@color/black</item>
         <item name="colorSurface">@color/black</item>
+
+        <!-- Atributos personalizados necesarios para evitar el crash -->
+        <item name="appColorPrimary">#1e4fd9</item>
+        <item name="appColorPrimaryDark">#041C9E</item>
+        <item name="appColorPrimaryLight">#5287F5</item>
+        <item name="appColorSecondary">#0368B0</item>
+        <item name="appColorSecondaryLight">#CCDCFF</item>
+        <item name="gradientStartColor">#1E293B</item>
+        <item name="gradientEndColor">#0F172A</item>
     </style>
 </resources>

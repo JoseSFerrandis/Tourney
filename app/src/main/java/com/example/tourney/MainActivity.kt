@@ -15,7 +15,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -23,7 +22,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tourney.databinding.ActivityMainBinding
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
-import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
@@ -38,7 +36,6 @@ class MainActivity : AppCompatActivity() {
     private var cookiesDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // 1. Cargar preferencia de tema antes de super.onCreate
         val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val selectedTheme = prefs.getString("user_theme", "Blue")
         
@@ -65,7 +62,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        // Recuperar NavController de forma segura a través del NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         navController = navHostFragment.navController
         
@@ -75,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setImageBitmap(resources.getDrawable(R.drawable.ic_trophy).toBitmap())
         binding.fab.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
 
-        val primaryColor = MaterialColors.getColor(binding.fab, R.attr.appColorPrimaryDark)
+        val primaryColor = MaterialColors.getColor(this, R.attr.appColorPrimaryDark, Color.parseColor("#041C9E"))
         binding.fab.imageTintList = ColorStateList.valueOf(primaryColor)
         
         binding.fab.setOnClickListener { showCustomHomeDialog() }
@@ -96,25 +92,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            // Si cambiamos de pantalla y no estamos en los términos, comprobamos si hay que mostrar el aviso
-            if (destination.id != R.id.TermsDetailFragment) {
+            // Usar el ID corregido del grafo de navegación
+            if (destination.id != R.id.privacyFragmentDest) {
                 checkCookiesConsent()
             }
         }
 
         TournamentRepository.getInstance().loadFromDatabase(this)
-
-        // DEBUG: Log de todos los usuarios registrados
         logAllUsers()
-
-        // Comprobar consentimiento inicial
         checkCookiesConsent()
     }
 
     override fun onResume() {
         super.onResume()
-        // Re-comprobar al volver a la app o al volver atrás de un fragmento
-        if (::navController.isInitialized && navController.currentDestination?.id != R.id.TermsDetailFragment) {
+        if (::navController.isInitialized && navController.currentDestination?.id != R.id.privacyFragmentDest) {
             checkCookiesConsent()
         }
     }
@@ -122,7 +113,6 @@ class MainActivity : AppCompatActivity() {
     private fun checkCookiesConsent() {
         val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         if (!prefs.getBoolean("cookies_accepted", false)) {
-            // Solo lo mostramos si no está ya mostrándose
             if (cookiesDialog == null || !cookiesDialog!!.isShowing) {
                 showCookiesDialog()
             }
@@ -130,59 +120,58 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showCookiesDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.cookies_alert, null)
-        cookiesDialog = MaterialAlertDialogBuilder(this)
-            .setView(dialogView)
-            .setCancelable(false) // No permite salir sin aceptar
-            .create()
+        try {
+            val dialogView = layoutInflater.inflate(R.layout.cookies_alert, null)
+            cookiesDialog = MaterialAlertDialogBuilder(this)
+                .setView(dialogView)
+                .setCancelable(false)
+                .create()
 
-        cookiesDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            cookiesDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val tvReadMore = dialogView.findViewById<TextView>(R.id.tvReadMoreTerms)
-        val cbTerms = dialogView.findViewById<MaterialCheckBox>(R.id.cbTerms)
-        val cbPrivacy = dialogView.findViewById<MaterialCheckBox>(R.id.cbPrivacy)
-        val btnAccept = dialogView.findViewById<MaterialButton>(R.id.btnAcceptCookies)
+            val tvReadMore = dialogView.findViewById<TextView>(R.id.tvReadMoreTerms)
+            val cbTerms = dialogView.findViewById<MaterialCheckBox>(R.id.cbTerms)
+            val cbPrivacy = dialogView.findViewById<MaterialCheckBox>(R.id.cbPrivacy)
+            val btnAccept = dialogView.findViewById<MaterialButton>(R.id.btnAcceptCookies)
 
-        // Obtenemos los colores del tema actual para el botón
-        val colorPrimary = MaterialColors.getColor(this, R.attr.appColorPrimary, Color.BLUE)
-        val colorPrimaryLight = MaterialColors.getColor(this, R.attr.appColorPrimaryLight, Color.LTGRAY)
+            val colorPrimary = MaterialColors.getColor(this, R.attr.appColorPrimary, Color.BLUE)
+            val colorPrimaryLight = MaterialColors.getColor(this, R.attr.appColorPrimaryLight, Color.LTGRAY)
 
-        val updateButtonState = {
-            val isAccepted = (cbTerms?.isChecked == true) && (cbPrivacy?.isChecked == true)
-            btnAccept?.isEnabled = isAccepted
-            
-            // Aplicar color dinámico
-            val targetColor = if (isAccepted) colorPrimary else colorPrimaryLight
-            btnAccept?.backgroundTintList = ColorStateList.valueOf(targetColor)
+            val updateButtonState = {
+                val isAccepted = (cbTerms?.isChecked == true) && (cbPrivacy?.isChecked == true)
+                btnAccept?.isEnabled = isAccepted
+                val targetColor = if (isAccepted) colorPrimary else colorPrimaryLight
+                btnAccept?.backgroundTintList = ColorStateList.valueOf(targetColor)
+            }
+
+            updateButtonState()
+            cbTerms?.setOnCheckedChangeListener { _, _ -> updateButtonState() }
+            cbPrivacy?.setOnCheckedChangeListener { _, _ -> updateButtonState() }
+
+            tvReadMore?.setOnClickListener {
+                cookiesDialog?.dismiss()
+                navController.navigate(R.id.privacyFragmentDest)
+            }
+
+            btnAccept?.setOnClickListener {
+                val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                prefs.edit().putBoolean("cookies_accepted", true).apply()
+                cookiesDialog?.dismiss()
+            }
+
+            cookiesDialog?.show()
+        } catch (e: Exception) {
+            Log.e("ERROR", "No se pudo mostrar el diálogo de cookies: ${e.message}")
         }
-
-        updateButtonState()
-
-        cbTerms?.setOnCheckedChangeListener { _, _ -> updateButtonState() }
-        cbPrivacy?.setOnCheckedChangeListener { _, _ -> updateButtonState() }
-
-        tvReadMore?.setOnClickListener {
-            cookiesDialog?.dismiss()
-            navController.navigate(R.id.TermsDetailFragment)
-        }
-
-        btnAccept?.setOnClickListener {
-            val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-            prefs.edit().putBoolean("cookies_accepted", true).apply()
-            cookiesDialog?.dismiss()
-        }
-
-        cookiesDialog?.show()
     }
 
     private fun logAllUsers() {
         try {
             val users = UsersDao(this).getAllUsers()
-            Log.e("DEBUG_USERS", "=== LISTA DE USUARIOS REGISTRADOS ===")
+            Log.e("DEBUG_USERS", "=== USUARIOS REGISTRADOS ===")
             users.forEach { user ->
-                Log.e("DEBUG_USERS", "Email: ${user.email} | Password: ${user.password} | Nick: ${user.nickname}")
+                Log.e("DEBUG_USERS", "Email: ${user.email} | Nick: ${user.nickname}")
             }
-            Log.e("DEBUG_USERS", "=====================================")
         } catch (e: Exception) {
             Log.e("DEBUG_USERS", "Error al leer usuarios: ${e.message}")
         }
@@ -198,7 +187,10 @@ class MainActivity : AppCompatActivity() {
 
         val btnCreate = dialogView.findViewById<Button>(R.id.btnCreateOption)
         val btnJoin = dialogView.findViewById<Button>(R.id.btnJoinOption)
-        if(User.actualUser?.logged == false) btnJoin.visibility = View.GONE
+        
+        if (User.actualUser?.id?.toInt() == 3) {
+            btnJoin.visibility = View.GONE
+        }
 
         btnCreate.setOnClickListener {
             navController.navigate(R.id.action_HomeFragment_to_CreateTournamentFragment)
@@ -220,13 +212,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
-            R.id.action_deleteTable -> {
-                UsersDao(this).dropAll()
+            R.id.action_privacy -> {
+                navController.navigate(R.id.privacyFragmentDest)
                 true
             }
-            R.id.action_deleteTournaments -> {
-                TournamentsDao(this).dropAll()
+            R.id.action_contact -> {
+                navController.navigate(R.id.contactFragmentDest)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -234,7 +225,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

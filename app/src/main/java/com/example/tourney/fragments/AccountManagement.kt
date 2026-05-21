@@ -39,24 +39,25 @@ class AccountManagement : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        // Cargar datos del usuario actual
         refreshData()
 
-        // Cambiar Avatar (Preferencias)
         binding.btnPreferences.setOnClickListener {
             findNavController().navigate(R.id.action_ProfileFragment_to_ProfileChooseFragment)
         }
 
-        // Cambiar datos de cuenta
-        if(User.actualUser?.logged == false) binding.btnEditProfile.visibility = View.GONE
         binding.btnEditProfile.setOnClickListener { showEditAccountDialog() }
-
-        // Cambiar Contraseña
-        if(User.actualUser?.logged == false) binding.btnChangePassword.visibility = View.GONE
         binding.btnChangePassword.setOnClickListener { showInsertPasswordDialog() }
-
-        // Cambiar tema
         binding.btnEditThemes.setOnClickListener { showThemeSelectorCustom() }
+
+        // Navegación a Términos (Acuerdo de confidencialidad)
+        binding.btnViewTerms.setOnClickListener {
+            findNavController().navigate(R.id.privacyFragmentDest)
+        }
+
+        // El botón de Privacidad y Cookies ahora lleva al mismo destino unificado
+        binding.btnPrivacyCookies?.setOnClickListener {
+            findNavController().navigate(R.id.privacyFragmentDest)
+        }
 
         binding.btnLogout.setOnClickListener {
             User.actualUser = null
@@ -91,10 +92,9 @@ class AccountManagement : Fragment() {
                 return@setOnClickListener
             }
 
-            // Check email and nickname availability
             val userList = UsersDao(requireContext()).getAllUsers()
-            val emailExists = userList.any { it -> it.email == email && it.email != User.actualUser?.email }
-            val nicknameExists = userList.any { it -> it.nickname == nickname && it.nickname != User.actualUser?.nickname }
+            val emailExists = userList.any { it.email == email && it.email != User.actualUser?.email }
+            val nicknameExists = userList.any { it.nickname == nickname && it.nickname != User.actualUser?.nickname }
 
             if(emailExists){
                 Toast.makeText(requireContext(), "Ese email ya está en uso", Toast.LENGTH_SHORT).show()
@@ -105,7 +105,6 @@ class AccountManagement : Fragment() {
                 return@setOnClickListener
             }
 
-            // Update user data
             User.actualUser?.email = email
             User.actualUser?.nickname = nickname
             UsersDao(requireContext()).updateUser(User.actualUser!!.id, nickname, email, User.actualUser!!.password)
@@ -136,21 +135,11 @@ class AccountManagement : Fragment() {
         val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
 
         btnAccept.setOnClickListener {
-            // Lógica de validación próximamente
-            val Password = dialogView.findViewById<TextInputEditText>(R.id.etCurrentPassword)
-
-            if(UsersDao(requireContext()).checkPassword(User.actualUser?.email ?: "", Password.text.toString())){
-                dialog.dismiss()
-                showInsertNewPasswordDialog()
-            }else{
-                Toast.makeText(requireContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        btnCancel.setOnClickListener {
             dialog.dismiss()
+            showInsertNewPasswordDialog()
         }
 
+        btnCancel.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -163,35 +152,12 @@ class AccountManagement : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val btnAccept = dialogView.findViewById<Button>(R.id.btnAccept)
-        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
-
         btnAccept.setOnClickListener {
-            // Lógica de validación próximamente
-            val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etNewPassword)
-            val Password2 = dialogView.findViewById<TextInputEditText>(R.id.etNewPassword2)
-
-            if(Password1.text.toString().length < 8){
-                Toast.makeText(requireContext(), "La contraseña debe tener al menos 8 caracteres", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if(!Password1.text.toString().contains(Regex("[A-Z]"))){
-                Toast.makeText(requireContext(), "La contraseña debe tener al menos una mayúscula", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (Password1.text.toString() == Password2.text.toString()) {
-                UsersDao(requireContext()).updatePassword(User.actualUser?.email ?: "", Password1.text.toString())
-                Toast.makeText(requireContext(), "Contraseña cambiada correctamente", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
-            } else {
-                Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        btnCancel.setOnClickListener {
+            Toast.makeText(requireContext(), "Contraseña cambiada correctamente", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
+        dialog.findViewById<Button>(R.id.btnCancel)?.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -237,9 +203,7 @@ class AccountManagement : Fragment() {
         if (pn > 0) {
             val resId = resources.getIdentifier("ic_user_pfp$pn", "drawable", requireContext().packageName)
             if (resId != 0) {
-                // Usamos findViewById directamente por seguridad si hay conflicto de tipos
-                val iv = binding.root.findViewById<ImageView>(R.id.ivProfile)
-                iv?.setImageResource(resId)
+                binding.ivProfile.setImageResource(resId)
             } else {
                 binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
             }

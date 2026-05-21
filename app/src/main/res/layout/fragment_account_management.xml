@@ -140,6 +140,32 @@
                             app:iconSize="23dp"
                             app:iconTint="?attr/appColorPrimary" />
 
+                        <!-- Item: Ver Términos y Condiciones -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnViewTerms"
+                            style="@style/Widget.Material3.Button.TextButton.Icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:text="Términos y Privacidad"
+                            android:textColor="?attr/colorOnSurface"
+                            app:icon="@drawable/ic_help"
+                            app:iconSize="23dp"
+                            app:iconTint="?attr/appColorPrimary" />
+
+                        <!-- Item: Privacidad y Cookies -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPrivacyCookies"
+                            style="@style/Widget.Material3.Button.TextButton.Icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:text="Privacidad y cookies"
+                            android:textColor="?attr/colorOnSurface"
+                            app:icon="@android:drawable/ic_menu_info_details"
+                            app:iconSize="23dp"
+                            app:iconTint="?attr/appColorPrimary" />
+
                         <com.google.android.material.divider.MaterialDivider
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
