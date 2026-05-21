@@ -12,6 +12,8 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tourney.R
@@ -37,6 +39,13 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCreateTournamentBinding.bind(view)
         val context = requireContext()
+
+        // Ajuste para que el teclado no tape el contenido
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val keyboardInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, keyboardInsets.bottom)
+            insets
+        }
 
         // Oculta el campo de código si el usuario es un invitado
         if(User.actualUser?.logged == false){
@@ -75,10 +84,6 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             dialog.show()
         }
 
-        //parseo que he realizado con la IA, estaría bien mirar de cambiar los tipos de datos
-        // completamente ya que por ejemplo que el dinero sea una string, no es muy buena idea
-        // tambíen quiero cambiar que no se establezca el numero de participatnes iniciales por ahora
-        //pero si os gusta lo podemos dejar
         binding.btnCreateTournament.setOnClickListener {
             val name = binding.etName.text.toString()
             val game = binding.etGame.text.toString()
@@ -90,12 +95,17 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             val type = Tournament.getTournamentTypeFromString(binding.spTournamentType.selectedItem.toString())
 
             if (name.isNotBlank() && game.isNotBlank()) {
+                val currentUser = User.actualUser ?: run {
+                    Toast.makeText(context, "Error: No hay un usuario activo", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val newTournament = Tournament(
                     id = 0, // Se asignará en el insert del DAO
                     name = name,
                     game = game,
-                    creatorId = User.actualUser!!.id,
-                    creatorNickname = establishedValue(context, User.actualUser?.nickname),
+                    creatorId = currentUser.id,
+                    creatorNickname = establishedValue(context, currentUser.nickname),
                     maxParticipants = maxParticipants,
                     date = date,
                     location = location,

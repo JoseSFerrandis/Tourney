@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.example.tourney.databinding.FragmentRegisterBinding
@@ -39,6 +41,13 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Ajuste para que el teclado no tape el contenido
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val keyboardInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            v.setPadding(0, 0, 0, keyboardInsets.bottom)
+            insets
+        }
 
         setupValidationListeners()
         setupClickListeners()
@@ -140,7 +149,6 @@ class RegisterFragment : Fragment() {
             setError(binding.tilPasswordConfirm, "Las contraseñas no coinciden")
             isValid = false
         }
-
 
         return isValid
     }

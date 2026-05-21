@@ -17,13 +17,12 @@
         android:background="@drawable/bg_gradient_blue"
         tools:context=".fragments.LoginFragment">
 
-        <!-- Contenedor central (flex-1 justify-center items-center) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            <!-- Contenedor central -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
 
             <!-- Ícono trofeo en círculo blanco -->
             <FrameLayout
@@ -174,8 +173,7 @@
                     android:layout_marginBottom="8dp"
                     android:text="¿No tienes cuenta?"
                     android:textColor="?attr/appColorSecondaryLight"
-
-                android:textSize="13sp" />
+                    android:textSize="13sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCreateAccount"
