@@ -24,17 +24,18 @@ class ParticipantAdapterTest {
             id = 1L,
             name = "Test",
             game = "Test",
-            creatorId = 0,
+            creatorId = 0L,
             creatorNickname = "Test",
+            participantList = mutableListOf(),
             maxParticipants = 10,
-            date = 0,
+            date = 0L,
             location = "Test",
             prize = "0",
             code = 0
         )
-        // Añadimos algunos participantes
-        tournament.addParticipant(User(1, "User1", "u1", "p", 0))
-        tournament.addParticipant(User(2, "User2", "u2", "p", 0))
+        // Añadimos algunos participantes con IDs Long
+        tournament.addParticipant(User(1L, "User1", "u1", "p", 0))
+        tournament.addParticipant(User(2L, "User2", "u2", "p", 0))
         
         adapter = ParticipantAdapter(tournament, mockRefresh)
     }
@@ -46,13 +47,8 @@ class ParticipantAdapterTest {
 
     @Test
     fun testRemoveParticipantAtPosition() {
-        // En un unit test puro no podemos testear notifyItemRemoved fácilmente sin mockear el RecyclerView,
-        // pero podemos testear que la lógica de remover del torneo se dispara.
-        
-        // Simulamos lo que haría el click listener si pudiéramos llamarlo
         val initialSize = tournament.participantList.size
         tournament.removeParticipantAtPosition(0)
-        
         assertEquals(initialSize - 1, tournament.participantList.size)
     }
 }
