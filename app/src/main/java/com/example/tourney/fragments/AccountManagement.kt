@@ -49,13 +49,8 @@ class AccountManagement : Fragment() {
         binding.btnChangePassword.setOnClickListener { showInsertPasswordDialog() }
         binding.btnEditThemes.setOnClickListener { showThemeSelectorCustom() }
 
-        // Navegación a Términos (Acuerdo de confidencialidad)
+        // Navegación a Términos y Privacidad
         binding.btnViewTerms.setOnClickListener {
-            findNavController().navigate(R.id.privacyFragmentDest)
-        }
-
-        // El botón de Privacidad y Cookies ahora lleva al mismo destino unificado
-        binding.btnPrivacyCookies?.setOnClickListener {
             findNavController().navigate(R.id.privacyFragmentDest)
         }
 
