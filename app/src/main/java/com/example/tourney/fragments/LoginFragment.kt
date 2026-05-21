@@ -81,19 +81,4 @@ class LoginFragment : Fragment() {
             }
         }
     }
-
-    fun login(): Boolean{
-        val allUsers = UsersDao(requireContext()).getAllUsers()
-        for(user in allUsers){
-            if(binding.loginEmailInput.text.toString() == user.email &&
-                binding.loginPasswordInput.text.toString() == user.password){
-                User.actualUser = user
-                User.actualUser = user
-                User.actualUser!!.logged = true
-                return true
-            }
-        }
-        Snackbar.make(binding.root, "Email o contraseña incorrectos", Snackbar.LENGTH_LONG).show()
-        return false
-    }
 }

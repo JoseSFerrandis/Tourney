@@ -12,6 +12,7 @@ import com.example.tourney.databinding.FragmentSetNewPasswordBinding
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
+import com.example.tourney.tools.CheckValues
 import com.example.tourney.tools.Security
 import com.google.android.material.snackbar.Snackbar
 
@@ -59,41 +60,24 @@ class SetNewPassword : Fragment() {
 
     fun createNewPassword(){
         binding.newPasswordInput.text?.let {
-            // Contraseña demasiado corta
-            if(it.length in 2..<8)
-                binding.tilNewPassword.error = "Debe tener al menos 8 caracteres"
-
-            // Contraseña sin mayúsculas
-            else if(!it.contains(Regex("[A-Z]")))
-                binding.tilNewPassword.error = "Debe tener al menos una mayúscula"
-
-            // Contraseña sin números
-            else if(!it.contains(Regex("\\d")))
-                binding.tilNewPassword.error = "Debe tener al menos un número"
-
-                // Contraseña sin minúsculas
-            else if(!it.contains(Regex("[a-z]")))
-                binding.tilNewPassword.error = "Debe tener al menos una minúscula"
-
-                /*
-                // Contraseña sin caracteres especiales
-            else if(!it.contains(Regex("[^a-zA-Z\\d]")))
-                binding.tilNewPassword.error = "Debe tener al menos un carácter especial"
-                */
-
-            // Contraseña válida
-            else {
-                binding.tilNewPassword.error = null
+            val passwordError = CheckValues.checkPassword(it.toString())
+            when (passwordError) {
+                7 -> { binding.tilNewPassword.error = "La seguridad es lo primero. Pon una clave." }
+                1 -> { binding.tilNewPassword.error = "La contraseña debe tener al menos 8 caracteres" }
+                2 -> { binding.tilNewPassword.error = "Debe tener al menos una mayúscula" }
+                3 -> { binding.tilNewPassword.error = "Debe tener al menos un número" }
+                4 -> { binding.tilNewPassword.error = "Debe tener al menos una minúscula" }
+                /*5 -> { binding.tilNewPassword.error = "Debe tener al menos un carácter especial" }*/
+                6 -> { binding.tilNewPassword.error = "No puede contener espacios" }
+                // Contraseña válida
+                0 -> { binding.tilNewPassword.error = null }
             }
         }
         // Contraseña no coincide
         if(binding.repeatPasswordInput.text.toString() != binding.newPasswordInput.text.toString())
             binding.tilRepeatPassword.error = "Las contraseñas no coinciden"
-
-            // Contraseña válida
-            else {
-                binding.tilRepeatPassword.error = null
-            }
+        // Contraseña válida
+        else binding.tilRepeatPassword.error = null
 
 
         binding.newPasswordInput.clearFocus()

@@ -215,27 +215,66 @@ class AccountManagement : Fragment() {
             val Password1 = dialogView.findViewById<TextInputEditText>(R.id.etNewPassword)
             val Password2 = dialogView.findViewById<TextInputEditText>(R.id.etRepeatPassword)
 
+            val passwordError = CheckValues.checkPassword(it.toString())
 
-            if(Password1.text.toString().length < 8){
-                Toast.makeText(requireContext(), "La contraseña debe tener al menos 8 caracteres", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            when(passwordError) {
+                1 -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "La contraseña debe tener al menos 8 caracteres",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                2 -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "La contraseña debe tener al menos una mayúscula",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                3 -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "La contraseña debe tener al menos un número",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                4 -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "La contraseña debe tener al menos una minúscula",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                /*5 -> {
+                    Toast.makeText(requireContext(), "La contraseña debe tener al menos un carácter especial", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }*/
+                6 -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "No puede contener espacios",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                7 -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "La seguridad es lo primero. Pon una clave",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
             }
-            if(!Password1.text.toString().matches(Regex(".*[A-Z].*"))){
-                Toast.makeText(requireContext(), "La contraseña debe tener al menos una mayúscula", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if(!Password1.text.toString().matches(Regex(".*[0-9].*"))){
-                Toast.makeText(requireContext(), "La contraseña debe tener al menos un número", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if(!Password1.text.toString().matches(Regex(".*[a-z].*"))){
-                Toast.makeText(requireContext(), "La contraseña debe tener al menos una minúscula", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if(!Password1.text.toString().matches(Regex(".*[!@#$%^&*()].*"))){
-                Toast.makeText(requireContext(), "La contraseña debe tener al menos un carácter especial", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+
             if(Password1.text.toString() != Password2.text.toString()){
                 Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

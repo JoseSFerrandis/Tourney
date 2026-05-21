@@ -125,7 +125,7 @@ class TournamentRepository (private val tournamentsDao: TournamentsDao, private 
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexiÃ³n con el servidor. Vuelve a intentarlo")) }
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
                 e.printStackTrace()
             }
         }
@@ -185,7 +185,7 @@ class TournamentRepository (private val tournamentsDao: TournamentsDao, private 
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexiÃ³n con el servidor. Vuelve a intentarlo")) }
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
                 e.printStackTrace()
             }
         }
@@ -229,7 +229,7 @@ class TournamentRepository (private val tournamentsDao: TournamentsDao, private 
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexiÃ³n con el servidor. Vuelve a intentarlo")) }
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
                 e.printStackTrace()
             }
         }
@@ -268,7 +268,7 @@ class TournamentRepository (private val tournamentsDao: TournamentsDao, private 
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexiÃ³n con el servidor. Vuelve a intentarlo")) }
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexión con el servidor. Vuelve a intentarlo")) }
                 e.printStackTrace()
             }
         }

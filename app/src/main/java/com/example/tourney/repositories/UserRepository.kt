@@ -250,15 +250,15 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
     }
 
     fun removeJoinedTournamentRelation(userId: Long, tournamentId: Long, context: Context, onSuccess: () -> Unit = {}, onError: (Exception) -> Unit = {}) {
-        if (User.actualUser?.logged != true) {
+        if (User.actualUser?.logged == true) {
             dao.removeTournamentRelation(userId, tournamentId, AppDatabaseHelper.REL_TYPE_JOINED)
             onSuccess()
             return
         }
 
-        // El backend no tiene por quÃ© permitir que un creador quite la relaciÃ³n de otro usuario
+        // El backend no tiene por qué permitir que un creador quite la relación de otro usuario
         // con el token actual. Persistimos la lista del torneo desde TournamentRepository y, si es
-        // el usuario actual, sincronizamos tambiÃ©n su relaciÃ³n remota.
+        // el usuario actual, sincronizamos también su relación remota.
         if (User.actualUser?.id == userId) {
             leaveTournament(tournamentId, context, onSuccess, onError)
         } else {
@@ -271,7 +271,7 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
     suspend fun getFollowingTournamentsList(token: String): List<Tournament> = api.getFollowingTournaments(token)
 
 
-    fun loadShowableTournaments(context: Context) = CoroutineScope(Dispatchers.IO).launch {
+    suspend fun loadShowableTournaments(context: Context) = withContext(Dispatchers.IO) {
         try {
             val sharedPreferences = Security().getEncryptedSharedPreferences(context)
             val token = sharedPreferences.getString("token", "") ?: ""

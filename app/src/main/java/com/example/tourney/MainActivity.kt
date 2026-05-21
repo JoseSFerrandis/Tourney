@@ -105,9 +105,6 @@ class MainActivity : AppCompatActivity() {
 
         TournamentRepository.getInstance(this).loadFromDatabase(this)
 
-        // DEBUG: Log de todos los usuarios registrados
-        logAllUsers()
-
         // Comprobar consentimiento inicial
         checkCookiesConsent()
     }
@@ -176,19 +173,6 @@ class MainActivity : AppCompatActivity() {
         cookiesDialog?.show()
     }
 
-    private fun logAllUsers() {
-        try {
-            val users = UsersDao(this).getAllUsers()
-            Log.e("DEBUG_USERS", "=== LISTA DE USUARIOS REGISTRADOS ===")
-            users.forEach { user ->
-                Log.e("DEBUG_USERS", "Email: ${user.email} | Password: ${user.password} | Nick: ${user.nickname}")
-            }
-            Log.e("DEBUG_USERS", "=====================================")
-        } catch (e: Exception) {
-            Log.e("DEBUG_USERS", "Error al leer usuarios: ${e.message}")
-        }
-    }
-
     private fun showCustomHomeDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_home_options, null)
         val dialog = MaterialAlertDialogBuilder(this)
@@ -222,14 +206,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> true
-            R.id.action_deleteTable -> {
-                UsersDao(this).dropAll()
-                true
-            }
-            R.id.action_deleteTournaments -> {
-                TournamentsDao(this).dropAll()
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }

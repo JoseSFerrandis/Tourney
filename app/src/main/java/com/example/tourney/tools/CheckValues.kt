@@ -18,10 +18,12 @@ object CheckValues {
      * 4: La contraseña no contiene al menos una minúscula
      * 5: La contraseña no contiene al menos un carácter especial
      * 6: La contraseña contiene espacios
+     * 7: La contraseña está vacía
      */
     fun checkPassword(password: String): Int {
         //val passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"
         if(password.length < 8){ return 1 }
+        if(password.isEmpty()){ return 7 }
         if(!password.matches(Regex(".*[A-Z].*"))){ return 2 }
         if(!password.matches(Regex(".*[0-9].*"))){ return 3 }
         if(!password.matches(Regex(".*[a-z].*"))){ return 4 }

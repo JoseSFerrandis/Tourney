@@ -12,6 +12,7 @@ import com.example.tourney.databinding.FragmentRegisterBinding
 import com.example.tourney.models.NewUserModel
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
+import com.example.tourney.tools.CheckValues
 import com.example.tourney.tools.Security
 import com.example.tourney.tools.UsersDao
 import com.google.android.material.snackbar.Snackbar
@@ -87,10 +88,6 @@ class RegisterFragment : Fragment() {
                 setError(binding.tilNickname, "Usa solo letras, números o guiones bajos")
                 isValid = false
             }
-            usersDao.getAllUsers().any { it.nickname.equals(nickname, true) } -> {
-                setError(binding.tilNickname, "Este nickname ya está en batalla. Elige otro.")
-                isValid = false
-            }
         }
 
         // 2. Validar Email
@@ -103,43 +100,45 @@ class RegisterFragment : Fragment() {
                 setError(binding.tilEmail, "Ese email no parece correcto")
                 isValid = false
             }
-            usersDao.getAllUsers().any { it.email.equals(email, true) } -> {
-                setError(binding.tilEmail, "Este email ya tiene una cuenta activa")
+        }
+
+        // 3. Validar Contraseña
+        val passwordError = CheckValues.checkPassword(password)
+        when (passwordError) {
+            7 -> {
+                setError(binding.tilPassword, "La seguridad es lo primero. Pon una clave.")
+                isValid = false
+            }
+            1 -> {
+                setError(binding.tilPassword, "La contraseña debe tener al menos 8 caracteres")
+                isValid = false
+            }
+            2 -> {
+                setError(binding.tilPassword, "Debe tener al menos una mayúscula")
+                isValid = false
+            }
+            3 -> {
+                setError(binding.tilPassword, "Debe tener al menos un número")
+                isValid = false
+            }
+            4 -> {
+                setError(binding.tilPassword, "Debe tener al menos una minúscula")
+                isValid = false
+            }
+            /*
+            5 -> {
+                setError(binding.tilPassword, "Debe tener al menos un carácter especial")
+                isValid = false
+            }*/
+            6 -> {
+                setError(binding.tilPassword, "No puede contener espacios")
                 isValid = false
             }
         }
 
-        // 3. Validar Contraseña
-        when {
-            password.isEmpty() -> {
-                setError(binding.tilPassword, "La seguridad es lo primero. Pon una clave.")
-                isValid = false
-            }
-            password.length < 8 -> {
-                setError(binding.tilPassword, "La contraseña debe tener al menos 8 caracteres")
-                isValid = false
-            }
-            confirm != password -> {
-                setError(binding.tilPasswordConfirm, "Las contraseñas no coinciden")
-                isValid = false
-            }
-            !password.matches(Regex(".*[A-Z].*")) -> {
-                setError(binding.tilPassword, "Debe tener al menos una mayúscula")
-                isValid = false
-            }
-            !password.matches(Regex(".*[a-z].*")) -> {
-                setError(binding.tilPassword, "Debe tener al menos una minúscula")
-                isValid = false
-            }
-            !password.matches(Regex(".*\\d.*")) -> {
-                setError(binding.tilPassword, "Debe tener al menos un número")
-                isValid = false
-            }
-            /*
-            !password.matches(Regex(".*[!@#$%^&*()].*")) -> {
-                setError(binding.tilPassword, "Debe tener al menos un carácter especial")
-                isValid = false
-            }*/
+        if(confirm != password){
+            setError(binding.tilPasswordConfirm, "Las contraseñas no coinciden")
+            isValid = false
         }
 
 
