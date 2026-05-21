@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnThemeOption"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="16dp"
+        android:text="Nombre del Tema"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        app:cornerRadius="20dp"
+        app:icon="@drawable/ic_check"
+        app:iconSize="28dp"
+        app:iconGravity="textStart"
+        app:iconPadding="16dp"
+        app:iconTint="@color/white" />
+</layout>

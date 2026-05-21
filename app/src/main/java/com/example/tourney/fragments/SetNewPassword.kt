@@ -41,6 +41,14 @@ class SetNewPassword : Fragment() {
 
         email = arguments?.getString("email")
 
+        binding.newPasswordInput.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.tilNewPassword.error = null
+        }
+        binding.repeatPasswordInput.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.tilRepeatPassword.error = null
+        }
+
+
         binding.btnCreateNewPassword.setOnClickListener {
             createNewPassword()
             binding.btnCreateNewPassword.isEnabled = true
@@ -52,7 +60,7 @@ class SetNewPassword : Fragment() {
     fun createNewPassword(){
         binding.newPasswordInput.text?.let {
             // Contraseña demasiado corta
-            if(it.length < 8 && it.length > 1)
+            if(it.length in 2..<8)
                 binding.tilNewPassword.error = "Debe tener al menos 8 caracteres"
 
             // Contraseña sin mayúsculas
@@ -67,9 +75,11 @@ class SetNewPassword : Fragment() {
             else if(!it.contains(Regex("[a-z]")))
                 binding.tilNewPassword.error = "Debe tener al menos una minúscula"
 
+                /*
                 // Contraseña sin caracteres especiales
             else if(!it.contains(Regex("[^a-zA-Z\\d]")))
                 binding.tilNewPassword.error = "Debe tener al menos un carácter especial"
+                */
 
             // Contraseña válida
             else {

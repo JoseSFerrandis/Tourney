@@ -47,7 +47,11 @@ class TournamentListFragment : Fragment() {
         val tournaments =
             TournamentRepository.getInstance(requireContext()).searchTournamentListByIds(ids.toMutableList())
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        // Si el LayoutManager no está definido en el XML (como en tablet), ponemos el lineal por defecto
+        if (binding.recyclerView.layoutManager == null) {
+            binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        }
+
         binding.recyclerView.adapter = TournamentAdapter(tournaments) { tournament ->
             val bundle = Bundle().apply { putParcelable("tournament_data", tournament) }
             findNavController().navigate(R.id.action_HomeFragment_to_TournamentFragment, bundle)

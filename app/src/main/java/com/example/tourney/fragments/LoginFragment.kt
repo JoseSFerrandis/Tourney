@@ -69,10 +69,10 @@ class LoginFragment : Fragment() {
         binding.btnForgotPassword.setOnClickListener {
             findNavController().navigate(R.id.action_LoginFragment_to_RememberPassword)
         }
-        
+
         binding.btnModoInvitado?.setOnClickListener {
             // Cargamos al usuario invitado desde la BD (ID 3 por defecto)
-            val invitado = UsersDao(requireContext()).getUserById(3)
+            val invitado = UsersDao(requireContext()).getUserById(1)
             if (invitado != null) {
                 User.actualUser = invitado
                 findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
@@ -82,37 +82,18 @@ class LoginFragment : Fragment() {
         }
     }
 
-    /*fun login(): Boolean{
-
-        UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance())
-            .loginUser(binding.loginEmailInput.text.toString(),
-                binding.loginPasswordInput.text.toString())
-            {
-                return@loginUser true
-            }
-        return false
-
-        /*
-        if(binding.loginEmailInput.text.toString() == "" &&
-            binding.loginPasswordInput.text.toString() == ""){
-            User.actualUser = User(-1, "admin", "1", "admin", 0)
-            return true
-        }
-
+    fun login(): Boolean{
         val allUsers = UsersDao(requireContext()).getAllUsers()
         for(user in allUsers){
             if(binding.loginEmailInput.text.toString() == user.email &&
                 binding.loginPasswordInput.text.toString() == user.password){
                 User.actualUser = user
+                User.actualUser = user
+                User.actualUser!!.logged = true
                 return true
             }
         }
         Snackbar.make(binding.root, "Email o contraseña incorrectos", Snackbar.LENGTH_LONG).show()
-        return false*/
-    }*/
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        return false
     }
 }

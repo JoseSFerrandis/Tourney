@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="500dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="32dp"
+    app:cardElevation="12dp"
+    app:strokeWidth="0dp"
+    android:layout_gravity="center"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="48dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Qué quieres hacer?"
+            android:textColor="?attr/appColorSecondary"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="48dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreateOption"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Crear torneo"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_plus"
+            app:iconTint="@color/white"
+            app:backgroundTint="?attr/appColorPrimary"
+            app:cornerRadius="20dp"
+            android:layout_marginBottom="24dp"
+            app:iconSize="32dp"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnJoinOption"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Unirse a un torneo"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_join_tournament"
+            app:iconTint="@color/white"
+            app:backgroundTint="?attr/appColorPrimary"
+            app:cornerRadius="20dp"
+            app:iconSize="32dp"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

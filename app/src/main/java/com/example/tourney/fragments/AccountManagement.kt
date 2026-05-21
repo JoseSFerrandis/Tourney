@@ -20,11 +20,11 @@ import com.example.tourney.adapters.ThemeAdapter
 import com.example.tourney.adapters.ThemeOption
 import com.example.tourney.databinding.FragmentAccountManagementBinding
 import com.example.tourney.entities.User
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
 import com.example.tourney.tools.CheckValues
 import com.example.tourney.tools.UsersDao
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 
 class AccountManagement : Fragment() {
