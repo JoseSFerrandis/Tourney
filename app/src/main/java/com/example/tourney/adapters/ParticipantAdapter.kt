@@ -7,7 +7,8 @@ import com.example.tourney.databinding.ItemUserBinding
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
-import com.example.tourney.tools.AppDatabaseHelper
+import com.example.tourney.repositories.UserRepository
+import com.example.tourney.tools.APIService
 import com.example.tourney.tools.UsersDao
 
 class ParticipantAdapter(private val tournament : Tournament, private val refresh : () -> Unit) :
@@ -40,10 +41,10 @@ class ParticipantAdapter(private val tournament : Tournament, private val refres
             
             // 2. Si es un usuario registrado, eliminar la relación de inscripción (Base de Datos)
             if (userId != null) {
-                UsersDao(holder.itemView.context).removeTournamentRelation(
+                UserRepository.getInstance(UsersDao(holder.itemView.context), APIService.getInstance()).removeJoinedTournamentRelation(
                     userId, 
-                    tournament.id, 
-                    AppDatabaseHelper.REL_TYPE_JOINED
+                    tournament.id,
+                    holder.itemView.context
                 )
             }
             

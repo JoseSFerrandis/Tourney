@@ -2,6 +2,7 @@ package com.example.tourney.tools
 
 import com.example.models.LoginResponse
 import com.example.models.PasswordModel
+import com.example.tourney.entities.Participant
 import com.example.tourney.entities.Tournament
 import com.example.tourney.models.LoginModel
 import com.example.tourney.models.NewUserModel
@@ -15,6 +16,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -62,8 +64,46 @@ interface APIService {
 
 
 
+    @GET("/tournament/getAllTournaments")
+    suspend fun getAllTournaments(@Header("Authorization") token: String): List<Tournament>
+
+    @GET("/tournament/getTournamentByCode/{code}")
+    suspend fun getTournamentByCode(@Header("Authorization") token: String, @Path("code") code: Int): Response<Tournament>
+
     @POST("/tournament/createTournament")
     suspend fun insertTournament(@Header("Authorization") token: String, @Body tournament: TournamentModel): Response<IdModel>
+
+    @POST("/tournament/updateTournament")
+    suspend fun updateTournament(@Header("Authorization") token: String, @Body tournament: TournamentModel): Response<Unit>
+
+    @POST("/tournament/updateParticipants/{id}")
+    suspend fun updateParticipants(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long,
+        @Body participants: List<Participant>
+    ): Response<Unit>
+
+    @POST("/tournament/updateThumbnail/{id}/{thumbnail}")
+    suspend fun updateTournamentThumbnail(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long,
+        @Path("thumbnail") thumbnail: Int
+    ): Response<Unit>
+
+    @DELETE("/tournament/deleteTournament/{id}")
+    suspend fun deleteTournament(@Header("Authorization") token: String, @Path("id") id: Long): Response<Unit>
+
+    @POST("/user/followTournament/{id}")
+    suspend fun followTournament(@Header("Authorization") token: String, @Path("id") id: Long): Response<Unit>
+
+    @POST("/user/unfollowTournament/{id}")
+    suspend fun unfollowTournament(@Header("Authorization") token: String, @Path("id") id: Long): Response<Unit>
+
+    @POST("/user/joinTournament/{id}")
+    suspend fun joinTournament(@Header("Authorization") token: String, @Path("id") id: Long): Response<Unit>
+
+    @POST("/user/leaveTournament/{id}")
+    suspend fun leaveTournament(@Header("Authorization") token: String, @Path("id") id: Long): Response<Unit>
 
     companion object{
         private var apiService: APIService? = null

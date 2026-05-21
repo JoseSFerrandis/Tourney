@@ -15,6 +15,7 @@ import androidx.core.content.edit
 import com.example.models.PasswordModel
 import com.example.tourney.entities.Tournament
 import com.example.tourney.models.EmailAndNickname
+import com.example.tourney.tools.AppDatabaseHelper
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withTimeout
 
@@ -184,6 +185,87 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
 
     }
 
+    fun followTournament(tournamentId: Long, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        updateTournamentRelation(
+            context = context,
+            localAction = {
+                User.actualUser?.addFollowingTournament(tournamentId)
+                User.actualUser?.email?.let { email ->
+                    dao.updateFollowingTournamentList(email, User.actualUser?.followingTournamentList.toCsv())
+                }
+            },
+            remoteAction = { token -> api.followTournament(token, tournamentId) },
+            memoryAction = { User.actualUser?.addFollowingTournament(tournamentId) },
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
+    fun unfollowTournament(tournamentId: Long, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        updateTournamentRelation(
+            context = context,
+            localAction = {
+                User.actualUser?.removeFollowingTournament(tournamentId)
+                User.actualUser?.email?.let { email ->
+                    dao.updateFollowingTournamentList(email, User.actualUser?.followingTournamentList.toCsv())
+                }
+            },
+            remoteAction = { token -> api.unfollowTournament(token, tournamentId) },
+            memoryAction = { User.actualUser?.removeFollowingTournament(tournamentId) },
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
+    fun joinTournament(tournamentId: Long, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        updateTournamentRelation(
+            context = context,
+            localAction = {
+                User.actualUser?.addJoinedTournament(tournamentId)
+                User.actualUser?.email?.let { email ->
+                    dao.updateJoinedTournamentList(email, User.actualUser?.joinedTournamentList.toCsv())
+                }
+            },
+            remoteAction = { token -> api.joinTournament(token, tournamentId) },
+            memoryAction = { User.actualUser?.addJoinedTournament(tournamentId) },
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
+    fun leaveTournament(tournamentId: Long, context: Context, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        updateTournamentRelation(
+            context = context,
+            localAction = {
+                User.actualUser?.removeJoinedTournament(tournamentId)
+                User.actualUser?.email?.let { email ->
+                    dao.updateJoinedTournamentList(email, User.actualUser?.joinedTournamentList.toCsv())
+                }
+            },
+            remoteAction = { token -> api.leaveTournament(token, tournamentId) },
+            memoryAction = { User.actualUser?.removeJoinedTournament(tournamentId) },
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
+    fun removeJoinedTournamentRelation(userId: Long, tournamentId: Long, context: Context, onSuccess: () -> Unit = {}, onError: (Exception) -> Unit = {}) {
+        if (User.actualUser?.logged != true) {
+            dao.removeTournamentRelation(userId, tournamentId, AppDatabaseHelper.REL_TYPE_JOINED)
+            onSuccess()
+            return
+        }
+
+        // El backend no tiene por quÃ© permitir que un creador quite la relaciÃ³n de otro usuario
+        // con el token actual. Persistimos la lista del torneo desde TournamentRepository y, si es
+        // el usuario actual, sincronizamos tambiÃ©n su relaciÃ³n remota.
+        if (User.actualUser?.id == userId) {
+            leaveTournament(tournamentId, context, onSuccess, onError)
+        } else {
+            onSuccess()
+        }
+    }
+
     suspend fun getCreatedTournamentsList(token: String): List<Tournament> = api.getCreatedTournaments(token)
     suspend fun getJoinedTournamentsList(token: String): List<Tournament> = api.getJoinedTournaments(token)
     suspend fun getFollowingTournamentsList(token: String): List<Tournament> = api.getFollowingTournaments(token)
@@ -209,11 +291,55 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
 
             User.actualUser?.showableTournamentList?.clear()
             User.actualUser?.showableTournamentList?.addAll(created.map { it.id })
+            User.actualUser?.joinedTournamentList?.clear()
             User.actualUser?.joinedTournamentList?.addAll(joined.map { it.id })
+            User.actualUser?.followingTournamentList?.clear()
             User.actualUser?.followingTournamentList?.addAll(following.map { it.id })
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun updateTournamentRelation(
+        context: Context,
+        localAction: () -> Unit,
+        remoteAction: suspend (String) -> retrofit2.Response<Unit>,
+        memoryAction: () -> Unit,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        if (User.actualUser?.logged != true) {
+            localAction()
+            onSuccess()
+            return
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                withTimeout(5000) {
+                    val response = remoteAction(getBearerToken(context))
+                    if (response.isSuccessful) {
+                        memoryAction()
+                        withContext(Dispatchers.Main) { onSuccess() }
+                    } else {
+                        withContext(Dispatchers.Main) { onError(Exception("No se ha podido actualizar la relaciÃ³n con el torneo")) }
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) { onError(Exception("No se pudo establecer conexiÃ³n con el servidor. Vuelve a intentarlo")) }
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun getBearerToken(context: Context): String {
+        val sharedPreferences = Security().getEncryptedSharedPreferences(context)
+        val token = sharedPreferences.getString("token", "") ?: ""
+        return "Bearer $token"
+    }
+
+    private fun MutableList<Long>?.toCsv(): String {
+        return this?.joinToString(",") ?: ""
     }
 
     companion object{

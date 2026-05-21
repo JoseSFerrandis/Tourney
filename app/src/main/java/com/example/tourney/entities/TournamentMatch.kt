@@ -10,8 +10,8 @@ data class TournamentMatch(
     var id: Long = 0,
     var tournamentId: Long,
     var roundNumber: Int,
-    var participantOneId: Long?, // Referencia al ID de Participante
-    var participantTwoId: Long?,
+    var participantOneId: Long? = null, // Referencia al ID de Participante
+    var participantTwoId: Long? = null,
     var participantOneName: String, // Referencia al nombre de Participante
     var participantTwoName: String,
     var scoreOne: String = "0",

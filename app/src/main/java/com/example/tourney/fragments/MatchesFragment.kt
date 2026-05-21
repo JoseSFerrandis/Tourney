@@ -16,7 +16,7 @@ import com.example.tourney.entities.Participant
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
-import com.example.tourney.tools.TournamentsDao
+import com.example.tourney.repositories.TournamentRepository
 import com.ventura.bracketslib.BracketsView
 import com.ventura.bracketslib.model.ColomnData
 import com.ventura.bracketslib.model.CompetitorData
@@ -63,7 +63,7 @@ class MatchesFragment : Fragment() {
                 Toast.makeText(requireContext(), "Torneo iniciado", Toast.LENGTH_SHORT).show()
             }
             else { nextRound() }
-            tournament?.let{ TournamentsDao(requireContext()).updateTournament(it) }
+            tournament?.let{ persistTournament(it) }
             updateNextRoundBtn()
         }
         binding.goToClasification.setOnClickListener {
@@ -92,9 +92,18 @@ class MatchesFragment : Fragment() {
                 refreshBracketView()
             }
         } else {
-            tournament?.let{ TournamentsDao(requireContext()).updateTournament(it) }
+            tournament?.let{ persistTournament(it) }
             updateNextRoundBtn()
         }
+    }
+
+    private fun persistTournament(tournament: Tournament) {
+        TournamentRepository.getInstance(requireContext()).updateTournament(
+            tournament,
+            requireContext(),
+            onSuccess = {},
+            onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+        )
     }
 
     private fun initBracketView() {

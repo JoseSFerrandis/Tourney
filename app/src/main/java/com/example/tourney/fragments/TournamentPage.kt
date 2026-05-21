@@ -20,8 +20,8 @@ import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
 import com.example.tourney.repositories.TournamentRepository
+import com.example.tourney.repositories.UserRepository
 import com.example.tourney.tools.APIService
-import com.example.tourney.tools.TournamentsDao
 import com.example.tourney.tools.UsersDao
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -50,11 +50,16 @@ class TournamentPage : Fragment() {
             val selectedThumbnail = bundle.getInt("selected_thumbnail")
             tournament?.let { t ->
                 t.thumbnail = selectedThumbnail
-                // Actualizar en base de datos
-                TournamentsDao(requireContext()).updateTournamentThumbnail(t.id, selectedThumbnail)
-                // Refrescar imagen en la cabecera
-                updateHeaderImage(selectedThumbnail)
-                Toast.makeText(requireContext(), "Portada actualizada", Toast.LENGTH_SHORT).show()
+                TournamentRepository.getInstance(requireContext()).updateTournamentThumbnail(
+                    t.id,
+                    selectedThumbnail,
+                    requireContext(),
+                    onSuccess = {
+                        updateHeaderImage(selectedThumbnail)
+                        Toast.makeText(requireContext(), "Portada actualizada", Toast.LENGTH_SHORT).show()
+                    },
+                    onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+                )
             }
         }
 
@@ -170,45 +175,66 @@ class TournamentPage : Fragment() {
         binding.btnFollow?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 // Lógica para añadir a siguiendo
-                User.actualUser?.addFollowingTournament(tournament.id)
-                Toast.makeText(context, "Siguiendo torneo", Toast.LENGTH_SHORT).show()
+                UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).followTournament(
+                    tournament.id,
+                    requireContext(),
+                    onSuccess = { Toast.makeText(context, "Siguiendo torneo", Toast.LENGTH_SHORT).show() },
+                    onError = { error -> Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show() }
+                )
             } else {
                 // Lógica para dejar de seguir
-                User.actualUser?.removeFollowingTournament(tournament.id)
+                UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).unfollowTournament(
+                    tournament.id,
+                    requireContext(),
+                    onSuccess = {},
+                    onError = { error -> Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show() }
+                )
             }
-
-            UsersDao(requireContext()).updateFollowingTournamentList(User.actualUser?.email!!,
-                User.actualUser?.followingTournamentList.toString().replace("[", "").replace("]", ""))
         }
 
         binding.btnJoin.setOnClickListener {
             val alreadyJoined = tournament.participantList.find { it.userId == User.actualUser?.id } != null
+            val user = User.actualUser ?: return@setOnClickListener
 
             if(alreadyJoined){
-                tournament.removeParticipant(User.actualUser!!)
-                User.actualUser?.removeJoinedTournament(tournament.id)
+                tournament.removeParticipant(user)
 
-                UsersDao(requireContext()).updateJoinedTournamentList(
-                    User.actualUser?.email!!,
-                    User.actualUser?.joinedTournamentList.toString().replace("[", "")
-                        .replace("]", "")
+                UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).leaveTournament(
+                    tournament.id,
+                    requireContext(),
+                    onSuccess = {
+                        TournamentRepository.getInstance(requireContext()).updateParticipants(
+                            tournament,
+                            requireContext(),
+                            onSuccess = {
+                                Toast.makeText(requireContext(), "Desinscrito", Toast.LENGTH_SHORT).show()
+                                setupUI(tournament)
+                            },
+                            onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+                        )
+                    },
+                    onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
                 )
-                TournamentsDao(requireContext()).updateTournament(tournament)
-                Toast.makeText(requireContext(), "Desinscrito", Toast.LENGTH_SHORT).show()
-                setupUI(tournament)
                 return@setOnClickListener
             }
 
-            if(tournament.addParticipant(User.actualUser!!)){
-                User.actualUser?.addJoinedTournament(tournament.id)
-                UsersDao(requireContext()).updateJoinedTournamentList(
-                    User.actualUser?.email!!,
-                    User.actualUser?.joinedTournamentList.toString().replace("[", "")
-                        .replace("]", "")
+            if(tournament.addParticipant(user)){
+                UserRepository.getInstance(UsersDao(requireContext()), APIService.getInstance()).joinTournament(
+                    tournament.id,
+                    requireContext(),
+                    onSuccess = {
+                        TournamentRepository.getInstance(requireContext()).updateParticipants(
+                            tournament,
+                            requireContext(),
+                            onSuccess = {
+                                Toast.makeText(requireContext(), "Inscripción exitosa", Toast.LENGTH_SHORT).show()
+                                setupUI(tournament)
+                            },
+                            onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+                        )
+                    },
+                    onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
                 )
-                TournamentsDao(requireContext()).updateTournament(tournament)
-                Toast.makeText(requireContext(), "Inscripción exitosa", Toast.LENGTH_SHORT).show()
-                setupUI(tournament)
             }
         }
     }
@@ -271,9 +297,15 @@ class TournamentPage : Fragment() {
             .setTitle("Eliminar torneo")
             .setMessage("¿Estás seguro de que deseas eliminar este torneo?")
             .setPositiveButton("Sí") { _, _ ->
-                TournamentRepository.getInstance(requireContext()).deleteTournament(requireContext(), tournament.id)
-                Toast.makeText(requireContext(), "Torneo eliminado", Toast.LENGTH_SHORT).show()
-                findNavController().popBackStack()
+                TournamentRepository.getInstance(requireContext()).deleteTournament(
+                    requireContext(),
+                    tournament.id,
+                    onSuccess = {
+                        Toast.makeText(requireContext(), "Torneo eliminado", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    },
+                    onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+                )
             }
             .setNegativeButton("No", null)
             .show()

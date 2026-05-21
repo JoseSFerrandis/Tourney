@@ -15,7 +15,8 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
-import com.example.tourney.tools.TournamentsDao
+import com.example.tourney.repositories.TournamentRepository
+import android.widget.Toast
 
 class ClasificationListFragment : Fragment() {
     private var _binding: FragmentClasificationListBinding? = null
@@ -51,7 +52,7 @@ class ClasificationListFragment : Fragment() {
                 tournament?.setStatusInProgress(requireContext())
             }
             else{ tournament?.nextRound(requireContext()) }
-            tournament?.let{ TournamentsDao(requireContext()).updateTournament(it) }
+            tournament?.let{ persistTournament(it) }
             refresh()
         }
 
@@ -156,6 +157,15 @@ class ClasificationListFragment : Fragment() {
             }
         }
         return total
+    }
+
+    private fun persistTournament(tournament: Tournament) {
+        TournamentRepository.getInstance(requireContext()).updateTournament(
+            tournament,
+            requireContext(),
+            onSuccess = {},
+            onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+        )
     }
 
     private fun updateNextRoundBtn(){

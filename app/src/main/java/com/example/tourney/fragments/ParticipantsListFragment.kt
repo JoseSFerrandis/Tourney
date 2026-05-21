@@ -15,7 +15,7 @@ import com.example.tourney.entities.Participant
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.User
-import com.example.tourney.tools.TournamentsDao
+import com.example.tourney.repositories.TournamentRepository
 
 class ParticipantsListFragment : Fragment() {
 
@@ -111,7 +111,11 @@ class ParticipantsListFragment : Fragment() {
         // 2. Actualizar estado del botón de añadir
         updateInfo.invoke()
 
-        TournamentsDao(requireContext()).updateParticipants(tournament!!)
+        TournamentRepository.getInstance(requireContext()).updateParticipants(
+            tournament!!,
+            requireContext(),
+            onError = { error -> Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show() }
+        )
     }
 
     val updateInfo = fun() {

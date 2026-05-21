@@ -14,7 +14,7 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
-import com.example.tourney.tools.TournamentsDao
+import com.example.tourney.repositories.TournamentRepository
 
 class AddPunctuationParticipantAdapter(private val tournament : Tournament, private val context: Context) :
     RecyclerView.Adapter<AddPunctuationParticipantAdapter.UserViewHolder>() {
@@ -87,7 +87,7 @@ class AddPunctuationParticipantAdapter(private val tournament : Tournament, priv
                     if (holder.binding.participantPoints.hasFocus()) {
                         // Sincronizamos con el modelo plano (matches) y guardamos en DB
                         tournament.updateMatchesFromView()
-                        TournamentsDao(context).updateTournament(tournament)
+                        TournamentRepository.getInstance(context).updateTournament(tournament, context, {}, {})
                     }
                 }
             }

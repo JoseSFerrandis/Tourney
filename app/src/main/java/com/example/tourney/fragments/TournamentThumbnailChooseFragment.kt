@@ -12,7 +12,6 @@ import com.example.tourney.R
 import com.example.tourney.adapters.TournamentThumbnailAdapter
 import com.example.tourney.databinding.FragmentTournamentThumbnailChooseBinding
 import com.example.tourney.entities.Tournament
-import com.example.tourney.tools.TournamentsDao
 
 class TournamentThumbnailChooseFragment : Fragment() {
 
@@ -57,7 +56,6 @@ class TournamentThumbnailChooseFragment : Fragment() {
             
             if (tournament != null) {
                 // MODO EDICIÓN: Guardamos directamente en la base de datos
-                TournamentsDao(requireContext()).updateTournamentThumbnail(tournament.id, thumbnailId)
                 tournament.thumbnail = thumbnailId
             }
             
