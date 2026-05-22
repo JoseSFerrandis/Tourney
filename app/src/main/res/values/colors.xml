@@ -10,12 +10,17 @@
     <color name="blue_5">#1970C3</color>
     <color name="green_100">#006B00</color>
 
-
-
     <color name="DarkBlue1">#1e4fd9</color>
     <color name="DarkBlue2">#041C9E</color>
+    
+    <!-- Fondo de las fichas de torneo (Blanco en día, Gris clarito en noche) -->
+    <color name="tournament_card_bg">#FFFFFFFF</color>
+    
+    <!-- Fondo de los botones principales en la ficha (Azul en día, Blanco/Gris en noche) -->
+    <color name="tournament_button_bg">#1e4fd9</color>
+    <color name="tournament_button_text">#FFFFFFFF</color>
+
     <!-- Register new user -->
-    <!--  ── Fondo y superficies ─────────────────────────────────────────  -->
     <color name="bg_dark">#0F0F1A</color>
     <color name="input_bg">#1A1A2E</color>
     <color name="input_stroke">#2D2D4E</color>
@@ -30,29 +35,23 @@
     <color name="boton_tablet_card_white">#33FFFFFF</color>
     <color name="boton_movil_card_white">#33FFFFFF</color>
 
-    <!--  ── Acento principal ────────────────────────────────────────────  -->
     <color name="accent_purple">#7C3AED</color>
     <color name="accent_purple_light">#A78BFA</color>
-    <!--  ── Texto ───────────────────────────────────────────────────────  -->
     <color name="text_primary">#F1F0FF</color>
     <color name="text_secondary">#9CA3AF</color>
     <color name="text_hint">#4B5563</color>
     <color name="tablet_secondary">#CCDCFF</color>
     <color name="tablet_title_black">#1e4fd9</color>
 
-    <!--  ── Estado de error ─────────────────────────────────────────────  -->
     <color name="error_red">#EF4444</color>
-    <!--  ── Indicador de fortaleza ──────────────────────────────────────  -->
     <color name="strength_empty">#2D2D4E</color>
     <color name="strength_weak">#EF4444</color>
     <color name="strength_fair">#F97316</color>
     <color name="strength_good">#EAB308</color>
     <color name="strength_strong">#22C55E</color>
 
-    <!-- Color dinámico para tarjetas (negro en día, blanco en noche) -->
+    <!-- Color dinámico para texto en tarjetas -->
     <color name="dynamic_text_card">#FF000000</color>
 
-    <!-- Color del boton follow tournament -->
     <color name="follow_button_filled">@color/boton_movil_card</color>
-
 </resources>
