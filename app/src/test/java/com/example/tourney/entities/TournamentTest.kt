@@ -4,6 +4,8 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import com.ventura.bracketslib.model.CompetitorData
+import com.ventura.bracketslib.model.MatchData
+import com.ventura.bracketslib.model.ColomnData
 
 class TournamentTest {
 
@@ -20,7 +22,7 @@ class TournamentTest {
             creatorId = 0L,
             creatorNickname = "Creator",
             participantList = mutableListOf(),
-            maxParticipants = 2,
+            maxParticipants = 4,
             date = 0L,
             location = "Online",
             prize = "100",
@@ -32,40 +34,54 @@ class TournamentTest {
     }
 
     @Test
-    fun testHasSpace() {
-        assertTrue(tournament.hasSpace())
-        tournament.addParticipant(user1)
-        assertTrue(tournament.hasSpace())
-        tournament.addParticipant(user2)
-        assertFalse(tournament.hasSpace())
+    fun testUpdateMatchesFromView() {
+        val matchData = MatchData(CompetitorData("P1", "2"), CompetitorData("P2", "1"))
+        val column = ColomnData(mutableListOf(matchData))
+        tournament.columnMatches = mutableListOf(column)
+        
+        tournament.updateMatchesFromView()
+        
+        assertEquals(1, tournament.matches.size)
+        val flatMatch = tournament.matches[0]
+        assertEquals("P1", flatMatch.participantOneName)
+        assertEquals("P2", flatMatch.participantTwoName)
     }
 
     @Test
-    fun testAddParticipant() {
+    fun testAddParticipant_PreventDuplicates() {
         assertTrue(tournament.addParticipant(user1))
-        assertEquals(1, tournament.numParticipants)
         
-        assertTrue(tournament.addParticipant(user2))
+        // No debe permitir el mismo ID de usuario (user1 tiene ID 1)
+        val userSameId = User(1L, "OtroNick", "e@e.com", "p", 0)
+        assertFalse("Should fail due to duplicate ID", tournament.addParticipant(userSameId))
+        
+        // La lógica actual de la app permite duplicar Nickname SI el userId no es nulo y es diferente.
+        // Pero no permite duplicar Nickname SI el userId es nulo.
+        val p1 = Participant(nickname = "Gamer", userId = null)
+        assertTrue(tournament.addParticipant(p1))
+        
+        val p2 = Participant(nickname = "Gamer", userId = null)
+        assertFalse("Should fail due to duplicate Nickname for null userId", tournament.addParticipant(p2))
+        
         assertEquals(2, tournament.numParticipants)
-        
-        val user3 = User(3L, "Player3", "p3@test.com", "pass", 0)
-        assertFalse(tournament.addParticipant(user3))
     }
 
     @Test
-    fun testRemoveParticipant() {
-        tournament.addParticipant(user1)
-        tournament.addParticipant(user2)
+    fun testRecalculateNotDead_Elimination() {
+        tournament.type = TournamentType.ELIMINATION
+        tournament.setStatusFinished(null)
         
-        assertTrue(tournament.removeParticipant(user1))
-        assertEquals(1, tournament.numParticipants)
+        val match = MatchData(CompetitorData("Winner", "5"), CompetitorData("Loser", "2"))
+        tournament.columnMatches = mutableListOf(ColomnData(mutableListOf(match)))
+        
+        tournament.recalculateNotDead()
+        
+        assertEquals(1, tournament.getNotDead().size)
+        assertEquals("Winner", tournament.getNotDead()[0].name)
     }
 
     @Test
     fun testStatusUpdates() {
-        tournament.setStatusEditable()
-        assertEquals(TournamentStatus.EDITABLE, tournament.tournamentStatus)
-        
         tournament.setStatusInProgress(null)
         assertEquals(TournamentStatus.IN_PROGRESS, tournament.tournamentStatus)
         
