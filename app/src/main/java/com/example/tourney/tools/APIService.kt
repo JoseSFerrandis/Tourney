@@ -107,8 +107,7 @@ interface APIService {
 
     companion object{
         private var apiService: APIService? = null
-        // TODO: cambiar la URL
-        private var url: String = "http://192.168.0.17:8080"
+        private var url: String = "https://tourney.deyn-server.duckdns.org"
 
         fun getInstance(): APIService {
             if (apiService == null) {

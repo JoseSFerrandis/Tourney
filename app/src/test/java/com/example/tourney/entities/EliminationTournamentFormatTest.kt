@@ -1,13 +1,13 @@
-package com.example.tourney.models
+package com.example.tourney.entities
 
 import android.content.Context
 import android.widget.Toast
-import com.example.tourney.entities.EliminationTournamentFormat
 import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
 import com.ventura.bracketslib.model.CompetitorData
+import com.ventura.bracketslib.model.MatchData
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -89,7 +89,7 @@ class EliminationTournamentFormatTest {
             CompetitorData("C3", "0"),
             CompetitorData("C4", "0")
         )
-        val matches = format.createMatches(competitors)
+        val matches: MutableList<MatchData> = format.createMatches(competitors)
         assertEquals(2, matches.size)
         assertEquals("C1", matches[0].competitorOne.name)
         assertEquals("C2", matches[0].competitorTwo.name)
