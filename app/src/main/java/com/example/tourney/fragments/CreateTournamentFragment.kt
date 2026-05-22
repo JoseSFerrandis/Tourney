@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -40,6 +41,8 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         _binding = FragmentCreateTournamentBinding.bind(view)
         val context = requireContext()
 
+        setupTooltips()
+
         // Ajuste para que el teclado no tape el contenido
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val keyboardInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
@@ -47,9 +50,9 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             insets
         }
 
-        // Oculta el campo de código si el usuario es un invitado
-        if(User.actualUser?.logged == false){
-            binding.tvCode.visibility = View.GONE
+        if(User.actualUser?.logged == false) {
+            binding.tilCode?.visibility = View.GONE
+            binding.tvCode?.visibility = View.GONE
             binding.etCode.visibility = View.GONE
         }
 
@@ -85,14 +88,26 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
         }
 
         binding.btnCreateTournament.setOnClickListener {
-            val name = binding.etName.text.toString()
-            val game = binding.etGame.text.toString()
+            val name = binding.etName.text.toString().trim()
+            val game = binding.etGame.text.toString().trim()
             val maxParticipants = binding.etMaxParticipants.text.toString().toIntOrNull() ?: 32
             val date = tournamentDate
-            val location = binding.etLocation.text.toString()
-            val prize = binding.etPrize.text.toString()
+            val location = binding.etLocation.text.toString().trim()
+            val prize = binding.etPrize.text.toString().trim()
             val code = binding.etCode.text.toString().toIntOrNull()
             val type = Tournament.getTournamentTypeFromString(binding.spTournamentType.selectedItem.toString())
+
+            // Resetear errores
+            binding.tilName.error = null
+            binding.tilGame.error = null
+            binding.tilCode?.error = null
+
+            val tournaments = TournamentRepository.getInstance().getTournaments()
+            if (code != null && tournaments.any { it.code == code }) {
+                binding.tilCode?.error = "Ese código ya está en uso"
+                return@setOnClickListener
+            }
+
 
             if (name.isNotBlank() && game.isNotBlank()) {
                 val currentUser = User.actualUser ?: run {
@@ -101,7 +116,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 }
 
                 val newTournament = Tournament(
-                    id = 0, // Se asignará en el insert del DAO
+                    id = 0,
                     name = name,
                     game = game,
                     creatorId = currentUser.id,
@@ -136,12 +151,22 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 )
 
             } else {
+                if (name.isBlank()) binding.tilName.error = "Campo obligatorio"
+                if (game.isBlank()) binding.tilGame.error = "Campo obligatorio"
                 Toast.makeText(requireContext(), "Por favor, completa los campos obligatorios", Toast.LENGTH_SHORT).show()
             }
         }
 
         colorearAsteriscoNombre()
         colorearAsteriscoCompeti()
+    }
+
+    private fun setupTooltips() {
+        binding.btnTipoTorneoHelp?.let {
+            TooltipCompat.setTooltipText(it, getString(R.string.tooltip_help_type))
+        }
+        TooltipCompat.setTooltipText(binding.etDate, getString(R.string.tooltip_select_date))
+        TooltipCompat.setTooltipText(binding.btnCreateTournament, getString(R.string.tooltip_create_tournament))
     }
 
     override fun onDestroyView() {
@@ -172,6 +197,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
                 
                 val selectedDateStr = "$selectedDay/${selectedMonth + 1}/$selectedYear"
                 binding.etDate.setText(selectedDateStr)
+                binding.tilDate.error = null
             },
             year,
             month,

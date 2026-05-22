@@ -45,4 +45,10 @@
     <string name="cerrar_sesi_n">Cerrar sesión</string>
     <string name="gesti_n_de_cuenta">Gestión de cuenta</string>
     <string name="change_theme">Cambiar tema</string>
+
+    <!-- Tooltips -->
+    <string name="tooltip_help_type">Pulsa para entender los formatos de torneo</string>
+    <string name="tooltip_select_date">Haz clic para elegir la fecha del torneo</string>
+    <string name="tooltip_create_tournament">Finalizar y publicar torneo</string>
+    <string name="tooltip_save_changes">Guardar cambios del torneo</string>
 </resources>

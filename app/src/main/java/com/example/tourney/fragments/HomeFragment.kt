@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -46,6 +47,7 @@ class HomeFragment : Fragment() {
         viewPager = binding.pager
         val tabLayout = binding.tabLayout
 
+        setupTooltips()
         updateTournamentAdapter()
         Log.e("DEBUG_USERS", " ${User.actualUser?.id}  Email: ${User.actualUser?.email} | Password: ${User.actualUser?.password} , ${User.actualUser?.nickname}")
 
@@ -70,6 +72,16 @@ class HomeFragment : Fragment() {
         binding.tvGreeting.text = "Hola, ${User.actualUser?.nickname}"
     }
 
+    private fun setupTooltips() {
+        TooltipCompat.setTooltipText(binding.btnProfile, "Ver mi perfil y ajustes")
+        binding.btnSearchTournament?.let { TooltipCompat.setTooltipText(it, "Buscar torneos") }
+        binding.btnSearchFilters?.let { TooltipCompat.setTooltipText(it, "Filtros avanzados") }
+
+        binding.btnFilterTournamentSearchEliminacion?.let { TooltipCompat.setTooltipText(it, "Filtrar por Eliminación Directa") }
+        binding.btnFilterTournamentSearchLiguilla?.let { TooltipCompat.setTooltipText(it, "Filtrar por Formato Liga") }
+        binding.btnFilterTournamentSearchSuizo?.let { TooltipCompat.setTooltipText(it, "Filtrar por Sistema Suizo") }
+    }
+
     private fun updateProfileImage() {
         val pn = User.actualUser?.photo ?: 0
         
@@ -89,11 +101,7 @@ class HomeFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnProfile.setOnClickListener {
-            //if (User.actualUser?.id?.toInt() != 3) {
-                findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
-             //}else{
-               //  Toast.makeText(requireContext(), "No puedes acceder a tu perfil como invitado", Toast.LENGTH_SHORT).show()
-             //}
+            findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
         }
 
         // Search
@@ -130,7 +138,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        updateProfileImage() // Actualizamos la imagen también al volver
+        updateProfileImage()
         updateTournamentAdapter()
     }
 
@@ -145,19 +153,15 @@ class HomeFragment : Fragment() {
 }
 
 class TournamentCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-
-    override fun getItemCount(): Int =
-        if(User.actualUser?.logged == true) 3 else 1
-
+    override fun getItemCount(): Int = if(User.actualUser?.logged == false) 1 else 3
     override fun createFragment(position: Int): Fragment {
         val user = User.actualUser
-        if(user?.logged == true)
-            return when (position) {
-                0 -> TournamentListFragment.newInstance(user.showableTournamentList)
-                1 -> TournamentListFragment.newInstance(user.joinedTournamentList)
-                else -> TournamentListFragment.newInstance(user.followingTournamentList)
-            }
-        else
-            return TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
+        return if (user?.logged == true)
+                    when (position) {
+                        0 -> TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
+                        1 -> TournamentListFragment.newInstance(user?.joinedTournamentList ?: emptyList())
+                        else -> TournamentListFragment.newInstance(user?.followingTournamentList ?: emptyList())
+                    }
+                else TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
     }
 }

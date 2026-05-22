@@ -149,18 +149,11 @@ class MatchesFragment : Fragment() {
         _binding = null
     }
 
-    /*fun UpdateNextRoundBtn(){
-        if(tournament?.creatorId != User.actualUser?.id)
-            binding.btnNextRound.visibility = View.GONE
-        else
-            binding.btnNextRound.visibility = View.VISIBLE
-
-        binding.btnNextRound.isEnabled = tournament?.tournamentStatus != TournamentStatus.FINISHED
-        binding.btnNextRound.text = if(tournament?.tournamentStatus == TournamentStatus.FINISHED)
-            "Torneo finalizado" else "Siguiente ronda"
-    }*/
-
     private fun updateNextRoundBtn(){
+        binding.goToClasification.text =
+            if(tournament?.tournamentStatus == TournamentStatus.FINISHED) "Clasificación"
+            else "Resultados"
+
         if(tournament?.creatorId != User.actualUser?.id)
             binding.btnNextRound.visibility = View.GONE
         else

@@ -80,6 +80,10 @@ class TournamentPage : Fragment() {
     }
 
     private fun setupUI(tournament: Tournament) {
+        binding.btnClassification.text =
+            if(tournament.tournamentStatus == TournamentStatus.FINISHED) "Clasificación"
+            else "Resultados"
+
         binding.tvTournamentTitle?.text = establishedValue(tournament.name)
         binding.tvGameName?.text = establishedValue(tournament.game)
         binding.tvCreator?.text = establishedValue(tournament.creatorNickname)

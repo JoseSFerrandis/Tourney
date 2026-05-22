@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     private var cookiesDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // 1. Cargar preferencia de tema antes de super.onCreate
         val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val selectedTheme = prefs.getString("user_theme", "Blue")
         
@@ -66,7 +65,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        // Recuperar NavController de forma segura a través del NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         navController = navHostFragment.navController
         
