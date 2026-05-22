@@ -250,7 +250,7 @@ class UserRepository(private val dao: UsersDao, private val api: APIService) {
     }
 
     fun removeJoinedTournamentRelation(userId: Long, tournamentId: Long, context: Context, onSuccess: () -> Unit = {}, onError: (Exception) -> Unit = {}) {
-        if (User.actualUser?.logged == true) {
+        if (User.actualUser?.logged == false) {
             dao.removeTournamentRelation(userId, tournamentId, AppDatabaseHelper.REL_TYPE_JOINED)
             onSuccess()
             return
