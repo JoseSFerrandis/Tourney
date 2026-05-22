@@ -135,6 +135,9 @@
         <action
             android:id="@+id/action_TournamentFragment_to_EditTournamentFragment"
             app:destination="@id/EditTournamentFragment" />
+        <action
+            android:id="@+id/action_TournamentFragment_to_TournamentStandingsFragment"
+            app:destination="@id/TournamentStandingsFragment" />
     </fragment>
 
     <fragment
@@ -187,6 +190,12 @@
             android:id="@+id/action_ClasificationListFragment_to_MatchesFragment"
             app:destination="@id/MatchesFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/TournamentStandingsFragment"
+        android:name="com.example.tourney.fragments.TournamentStandingsFragment"
+        android:label="Tabla de Clasificación"
+        tools:layout="@layout/fragment_tournament_standings" />
 
     <fragment
         android:id="@+id/TournamentThumbnailChooseFragment"

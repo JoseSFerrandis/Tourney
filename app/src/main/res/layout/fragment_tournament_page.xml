@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_gradient_blue">
 
-                <!-- HEADER SECTOR (Cambiado a ShapeableImageView para consistencia con Tablet) -->
+                <!-- HEADER SECTOR -->
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/headerImage"
                     android:layout_width="match_parent"
@@ -178,14 +178,12 @@
                             android:orientation="vertical"
                             android:layout_marginBottom="16dp">
 
-                            <!-- Participants and Date -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:layout_marginBottom="8dp">
 
-                                <!-- Participants -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -209,7 +207,6 @@
                                         android:layout_marginStart="8dp" />
                                 </LinearLayout>
 
-                                <!-- Date -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -234,13 +231,12 @@
                                 </LinearLayout>
                             </LinearLayout>
 
-                            <!-- Location and Prize -->
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:orientation="horizontal">
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
 
-                                <!-- Location -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -267,7 +263,6 @@
                                         android:textSize="14sp" />
                                 </LinearLayout>
 
-                                <!-- Prize -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -290,17 +285,14 @@
                                         android:textColor="@color/dynamic_text_card"
                                         android:textSize="14sp" />
                                 </LinearLayout>
-
-
                             </LinearLayout>
 
-                            <!-- Badge -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_marginBottom="16dp">
-
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="8dp">
 
                                 <TextView
                                     android:id="@+id/tv_status_badge"
@@ -322,7 +314,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="20dp" />
 
-
                         <!-- Botón para unirse al torneo -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnJoin"
@@ -337,8 +328,22 @@
                             app:icon="@drawable/ic_join_tournament"
                             app:iconTint="@color/white" />
 
+                        <!-- Botón Clasificación (Tabla de Puntos) - Solo Liguilla/Suizo -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnStandings"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginBottom="12dp"
+                            android:textSize="18sp"
+                            android:text="Tabla de Puntos"
+                            android:textColor="@color/white"
+                            android:visibility="gone"
+                            app:backgroundTint="?attr/appColorSecondary"
+                            app:icon="@drawable/ic_trophy"
+                            app:iconTint="@color/white" />
 
-                        <!-- Clasificación y Emparejamiento con estilo de botón -->
+                        <!-- Resultados / Gestion de Puntos -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnClassification"
                             style="@style/Widget.Material3.Button.TonalButton"
@@ -346,7 +351,7 @@
                             android:layout_height="56dp"
                             android:layout_marginBottom="12dp"
                             android:textSize="18sp"
-                            android:text="Clasificación"
+                            android:text="Gestión de Puntos"
                             android:textColor="@color/white"
                             app:backgroundTint="?attr/appColorPrimary"
                             app:icon="@drawable/ic_check"
@@ -367,7 +372,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Participantes y Reglas al mismo nivel -->
+                <!-- Participantes y Reglas -->
                 <LinearLayout
                     android:id="@+id/layoutSecondaryActions"
                     android:layout_width="match_parent"

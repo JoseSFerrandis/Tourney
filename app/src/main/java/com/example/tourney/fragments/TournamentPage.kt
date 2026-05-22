@@ -82,7 +82,7 @@ class TournamentPage : Fragment() {
     private fun setupUI(tournament: Tournament) {
         binding.btnClassification.text =
             if(tournament.tournamentStatus == TournamentStatus.FINISHED) "Clasificación"
-            else "Resultados"
+            else "Gestión de Puntos"
 
         binding.tvTournamentTitle?.text = establishedValue(tournament.name)
         binding.tvGameName?.text = establishedValue(tournament.game)
@@ -109,6 +109,10 @@ class TournamentPage : Fragment() {
         binding.btnJoin.isEnabled = tournament.tournamentStatus == TournamentStatus.EDITABLE
         binding.btnJoin.text = if(tournament.participantList.find { it.userId == User.actualUser?.id } != null) "Desinscribirse" else "Inscribirse"
 
+        // Mostrar botón de Tabla de Puntos solo para Liguilla y Suizo si ya han empezado o terminado
+        binding.btnStandings.isVisible = (tournament.type == TournamentType.LIGUILLA || tournament.type == TournamentType.SUIZO) &&
+                tournament.tournamentStatus != TournamentStatus.EDITABLE
+
         // Cargar imagen de portada inicial
         updateHeaderImage(tournament.thumbnail)
 
@@ -129,11 +133,8 @@ class TournamentPage : Fragment() {
     }
 
     private fun updateHeaderImage(thumbnailId: Int) {
-        // Usamos findViewById directamente para asegurar el tipo ImageView
-        // Esto evita errores de DataBinding cuando los tipos en los layouts (móvil/tablet) no coinciden exactamente
         val header = binding.root.findViewById<ImageView>(R.id.headerImage)
         if (thumbnailId > 0) {
-            // Android requiere nombres de recursos en minúsculas
             val resName = "tournament_thumbnail_$thumbnailId"
             val resId = resources.getIdentifier(resName, "drawable", requireContext().packageName)
             if (resId != 0) {
@@ -161,8 +162,14 @@ class TournamentPage : Fragment() {
             findNavController().navigate(R.id.action_TournamentFragment_to_MatchesFragment, bundle)
         }
 
+        binding.btnStandings.setOnClickListener {
+            val bundle = Bundle().apply {
+                putParcelable("tournament_data", tournament)
+            }
+            findNavController().navigate(R.id.action_TournamentFragment_to_TournamentStandingsFragment, bundle)
+        }
+
         binding.btnRules?.setOnClickListener { showRulesDialog(tournament) }
-        //binding.btnRulesSecond?.setOnClickListener { showRulesDialog(tournament) }
 
         binding.btnViewParticipants.setOnClickListener {
             val bundle = Bundle().apply {
@@ -171,7 +178,6 @@ class TournamentPage : Fragment() {
             findNavController().navigate(R.id.action_TournamentFragment_to_ParticipantsListFragment, bundle)
         }
 
-        // BOTÓN AJUSTES -> IR AL SELECTOR PASANDO EL TORNEO
         binding.btnSettings?.setOnClickListener {
             showOptionsDialog(tournament)
         }
@@ -242,7 +248,7 @@ class TournamentPage : Fragment() {
             }
         }
     }
-    //La nueva opción para el dialogo custom
+
     fun showOptionsDialog(tournament: Tournament) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_tournament_options, null)
         val dialog = MaterialAlertDialogBuilder(requireContext())
@@ -281,7 +287,6 @@ class TournamentPage : Fragment() {
             val bundle = Bundle().apply {
                 putParcelable("tournament_data", tournament)
             }
-            // Pass the bundle here!
             findNavController().navigate(
                 R.id.action_TournamentFragment_to_EditTournamentFragment,
                 bundle

@@ -301,12 +301,29 @@
                                 app:iconSize="24dp"
                                 app:iconTint="@color/white" />
 
+                            <!-- Botón Clasificación (Tabla de Puntos) -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnStandings"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:layout_marginBottom="12dp"
+                                android:text="Tabla de Puntos"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                app:backgroundTint="?attr/appColorSecondary"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_trophy"
+                                app:iconSize="24dp"
+                                app:iconTint="@color/white" />
+
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnClassification"
                                 android:layout_width="match_parent"
                                 android:layout_height="60dp"
                                 android:layout_marginBottom="12dp"
-                                android:text="Ver clasificación"
+                                android:text="Gestión de Puntos"
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
