@@ -188,7 +188,7 @@ class MainActivity : AppCompatActivity() {
         val btnCreate = dialogView.findViewById<Button>(R.id.btnCreateOption)
         val btnJoin = dialogView.findViewById<Button>(R.id.btnJoinOption)
         
-        if (User.actualUser?.id?.toInt() == 3) {
+        if (User.actualUser?.logged == false) {
             btnJoin.visibility = View.GONE
         }
 

@@ -43,7 +43,6 @@
                     android:layout_marginBottom="40dp"
                     android:text="Completa los detalles del evento"
                     android:textColor="?attr/appColorSecondaryLight"
-
                     android:textSize="28sp" />
 
                 <!-- Formulario en Dos Columnas -->
@@ -75,6 +74,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="24dp"
+                            app:helperText="Ej: Copa de Invierno 2026"
+                            app:helperTextTextColor="?attr/appColorSecondaryLight"
                             app:hintEnabled="false">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -82,7 +83,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
-                                android:hint="Copa mundial 2026"
+                                android:hint="Nombre del torneo"
                                 android:paddingHorizontal="16dp"
                                 android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -96,6 +97,7 @@
                             android:textSize="20sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilMaxParticipants"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="24dp"
@@ -121,6 +123,7 @@
                             android:textSize="20sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="24dp"
@@ -131,7 +134,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
-                                android:hint="Estadio virtual"
+                                android:hint="Estadio virtual, ciudad..."
                                 android:paddingHorizontal="16dp"
                                 android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -160,6 +163,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="24dp"
+                            app:helperText="Nombre del juego o deporte"
+                            app:helperTextTextColor="?attr/appColorSecondaryLight"
                             app:hintEnabled="false">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -185,6 +190,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="24dp"
+                            app:helperText="Cuándo comenzará la competición"
+                            app:helperTextTextColor="?attr/appColorSecondaryLight"
                             app:hintEnabled="false"
                             app:endIconMode="custom"
                             app:endIconDrawable="@drawable/ic_calendar">
@@ -210,6 +217,7 @@
                             android:textSize="20sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilPrize"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="24dp"
@@ -220,7 +228,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="56dp"
                                 android:background="@drawable/bg_input_white"
-                                android:hint="5,000€"
+                                android:hint="5,000€, trofeo..."
                                 android:paddingHorizontal="16dp"
                                 android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -228,15 +236,33 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Tipo de Torneo (Añadido para evitar error de compilación) -->
-                <TextView
+                <!-- Tipo de Torneo -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:text="Tipo de torneo"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo de torneo"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
+                    <ImageButton
+                        android:id="@+id/btnTipoTorneoHelp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="12dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_help"
+                        android:tooltipText="Ver ayuda sobre tipos de torneo"
+                        app:tint="@android:color/white" />
+                </LinearLayout>
 
                 <Spinner
                     android:id="@+id/spTournamentType"
@@ -245,7 +271,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="32dp"
                     android:background="@drawable/bg_input_white"
-                    android:paddingHorizontal="16dp" />
+                    android:paddingHorizontal="16dp"
+                    android:theme="@style/ThemeOverlay.AppCompat.Light" />
 
                 <!-- Código (Centrado abajo) -->
                 <TextView
@@ -259,10 +286,13 @@
                     android:textSize="20sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCode"
                     android:layout_width="400dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="48dp"
+                    app:helperText="Código numérico para que otros se unan"
+                    app:helperTextTextColor="?attr/appColorSecondaryLight"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -286,7 +316,8 @@
                     android:text="Crear torneo"
                     android:textColor="?attr/appColorSecondary"
                     android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:tooltipText="Finalizar y publicar torneo" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -46,6 +47,7 @@ class HomeFragment : Fragment() {
         viewPager = binding.pager!!
         val tabLayout = binding.tabLayout
 
+        setupTooltips()
         updateTournamentAdapter()
         Log.e("DEBUG_USERS", " ${User.actualUser?.id}  Email: ${User.actualUser?.email} | Password: ${User.actualUser?.password} , ${User.actualUser?.nickname}")
 
@@ -62,10 +64,18 @@ class HomeFragment : Fragment() {
         binding.tvGreeting.text = "Hola, ${User.actualUser?.nickname}"
     }
 
+    private fun setupTooltips() {
+        TooltipCompat.setTooltipText(binding.btnProfile, "Ver mi perfil y ajustes")
+        binding.btnSearchTournament?.let { TooltipCompat.setTooltipText(it, "Buscar torneos") }
+        binding.btnSearchFilters?.let { TooltipCompat.setTooltipText(it, "Filtros avanzados") }
+        
+        binding.btnFilterTournamentSearchEliminacion?.let { TooltipCompat.setTooltipText(it, "Filtrar por Eliminación Directa") }
+        binding.btnFilterTournamentSearchLiguilla?.let { TooltipCompat.setTooltipText(it, "Filtrar por Formato Liga") }
+        binding.btnFilterTournamentSearchSuizo?.let { TooltipCompat.setTooltipText(it, "Filtrar por Sistema Suizo") }
+    }
+
     private fun updateProfileImage() {
         val pn = User.actualUser?.photo ?: 0
-        
-        // Si el número es válido (del 1 al 18)
         if (pn > 0) {
             val resId = resources.getIdentifier("ic_user_pfp$pn", "drawable", requireContext().packageName)
             if (resId != 0) {
@@ -74,25 +84,18 @@ class HomeFragment : Fragment() {
                 binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
             }
         } else {
-            // Imagen por defecto si es 0 o nulo
             binding.ivProfile.setImageResource(R.drawable.ic_user_pfp1)
         }
     }
 
     private fun setupListeners() {
         binding.btnProfile.setOnClickListener {
-            //if (User.actualUser?.id?.toInt() != 3) {
-                findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
-             //}else{
-               //  Toast.makeText(requireContext(), "No puedes acceder a tu perfil como invitado", Toast.LENGTH_SHORT).show()
-             //}
+            findNavController().navigate(R.id.action_HomeFragment_to_ProfileFragment)
         }
 
         // Search
         binding.btnSearchTournament?.setOnClickListener {
             viewModel.updateSearch(binding.etSearch.text.toString().trim())
-
-            // Cierra el menú de filtros si estuviera abierto
             binding.vwFiltersTournamentSearch?.isVisible = false
         }
         binding.btnSearchFilters?.setOnClickListener {
@@ -122,7 +125,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        updateProfileImage() // Actualizamos la imagen también al volver
+        updateProfileImage()
         updateTournamentAdapter()
     }
 
@@ -137,15 +140,15 @@ class HomeFragment : Fragment() {
 }
 
 class TournamentCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-
-    override fun getItemCount(): Int = 3 // "Mis torneos","Inscrito" y "Siguiendo"
-
+    override fun getItemCount(): Int = if(User.actualUser?.logged == false) 1 else 3
     override fun createFragment(position: Int): Fragment {
         val user = User.actualUser
-        return when (position) {
-            0 -> TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
-            1 -> TournamentListFragment.newInstance(user?.joinedTournamentList ?: emptyList())
-            else -> TournamentListFragment.newInstance(user?.followingTournamentList ?: emptyList())
-        }
+        return if (user?.logged == true)
+                    when (position) {
+                        0 -> TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
+                        1 -> TournamentListFragment.newInstance(user?.joinedTournamentList ?: emptyList())
+                        else -> TournamentListFragment.newInstance(user?.followingTournamentList ?: emptyList())
+                    }
+                else TournamentListFragment.newInstance(user?.showableTournamentList ?: emptyList())
     }
 }
