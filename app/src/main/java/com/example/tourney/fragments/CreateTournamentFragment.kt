@@ -102,7 +102,7 @@ class CreateTournamentFragment : Fragment(R.layout.fragment_create_tournament) {
             binding.tilGame.error = null
             binding.tilCode?.error = null
 
-            val tournaments = TournamentRepository.getInstance().getTournaments()
+            val tournaments = TournamentRepository.getInstance(requireContext()).getTournaments()
             if (code != null && tournaments.any { it.code == code }) {
                 binding.tilCode?.error = "Ese código ya está en uso"
                 return@setOnClickListener
