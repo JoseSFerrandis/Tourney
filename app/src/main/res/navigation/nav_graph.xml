@@ -184,7 +184,7 @@
     <fragment
         android:id="@+id/ClasificationListFragment"
         android:name="com.example.tourney.fragments.ClasificationListFragment"
-        android:label="Clasificaciones"
+        android:label="Gestión de Puntos"
         tools:layout="@layout/fragment_clasification_list">
         <action
             android:id="@+id/action_ClasificationListFragment_to_MatchesFragment"
