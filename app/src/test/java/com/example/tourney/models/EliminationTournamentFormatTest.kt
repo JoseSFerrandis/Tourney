@@ -6,6 +6,7 @@ import com.example.tourney.entities.Tournament
 import com.example.tourney.entities.TournamentStatus
 import com.example.tourney.entities.TournamentType
 import com.example.tourney.entities.User
+import com.ventura.bracketslib.model.CompetitorData
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -68,7 +69,61 @@ class EliminationTournamentFormatTest {
     }
 
     @Test
-    fun testNextRound_WinnerProgresses() {
+    fun testInitMatches_OddParticipants() {
+        for (i in 1..3) {
+            tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
+        }
+        format.initMatches(tournament)
+        
+        // 3 users + 1 DESCANSO = 4
+        assertEquals(4, tournament.getNotDead().size)
+        assertEquals("DESCANSO", tournament.getNotDead()[3].name)
+    }
+
+    @Test
+    fun testCreateMatches() {
+        val competitors = mutableListOf(
+            CompetitorData("C1", "0"),
+            CompetitorData("C2", "0"),
+            CompetitorData("C3", "0"),
+            CompetitorData("C4", "0")
+        )
+        val matches = format.createMatches(competitors)
+        assertEquals(2, matches.size)
+        assertEquals("C1", matches[0].competitorOne.name)
+        assertEquals("C2", matches[0].competitorTwo.name)
+    }
+
+    @Test
+    fun testRestartMatches() {
+        tournament.addParticipant(User(1L, "U1", "e", "p", 0))
+        format.initMatches(tournament)
+        assertEquals(1, tournament.columnMatches.size)
+        
+        format.restartMatches(tournament)
+        assertEquals(1, tournament.columnMatches.size)
+    }
+
+    @Test
+    fun testNextRound_NoParticipants() {
+        assertFalse("Should return false when no participants", format.nextRound(tournament, mockContext))
+    }
+
+    @Test
+    fun testNextRound_TieFails() {
+        for (i in 1..2) tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
+        format.initMatches(tournament)
+        
+        // Empate
+        val match = tournament.columnMatches[0].matches[0]
+        match.competitorOne.score = "1"
+        match.competitorTwo.score = "1"
+        
+        assertFalse("Should not allow tie in elimination", format.nextRound(tournament, mockContext))
+    }
+
+    @Test
+    fun testNextRound_WinnerProgressesToFinish() {
         for (i in 1..2) tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
         format.initMatches(tournament)
 
@@ -76,7 +131,27 @@ class EliminationTournamentFormatTest {
         matches[0].competitorOne.score = "2"
         matches[0].competitorTwo.score = "1"
 
-        format.nextRound(tournament, mockContext)
+        assertTrue(format.nextRound(tournament, mockContext))
         assertEquals(TournamentStatus.FINISHED, tournament.tournamentStatus)
+        assertEquals(2, tournament.columnMatches.size)
+    }
+
+    @Test
+    fun testNextRound_FullProgression() {
+        // 4 participants -> 2 rounds
+        for (i in 1..4) tournament.addParticipant(User(i.toLong(), "User$i", "e@e.com", "pass", 0))
+        format.initMatches(tournament)
+        
+        // Round 1
+        tournament.columnMatches[0].matches[0].competitorOne.score = "1"
+        tournament.columnMatches[0].matches[0].competitorTwo.score = "0" // User1 wins
+        tournament.columnMatches[0].matches[1].competitorOne.score = "0"
+        tournament.columnMatches[0].matches[1].competitorTwo.score = "1" // User4 wins
+        
+        format.nextRound(tournament, mockContext)
+        assertEquals(2, tournament.columnMatches.size)
+        assertEquals(1, tournament.columnMatches[1].matches.size)
+        assertEquals("User1", tournament.columnMatches[1].matches[0].competitorOne.name)
+        assertEquals("User4", tournament.columnMatches[1].matches[0].competitorTwo.name)
     }
 }

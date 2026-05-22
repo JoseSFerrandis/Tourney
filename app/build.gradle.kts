@@ -57,6 +57,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
     
     // Instrumented Testing
     androidTestImplementation(libs.androidx.junit)

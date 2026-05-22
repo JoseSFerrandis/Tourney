@@ -21,17 +21,48 @@ class UserTest {
     }
 
     @Test
-    fun testAddShowableTournament() {
+    fun testAddAndRemoveShowableTournament() {
         user.addShowableTournament(3L)
         assertTrue(user.showableTournamentList.contains(3L))
+        
+        user.removeShowableTournament(3L)
+        assertFalse(user.showableTournamentList.contains(3L))
     }
 
     @Test
-    fun testSetShowableTournamentList() {
-        val stringList = "10, 20, 30"
+    fun testFollowingTournamentList() {
+        user.addFollowingTournament(10L)
+        assertTrue(user.followingTournamentList.contains(10L))
+        
+        user.removeFollowingTournament(10L)
+        assertTrue(user.followingTournamentList.isEmpty())
+    }
+
+    @Test
+    fun testJoinedTournamentList() {
+        user.addJoinedTournament(20L)
+        assertTrue(user.joinedTournamentList.contains(20L))
+        
+        user.removeJoinedTournament(20L)
+        assertTrue(user.joinedTournamentList.isEmpty())
+    }
+
+    @Test
+    fun testHasShowableTournament() {
+        assertTrue(user.hasShowableTournament(1L))
+        assertFalse(user.hasShowableTournament(99L))
+    }
+
+    @Test
+    fun testSetShowableTournamentList_Parsing() {
+        // Test con espacios y valores duplicados
+        val stringList = "10, 20 , 30"
         user.setShowableTournamentList(stringList)
+        
         assertEquals(3, user.showableTournamentList.size)
-        assertTrue(user.showableTournamentList.contains(10L))
+        assertEquals(10L, user.showableTournamentList[0])
+        assertEquals(20L, user.showableTournamentList[1])
+        assertEquals(30L, user.showableTournamentList[2])
     }
     
     @Test
